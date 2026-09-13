@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proton</title>
+    
+    <!-- 🔴 1. Favicon (Tab Logo) 🔴 -->
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        /* 🔴 2. Background Image (Full Screen & Original Clarity) 🔴 */
+        .main-container {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* جعل المحتوى يتركز في أسفل الصفحة فقط */
+            padding: 2.5rem 3rem;
+            
+            /* خلفية واضحة تماماً */
+            background: url('bg.png') center/cover no-repeat;
+        }
+
+        /* Bottom Footer (Social Media Icons Only) */
+        footer {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .social-icon-img {
+            width: 32px; /* حجم أيقونات التواصل */
+            height: 32px;
+            object-fit: contain;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            opacity: 0.9;
+        }
+
+        .social-icon-img:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .main-container { padding: 1.5rem; }
+            .social-icon-img { width: 28px; height: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- 🔴 Footer: Custom Social Media Image Icons 🔴 -->
+        <footer>
+            <div class="social-links">
+                <!-- أيقونة 1 -->
+                <a href="mailto:soliman@protonag.com" target="_blank">
+                    <img src="icon1.png" alt="E-Mail" class="social-icon-img">
+                </a>
+                
+                <!-- أيقونة 2 -->
+                <a href="https://www.facebook.com/Soliman.Proton" target="_blank">
+                    <img src="icon2.png" alt="Facebook" class="social-icon-img">
+                </a>
+                
+                <!-- أيقونة 3 -->
+                <a href="https://wa.me/+201066581983" target="_blank">
+                    <img src="icon3.png" alt="WhatsApp" class="social-icon-img">
+                </a>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>
