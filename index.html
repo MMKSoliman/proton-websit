@@ -5,40 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proton</title>
     
-    <!-- 🔴 1. Favicon (Tab Logo) 🔴 -->
+    <!-- Favicon (Tab Logo) -->
     <link rel="icon" type="image/png" href="favicon.png">
 
     <style>
-        /* تنسيقات الشاشات الصغيرة والموبايل */
-@media (max-width: 768px) {
-  body {
-    overflow-y: auto; /* السماح بالتمرير العمودي إذا كان المحتوى أطول من الشاشة */
-    padding: 20px 0;
-  }
-  
-  .container {
-    height: auto !important; /* إلغاء الارتفاع الثابت للمحتوى */
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  /* ضبط حاوية الأيقونات لتعرض بشكل مرن ومناسب */
-  .social-icons, .icons-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 30px;
-    padding-bottom: 20px;
-  }
-
-  .social-icons img, .icons-container img {
-    max-width: 40px; /* تحجيم الأيقونات لعدم الخروج عن الشاشة */
-    height: auto;
-  }
-}
         * {
             margin: 0;
             padding: 0;
@@ -48,21 +18,21 @@
         body, html {
             height: 100%;
             width: 100%;
-            overflow: hidden;
             font-family: system-ui, -apple-system, sans-serif;
+            background-color: #000;
         }
 
-        /* 🔴 2. Background Image (Full Screen & Original Clarity) 🔴 */
+        /* Background Image & Main Layout */
         .main-container {
             position: relative;
-            height: 100vh;
-            width: 100vw;
+            min-height: 100vh;
+            width: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end; /* جعل المحتوى يتركز في أسفل الصفحة فقط */
+            justify-content: flex-end;
             padding: 2.5rem 3rem;
             
-            /* خلفية واضحة تماماً */
+            /* خلفية هيدر/سفلي احترافية مع دعم الشاشات */
             background: url('bg.png') center/cover no-repeat;
         }
 
@@ -72,16 +42,19 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            padding-bottom: 1rem;
         }
 
         .social-links {
             display: flex;
             gap: 1.5rem;
             align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .social-icon-img {
-            width: 32px; /* حجم أيقونات التواصل */
+            width: 32px;
             height: 32px;
             object-fit: contain;
             transition: transform 0.2s ease, opacity 0.2s ease;
@@ -93,9 +66,26 @@
             transform: scale(1.1);
         }
 
+        /* 📱 تنسيقات الشاشات الصغيرة والموبايل (Media Query في المكان الصحيح) */
         @media (max-width: 768px) {
-            .main-container { padding: 1.5rem; }
-            .social-icon-img { width: 28px; height: 28px; }
+            body, html {
+                overflow-y: auto !important; /* السماح بالسكرول على الموبايل */
+            }
+
+            .main-container {
+                padding: 1.5rem 1rem;
+                justify-content: flex-end;
+                min-height: 100dvh; /* توافق كامل مع متصفحات الموبايل */
+            }
+
+            .social-links {
+                gap: 1.25rem;
+            }
+
+            .social-icon-img {
+                width: 36px; /* تكبير بسيط لتسهيل الضغط باللمس */
+                height: 36px;
+            }
         }
     </style>
 </head>
@@ -103,22 +93,22 @@
 
     <div class="main-container">
 
-        <!-- 🔴 Footer: Custom Social Media Image Icons 🔴 -->
+        <!-- Footer: Custom Social Media Image Icons -->
         <footer>
             <div class="social-links">
-                <!-- أيقونة 1 -->
+                <!-- أيقونة 1: E-Mail -->
                 <a href="mailto:soliman@protonag.com" target="_blank">
-                    <img src="icon1.png" alt="E-Mail" class="social-icon-img">
+                    <img src="Icon1.png" alt="E-Mail" class="social-icon-img" width="36" height="36">
                 </a>
                 
-                <!-- أيقونة 2 -->
+                <!-- أيقونة 2: Facebook -->
                 <a href="https://www.facebook.com/Soliman.Proton" target="_blank">
-                    <img src="icon2.png" alt="Facebook" class="social-icon-img">
+                    <img src="Icon2.png" alt="Facebook" class="social-icon-img" width="36" height="36">
                 </a>
                 
-                <!-- أيقونة 3 -->
+                <!-- أيقونة 3: WhatsApp -->
                 <a href="https://wa.me/+201066581983" target="_blank">
-                    <img src="icon3.png" alt="WhatsApp" class="social-icon-img">
+                    <img src="Icon3.png" alt="WhatsApp" class="social-icon-img" width="36" height="36">
                 </a>
             </div>
         </footer>
