@@ -25,6 +25,7 @@
             width: 100%;
             background-color: #0d0d0d;
             color: #ffffff;
+            overflow-x: hidden;
         }
 
         .main-container {
@@ -35,18 +36,21 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 2rem 1.5rem;
+            padding: 1.5rem 1rem;
             background: #0d0d0d url('./bg.png') center/cover no-repeat;
+            box-sizing: border-box;
         }
 
         .top-header {
-            width: 100%;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            z-index: 20;
-        }
-
+    		width: 100%;
+		    max-width: 100%; /* تمديد الهيدر بعرض الصفحة بالكامل */
+		    display: flex;
+		    justify-content: flex-start;
+		    align-items: center;
+		    padding: 0 1rem; /* مسافة أمان صغيرة من الحافة اليمنى واليسرى */
+		    z-index: 20;
+		}
+		
         .back-btn-wrapper {
             position: relative;
             display: inline-flex;
@@ -76,10 +80,11 @@
             -webkit-backdrop-filter: blur(14px);
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 16px;
-            padding: 2.2rem 2rem;
+            padding: 2rem 1.5rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
             margin: 1.5rem 0;
             z-index: 10;
+            box-sizing: border-box;
         }
 
         .card-header {
@@ -115,6 +120,8 @@
             padding: 1rem;
             border-radius: 12px;
             transition: border-color 0.2s ease, background 0.2s ease;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .platform-item:hover {
@@ -126,6 +133,8 @@
             display: flex;
             align-items: center;
             gap: 0.9rem;
+            flex: 1;
+            min-width: 200px;
         }
 
         .platform-icon {
@@ -133,6 +142,7 @@
             height: 40px;
             object-fit: contain;
             border-radius: 8px;
+            flex-shrink: 0;
         }
 
         .platform-text h4 {
@@ -144,10 +154,11 @@
         .platform-text p {
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.55);
+            line-height: 1.3;
         }
 
         .btn-connect {
-            padding: 9px 16px;
+            padding: 10px 16px;
             border-radius: 8px;
             border: 1px solid #00e5ff;
             background: rgba(0, 229, 255, 0.1);
@@ -157,6 +168,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             white-space: nowrap;
+            text-align: center;
         }
 
         .btn-connect:hover {
@@ -180,6 +192,8 @@
             border-radius: 10px;
             padding: 0.9rem 1.2rem;
             margin-bottom: 1.5rem;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
         .total-title {
@@ -196,10 +210,12 @@
         .actions-group {
             display: flex;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .btn-checkout {
             flex: 1;
+            min-width: 180px;
             padding: 12px;
             border-radius: 8px;
             border: none;
@@ -242,6 +258,7 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            padding: 1rem;
         }
 
         .modal-box {
@@ -250,7 +267,7 @@
             border-radius: 14px;
             padding: 2rem;
             max-width: 440px;
-            width: 90%;
+            width: 100%;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
@@ -276,6 +293,7 @@
         .modal-actions {
             display: flex;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
         footer {
@@ -306,6 +324,49 @@
         .social-icon-img:hover {
             opacity: 1;
             transform: scale(1.15);
+        }
+
+        /* 📱 Responsive Adjustments for Mobile */
+        @media (max-width: 580px) {
+            .main-container {
+                padding: 1rem 0.8rem;
+            }
+
+            .connect-card {
+                padding: 1.5rem 1rem;
+            }
+
+            .platform-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+
+            .platform-info {
+                width: 100%;
+            }
+
+            .btn-connect {
+                width: 100%;
+            }
+
+            .total-summary-box {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .actions-group {
+                flex-direction: column;
+            }
+
+            .btn-skip {
+                width: 100%;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -405,9 +466,9 @@
         <!-- Footer -->
         <footer>
             <div class="social-links">
-                <a href="mailto:soliman@protonag.com" target="_blank"><img src="./Icon1.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="E-Mail" class="social-icon-img"></a>
-                <a href="https://www.facebook.com/Soliman.Proton" target="_blank"><img src="./Icon2.png" onerror="this.onerror=null; this.src='./icon2.png';" alt="Facebook" class="social-icon-img"></a>
-                <a href="https://wa.me/+201066581983" target="_blank"><img src="./Icon3.png" onerror="this.onerror=null; this.src='./icon3.png';" alt="WhatsApp" class="social-icon-img"></a>
+                <a href="mailto:soliman@protonag.com" target="_blank"><img src="./icon1.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="E-Mail" class="social-icon-img"></a>
+                <a href="https://www.facebook.com/Soliman.Proton" target="_blank"><img src="./icon2.png" onerror="this.onerror=null; this.src='./icon2.png';" alt="Facebook" class="social-icon-img"></a>
+                <a href="https://wa.me/+201066581983" target="_blank"><img src="./icon3.png" onerror="this.onerror=null; this.src='./icon3.png';" alt="WhatsApp" class="social-icon-img"></a>
             </div>
         </footer>
 
@@ -436,7 +497,7 @@
         function handlePlatformClick(name, price, iconUrl) {
             const index = connectedPlatforms.findIndex(p => p.name === name);
 
-            // إذا كانت المنصة مربوّطة بالفعل، يتم إلغاء ربطها فوراً
+            // إذا كانت المنصة مربوطة بالفعل، يتم إلغاء ربطها فوراً
             if (index !== -1) {
                 connectedPlatforms.splice(index, 1);
                 const btn = document.getElementById(`btn-${name.toLowerCase()}`);
@@ -482,14 +543,12 @@
 
             const totalPrice = connectedPlatforms.reduce((sum, item) => sum + item.price, 0);
             const platformNames = connectedPlatforms.map(p => p.name).join('، ');
-            const message = `مرحباً بروتون 👋\n\nأود تفعيل إدارة منصات التواصل الخاصة بنشاطي التجاري.\n\n📌 المنصات المربوطة (${connectedPlatforms.length}): ${platformNames}\n💵 التكلفة الإجمالية: $${totalPrice} شهرياً\n\nيرجى تزويدي بالخطوات التالية لتأكيد التفعيل وبدء العمل.`;
+            const message = `مرحباً بروتون 👋\n\nأود تفعيل إدارة منصات التواصل الخاصة بنشاطي التجاري.\n\n📌 المنصات المربوطة (${connectedPlatforms.length}): ${platformNames}\n💰 التكلفة الإجمالية: $${totalPrice} شهرياً\n\nيرجى تزويدي بالخطوات التالية لتأكيد التفعيل وبدء العمل.`;
 
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-
             window.open(whatsappUrl, '_blank');
         }
     </script>
-
 </body>
 </html>
