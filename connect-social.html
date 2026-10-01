@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proton - ربط صفحات المنصات والتسعير</title>
+    
+    <link rel="icon" type="image/png" href="./favicon.png">
+
+    <!-- Google Fonts: Cairo & Open Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *, button, input, select, textarea {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Open Sans', 'Cairo', system-ui, -apple-system, sans-serif !important;
+        }
+
+        body, html {
+            min-height: 100vh;
+            width: 100%;
+            background-color: #0d0d0d;
+            color: #ffffff;
+        }
+
+        .main-container {
+            position: relative;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 1.5rem;
+            background: #0d0d0d url('./bg.png') center/cover no-repeat;
+        }
+
+        .top-header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .back-btn-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .back-icon-img {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            opacity: 0.95;
+        }
+
+        .back-btn-wrapper:hover .back-icon-img {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .connect-card {
+            width: 100%;
+            max-width: 620px;
+            background: rgba(18, 18, 18, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 2.2rem 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            margin: 1.5rem 0;
+            z-index: 10;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .card-subtitle {
+            font-size: 0.88rem;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.5;
+        }
+
+        .platforms-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .platform-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .platform-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(0, 229, 255, 0.3);
+        }
+
+        .platform-info {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+        }
+
+        .platform-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .platform-text h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .platform-text p {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .btn-connect {
+            padding: 9px 16px;
+            border-radius: 8px;
+            border: 1px solid #00e5ff;
+            background: rgba(0, 229, 255, 0.1);
+            color: #00e5ff;
+            font-size: 0.83rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-connect:hover {
+            background: #00e5ff;
+            color: #000;
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+        }
+
+        .btn-connect.connected {
+            background: rgba(46, 204, 113, 0.15);
+            border-color: #2ecc71;
+            color: #2ecc71;
+        }
+
+        .total-summary-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 229, 255, 0.05);
+            border: 1px dashed rgba(0, 229, 255, 0.3);
+            border-radius: 10px;
+            padding: 0.9rem 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .total-title {
+            font-size: 0.88rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .total-amount {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #00e5ff;
+        }
+
+        .actions-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-checkout {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, #0047ab, #00e5ff);
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            text-align: center;
+        }
+
+        .btn-checkout:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-skip {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.88rem;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        /* Modal Popup */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-box {
+            background: #181818;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            padding: 2rem;
+            max-width: 440px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .modal-box img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 1rem;
+        }
+
+        .modal-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-box p {
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.65);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        footer {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 1rem;
+            z-index: 10;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: center;
+            direction: ltr;
+        }
+
+        .social-icon-img {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            opacity: 0.95;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .social-icon-img:hover {
+            opacity: 1;
+            transform: scale(1.15);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- Header -->
+        <header class="top-header">
+            <a href="./index.html" class="back-btn-wrapper">
+                <img src="./home.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="الرئيسية" class="back-icon-img">
+            </a>
+        </header>
+
+        <!-- Connect Card -->
+        <div class="connect-card">
+            <div class="card-header">
+                <h2 class="card-title">اختر المنصات المرفقة للإدارة</h2>
+                <p class="card-subtitle">
+                    اضغط لربط حساب المنصة ومنح الصلاحيات المطلوبة لإدارتها واحتساب التكلفة.
+                </p>
+            </div>
+
+            <div class="platforms-list">
+                
+                <!-- Facebook -->
+                <div class="platform-item">
+                    <div class="platform-info">
+                        <img src="./facebook.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/5968/5968764.png';" class="platform-icon" alt="Facebook">
+                        <div class="platform-text">
+                            <h4>Facebook Pages</h4>
+                            <p>إدارة المنشورات، الرسائل والتحليلات</p>
+                        </div>
+                    </div>
+                    <button class="btn-connect" id="btn-facebook" onclick="handlePlatformClick('Facebook', 50, 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png')">
+                        ربط المنصة ($50/شهرياً)
+                    </button>
+                </div>
+
+                <!-- Instagram -->
+                <div class="platform-item">
+                    <div class="platform-info">
+                        <img src="./instagram.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/2111/2111463.png';" class="platform-icon" alt="Instagram">
+                        <div class="platform-text">
+                            <h4>Instagram Business</h4>
+                            <p>جدولة الريلز، المنشورات والتفاعل</p>
+                        </div>
+                    </div>
+                    <button class="btn-connect" id="btn-instagram" onclick="handlePlatformClick('Instagram', 50, 'https://cdn-icons-png.flaticon.com/512/2111/2111463.png')">
+                        ربط المنصة ($50/شهرياً)
+                    </button>
+                </div>
+
+                <!-- TikTok -->
+                <div class="platform-item">
+                    <div class="platform-info">
+                        <img src="./tiktok.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3046/3046121.png';" class="platform-icon" alt="TikTok">
+                        <div class="platform-text">
+                            <h4>TikTok Business</h4>
+                            <p>متابعة الحملات وتحليلات الفيديو</p>
+                        </div>
+                    </div>
+                    <button class="btn-connect" id="btn-tiktok" onclick="handlePlatformClick('TikTok', 60, 'https://cdn-icons-png.flaticon.com/512/3046/3046121.png')">
+                        ربط المنصة ($60/شهرياً)
+                    </button>
+                </div>
+
+                <!-- LinkedIn -->
+                <div class="platform-item">
+                    <div class="platform-info">
+                        <img src="./linkedin.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3536/3536505.png';" class="platform-icon" alt="LinkedIn">
+                        <div class="platform-text">
+                            <h4>LinkedIn Page</h4>
+                            <p>نشر المحتوى وتتبع تفاعل الشركات</p>
+                        </div>
+                    </div>
+                    <button class="btn-connect" id="btn-linkedin" onclick="handlePlatformClick('LinkedIn', 70, 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png')">
+                        ربط المنصة ($70/شهرياً)
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Total Box -->
+            <div class="total-summary-box">
+                <span class="total-title">عدد المنصات المربوطة: <strong id="selectedCount" style="color:#fff;">0</strong></span>
+                <span class="total-amount">الإجمالي: $<span id="totalPrice">0</span> / شهرياً</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="actions-group">
+                <button class="btn-checkout" onclick="redirectToWhatsApp()">إتمام الطلب وتفعيل الخطة</button>
+                <a href="./dashboard.html" class="btn-skip">تخطي الآن</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="social-links">
+                <a href="mailto:soliman@protonag.com" target="_blank"><img src="./Icon1.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="E-Mail" class="social-icon-img"></a>
+                <a href="https://www.facebook.com/Soliman.Proton" target="_blank"><img src="./Icon2.png" onerror="this.onerror=null; this.src='./icon2.png';" alt="Facebook" class="social-icon-img"></a>
+                <a href="https://wa.me/+201066581983" target="_blank"><img src="./Icon3.png" onerror="this.onerror=null; this.src='./icon3.png';" alt="WhatsApp" class="social-icon-img"></a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Modal Popup for Auth -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-box">
+            <img id="modalIcon" src="" alt="Platform Icon">
+            <h3 id="modalTitle">ربط حساب المنصة</h3>
+            <p>
+                سيتم منح منصة <strong>Proton</strong> الصلاحية لإدارة المحتوى، التحليلات، والحملات الخاصة بصفحتك على هذه المنصة.
+            </p>
+            <div class="modal-actions">
+                <button class="btn-checkout" onclick="confirmPlatformConnection()">موافقة ومنح الصلاحية</button>
+                <button class="btn-skip" onclick="closeAuthModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const whatsappNumber = "+201066581983";
+        let connectedPlatforms = [];
+        let currentTarget = null; // يحفظ المنصة الجاري ربطها الآن
+
+        function handlePlatformClick(name, price, iconUrl) {
+            const index = connectedPlatforms.findIndex(p => p.name === name);
+
+            // إذا كانت المنصة مربوّطة بالفعل، يتم إلغاء ربطها فوراً
+            if (index !== -1) {
+                connectedPlatforms.splice(index, 1);
+                const btn = document.getElementById(`btn-${name.toLowerCase()}`);
+                btn.textContent = `ربط المنصة ($${price}/شهرياً)`;
+                btn.classList.remove('connected');
+                updateTotal();
+            } else {
+                // إذا لم تكن مربوطة، نفتح نافذة الربط لتأكيد منح الصلاحيات أولاً
+                currentTarget = { name, price };
+                document.getElementById('modalTitle').textContent = `منح الصلاحيات لـ Proton على ${name}`;
+                document.getElementById('modalIcon').src = iconUrl;
+                document.getElementById('authModal').style.display = 'flex';
+            }
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
+            currentTarget = null;
+        }
+
+        function confirmPlatformConnection() {
+            if (currentTarget) {
+                connectedPlatforms.push(currentTarget);
+                const btn = document.getElementById(`btn-${currentTarget.name.toLowerCase()}`);
+                btn.textContent = 'تم الربط ✅';
+                btn.classList.add('connected');
+                updateTotal();
+            }
+            closeAuthModal();
+        }
+
+        function updateTotal() {
+            const totalPrice = connectedPlatforms.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('selectedCount').textContent = connectedPlatforms.length;
+            document.getElementById('totalPrice').textContent = totalPrice;
+        }
+
+        function redirectToWhatsApp() {
+            if (connectedPlatforms.length === 0) {
+                alert('يرجى ربط منصة واحدة على الأقل للمتابعة.');
+                return;
+            }
+
+            const totalPrice = connectedPlatforms.reduce((sum, item) => sum + item.price, 0);
+            const platformNames = connectedPlatforms.map(p => p.name).join('، ');
+            const message = `مرحباً بروتون 👋\n\nأود تفعيل إدارة منصات التواصل الخاصة بنشاطي التجاري.\n\n📌 المنصات المربوطة (${connectedPlatforms.length}): ${platformNames}\n💵 التكلفة الإجمالية: $${totalPrice} شهرياً\n\nيرجى تزويدي بالخطوات التالية لتأكيد التفعيل وبدء العمل.`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proton - تهيئة حسابك ونشاطك</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./favicon.png">
+
+    <!-- Google Fonts: Cairo (Arabic) & Open Sans (English) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            min-height: 100vh;
+            width: 100%;
+            /* تطبيق Open Sans للإنجليزي و Cairo للعربي */
+            font-family: 'Open Sans', 'Cairo', system-ui, -apple-system, sans-serif;
+            background-color: #0d0d0d;
+            color: #ffffff;
+        }
+
+        .main-container {
+            position: relative;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 1.5rem;
+            background: #0d0d0d url('./bg.png') center/cover no-repeat;
+        }
+
+        .top-header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .back-btn-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .back-icon-img {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            opacity: 0.95;
+        }
+
+        .back-btn-wrapper:hover .back-icon-img {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .back-tooltip {
+            position: absolute;
+            right: 110%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(20, 20, 20, 0.9);
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            direction: rtl;
+        }
+
+        .back-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent transparent rgba(20, 20, 20, 0.9);
+        }
+
+        .back-btn-wrapper:hover .back-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-50%) translateX(-4px);
+        }
+
+        /* Onboarding Card Form */
+        .onboarding-card {
+            width: 100%;
+            max-width: 580px;
+            background: rgba(18, 18, 18, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 2.2rem 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            margin: 1.5rem 0;
+            z-index: 10;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .card-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 1.8rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 25%;
+            background: linear-gradient(90deg, #0047ab, #00e5ff);
+            transition: width 0.3s ease;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .step-title-badge {
+            display: inline-block;
+            background: rgba(0, 229, 255, 0.1);
+            color: #00e5ff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.1rem;
+            text-align: right;
+            flex: 1;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.83rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 0.35rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: #00e5ff;
+        }
+
+        .color-picker-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-picker-input {
+            width: 45px;
+            height: 40px;
+            padding: 0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        /* Styling File Inputs & Notice */
+        .file-box {
+            border: 1px dashed rgba(255, 255, 255, 0.25);
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .file-box:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .file-box input[type="file"] {
+            display: none;
+        }
+
+        .file-box-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            display: block;
+        }
+
+        .business-card-section {
+            background: rgba(0, 229, 255, 0.04);
+            border: 1px dashed rgba(0, 229, 255, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.8rem;
+        }
+
+        .btn-submit {
+            flex: 1;
+            padding: 11px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, #0047ab, #00e5ff);
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            padding: 11px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            color: #fff;
+            font-size: 0.9rem;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        footer {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 1rem;
+            z-index: 10;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: center;
+            direction: ltr;
+        }
+
+        .social-icon-img {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            opacity: 0.95;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .social-icon-img:hover {
+            opacity: 1;
+            transform: scale(1.15);
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- Header -->
+        <header class="top-header">
+            <a href="./index.html" class="back-btn-wrapper">
+                <span class="back-tooltip">العودة للرئيسية</span>
+                <img src="./home.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="الرئيسية" class="back-icon-img">
+            </a>
+        </header>
+
+        <!-- Card Form -->
+        <div class="onboarding-card">
+            <div class="card-header">
+                <h2 class="card-title">تهيئة ملف النشاط</h2>
+                <p class="card-subtitle">الخطوة <span id="stepNumber">1</span> من 4</p>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <form id="onboardingForm" onsubmit="handleOnboardingSubmit(event)">
+                
+                <!-- 1️⃣ الخطوة الأولى: بيانات العميل -->
+                <div class="step active" id="step1">
+                    <span class="step-title-badge">1. معلومات التواصل الشخصية</span>
+                    
+                    <div class="form-group">
+                        <label>الاسم بالكامل</label>
+                        <input type="text" class="form-control" id="client_name" placeholder="أحمد سليمان" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>رقم الهاتف / الواتساب الشخصي</label>
+                            <input type="tel" class="form-control" id="client_phone" placeholder="+20 10XXXXXXXX" required>
+                        </div>
+                        <div class="form-group">
+                            <label>البريد الإلكتروني الشخصي</label>
+                            <input type="email" class="form-control" id="client_email" placeholder="client@domain.com" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2️⃣ الخطوة الثانية: نشاط العميل -->
+                <div class="step" id="step2">
+                    <span class="step-title-badge">2. تفاصيل النشاط التجاري</span>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>اسم البراند / الشركة</label>
+                            <input type="text" class="form-control" id="brand_name" placeholder="مثال: Proton Digital" required>
+                        </div>
+                        <div class="form-group">
+                            <label>نوع النشاط التجاري</label>
+                            <input type="text" class="form-control" id="business_type" placeholder="مثال: متجر ملابس، شركة برمجيات..." required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>وصف مفصل للنشاط والخدمات</label>
+                        <textarea class="form-control" id="business_description" style="min-height: 70px;" placeholder="اكتب نبذة عن ما تقدمه للعملاء..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>العملاء المستهدفين (Target Audience)</label>
+                        <input type="text" class="form-control" id="target_audience" placeholder="مثال: أصحاب الشركات، الشباب من 20-35 سنة" required>
+                    </div>
+                </div>
+
+                <!-- 3️⃣ الخطوة الثالثة: هوية النشاط البصرية -->
+                <div class="step" id="step3">
+                    <span class="step-title-badge">3. الهوية البصرية للعلامة التجارية</span>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>اللون الرئيسي (Primary Color)</label>
+                            <div class="color-picker-wrapper">
+                                <input type="color" class="color-picker-input" id="primary_color" value="#0047ab" onchange="document.getElementById('primary_hex').value=this.value">
+                                <input type="text" class="form-control" id="primary_hex" value="#0047ab">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>اللون الفرعي (Secondary Color)</label>
+                            <div class="color-picker-wrapper">
+                                <input type="color" class="color-picker-input" id="secondary_color" value="#00e5ff" onchange="document.getElementById('secondary_hex').value=this.value">
+                                <input type="text" class="form-control" id="secondary_hex" value="#00e5ff">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>خط البراند المفضل (Font Family)</label>
+                        <input type="text" class="form-control" id="font_family" placeholder="مثال: Cairo, Open Sans, Tajawal">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>شعار البراند (Logo)</label>
+                            <div class="file-box" onclick="document.getElementById('logo_file').click()">
+                                <span class="file-box-label" id="logo_label">📁 اضغط لرفع الشعار</span>
+                                <input type="file" id="logo_file" accept="image/*" onchange="updateFileName(this, 'logo_label')">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>دليل الهوية (Brand Guidelines)</label>
+                            <div class="file-box" onclick="document.getElementById('guidelines_file').click()">
+                                <span class="file-box-label" id="guidelines_label">📄 رفع ملف PDF/ZIP</span>
+                                <input type="file" id="guidelines_file" accept=".pdf,.zip,.rar" onchange="updateFileName(this, 'guidelines_label')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4️⃣ الخطوة الرابعة: تواصل النشاط وخيار الملف الشامل -->
+                <div class="step" id="step4">
+                    <span class="step-title-badge">4. بيانات الاتصال بالنشاط والبديل الشامل</span>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>هاتف البراند (brand_phone)</label>
+                            <input type="tel" class="form-control" id="brand_phone" placeholder="+20 10XXXXXXXX">
+                        </div>
+                        <div class="form-group">
+                            <label>واتساب البراند (brand_whatsapp)</label>
+                            <input type="tel" class="form-control" id="brand_whatsapp" placeholder="+20 10XXXXXXXX">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>بريد البراند (brand_email)</label>
+                            <input type="email" class="form-control" id="brand_email" placeholder="info@brand.com">
+                        </div>
+                        <div class="form-group">
+                            <label>موقع البراند (brand_website)</label>
+                            <input type="url" class="form-control" id="brand_website" placeholder="https://brand.com">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>عنوان المقر / الفرع (brand_address)</label>
+                        <input type="text" class="form-control" id="brand_address" placeholder="القاهرة، مصر">
+                    </div>
+
+                    <!-- 🎴 خيار رفع كارت العمل / الملف الشامل -->
+                    <div class="business-card-section">
+                        <label style="font-size:0.83rem; color:#00e5ff; font-weight:600; display:block; margin-bottom:0.3rem;">
+                            💡 ألا تملك ملفات منفصلة؟ (Business Card / Unified File)
+                        </label>
+                        <p style="font-size:0.75rem; color:rgba(255,255,255,0.6); margin-bottom:0.6rem;">
+                            يمكنك رفع صورة كارت العمل أو ملف شامل يحتوي على اللوجو، الألوان، الخطوط وبيانات التواصل بجودة عالية.
+                        </p>
+                        <div class="file-box" onclick="document.getElementById('unified_brand_file').click()">
+                            <span class="file-box-label" id="unified_file_label">💳 رفع ملف كارت العمل / البراند الشامل</span>
+                            <input type="file" id="unified_brand_file" accept="image/*,.pdf,.zip" onchange="updateFileName(this, 'unified_file_label')">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أزرار التنقل -->
+                <div class="btn-group">
+                    <button type="button" class="btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display: none;">السابق</button>
+                    <button type="button" class="btn-submit" id="nextBtn" onclick="changeStep(1)">التالي</button>
+                    <button type="submit" class="btn-submit" id="submitBtn" style="display: none;">حفظ وإكمال التهيئة</button>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="social-links">
+                <a href="mailto:soliman@protonag.com" target="_blank"><img src="./Icon1.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="E-Mail" class="social-icon-img"></a>
+                <a href="https://www.facebook.com/Soliman.Proton" target="_blank"><img src="./Icon2.png" onerror="this.onerror=null; this.src='./icon2.png';" alt="Facebook" class="social-icon-img"></a>
+                <a href="https://wa.me/+201066581983" target="_blank"><img src="./Icon3.png" onerror="this.onerror=null; this.src='./icon3.png';" alt="WhatsApp" class="social-icon-img"></a>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function updateFileName(input, labelId) {
+            if (input.files && input.files[0]) {
+                document.getElementById(labelId).textContent = "✅ " + input.files[0].name;
+            }
+        }
+
+        function changeStep(direction) {
+            if (direction === 1 && !validateCurrentStep()) {
+                return;
+            }
+
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            currentStep += direction;
+
+            if (currentStep < 1) currentStep = 1;
+            if (currentStep > totalSteps) currentStep = totalSteps;
+
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            updateUI();
+        }
+
+        function validateCurrentStep() {
+            const currentStepEl = document.getElementById(`step${currentStep}`);
+            const inputs = currentStepEl.querySelectorAll('input[required], select[required], textarea[required]');
+            
+            for (let input of inputs) {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function updateUI() {
+            document.getElementById('stepNumber').textContent = currentStep;
+            const progressPercent = (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = `${progressPercent}%`;
+
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            prevBtn.style.display = currentStep === 1 ? 'none' : 'block';
+            
+            if (currentStep === totalSteps) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        function handleOnboardingSubmit(e) {
+            e.preventDefault();
+            alert("تم حفظ واستلام كافة بيانات نشاطك بنجاح!");
+            window.location.href = "./index.html";
+        }
+    </script>
+
+</body>
+</html>

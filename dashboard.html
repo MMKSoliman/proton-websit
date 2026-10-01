@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proton - لوحة التحكم</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./favicon.png">
+
+    <!-- Google Fonts: Cairo & Open Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *, button, input, select, textarea {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Open Sans', 'Cairo', system-ui, -apple-system, sans-serif !important;
+        }
+
+        body, html {
+            min-height: 100vh;
+            width: 100%;
+            background-color: #0d0d0d;
+            color: #ffffff;
+        }
+
+        .main-container {
+            position: relative;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 1.5rem;
+            background: #0d0d0d url('./bg.png') center/cover no-repeat;
+        }
+
+        /* Top Header & Icons Navigation */
+        .top-header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 1.2rem;
+            z-index: 20;
+        }
+
+        /* Tooltip Container */
+        .icon-nav-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .nav-icon-img {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            opacity: 0.95;
+        }
+
+        .icon-nav-wrapper:hover .nav-icon-img {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Tooltip Styling */
+        .icon-nav-wrapper::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: 118%;
+            right: 50%;
+            transform: translateX(50%) translateY(-5px);
+            background: rgba(18, 18, 18, 0.95);
+            color: #00e5ff;
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            z-index: 30;
+        }
+
+        .icon-nav-wrapper:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(50%) translateY(0);
+        }
+
+        /* Dashboard Card */
+        .dashboard-card {
+            width: 100%;
+            max-width: 620px;
+            background: rgba(18, 18, 18, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            margin: 1.5rem 0;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.4);
+            color: #00e5ff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-subtitle {
+            font-size: 0.92rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+            max-width: 480px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #0047ab, #00e5ff);
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .action-link:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 1rem;
+            z-index: 10;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: center;
+            direction: ltr;
+        }
+
+        .social-icon-img {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            opacity: 0.95;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .social-icon-img:hover {
+            opacity: 1;
+            transform: scale(1.15);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- Top Navigation Header -->
+        <header class="top-header">
+            <!-- Home Icon -->
+            <a href="./index.html" class="icon-nav-wrapper" data-tooltip="الصفحة الرئيسية">
+                <img src="./home.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="الرئيسية" class="nav-icon-img">
+            </a>
+
+            <!-- Logout Icon -->
+            <a href="./index.html" class="icon-nav-wrapper" data-tooltip="تسجيل الخروج">
+                <img src="./logout.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/1828/1828479.png';" alt="تسجيل الخروج" class="nav-icon-img">
+            </a>
+        </header>
+
+        <!-- Dashboard Placeholder Card -->
+        <div class="dashboard-card">
+            <span class="status-badge">جاري التجهيز والربط ⏳</span>
+            
+            <h2 class="card-title">لوحة التحليلات والإدارة</h2>
+            
+            <p class="card-subtitle">
+                سيتم تفعيل اللوحة وعرض التحديثات والإحصائيات فور الوصول إلى نتائج التحليل واستلام الصلاحيات المطلوبة للمنصات.
+            </p>
+
+            <a href="./connect-social.html" class="action-link">
+                🔗 ربط أو تعديل منصات التواصل الآن
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="social-links">
+                <a href="mailto:soliman@protonag.com" target="_blank"><img src="./Icon1.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="E-Mail" class="social-icon-img"></a>
+                <a href="https://www.facebook.com/Soliman.Proton" target="_blank"><img src="./Icon2.png" onerror="this.onerror=null; this.src='./icon2.png';" alt="Facebook" class="social-icon-img"></a>
+                <a href="https://wa.me/+201066581983" target="_blank"><img src="./Icon3.png" onerror="this.onerror=null; this.src='./icon3.png';" alt="WhatsApp" class="social-icon-img"></a>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>
