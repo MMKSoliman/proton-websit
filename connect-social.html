@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proton - ربط صفحات المنصات والتسعير</title>
-    
+    <title>Proton - ربط المنصات وتخصيص الخدمات</title>
     <link rel="icon" type="image/png" href="./favicon.png">
 
-    <!-- Google Fonts: Cairo & Open Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -42,15 +40,15 @@
         }
 
         .top-header {
-    		width: 100%;
-		    max-width: 100%; /* تمديد الهيدر بعرض الصفحة بالكامل */
-		    display: flex;
-		    justify-content: flex-start;
-		    align-items: center;
-		    padding: 0 1rem; /* مسافة أمان صغيرة من الحافة اليمنى واليسرى */
-		    z-index: 20;
-		}
-		
+            width: 100%;
+            max-width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0 1rem;
+            z-index: 20;
+        }
+
         .back-btn-wrapper {
             position: relative;
             display: inline-flex;
@@ -84,7 +82,6 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
             margin: 1.5rem 0;
             z-index: 10;
-            box-sizing: border-box;
         }
 
         .card-header {
@@ -121,12 +118,6 @@
             border-radius: 12px;
             transition: border-color 0.2s ease, background 0.2s ease;
             gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .platform-item:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(0, 229, 255, 0.3);
         }
 
         .platform-info {
@@ -134,7 +125,6 @@
             align-items: center;
             gap: 0.9rem;
             flex: 1;
-            min-width: 200px;
         }
 
         .platform-icon {
@@ -154,21 +144,19 @@
         .platform-text p {
             font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.55);
-            line-height: 1.3;
         }
 
         .btn-connect {
-            padding: 10px 16px;
+            padding: 10px 18px;
             border-radius: 8px;
             border: 1px solid #00e5ff;
             background: rgba(0, 229, 255, 0.1);
             color: #00e5ff;
-            font-size: 0.83rem;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             white-space: nowrap;
-            text-align: center;
         }
 
         .btn-connect:hover {
@@ -193,7 +181,6 @@
             padding: 0.9rem 1.2rem;
             margin-bottom: 1.5rem;
             gap: 0.5rem;
-            flex-wrap: wrap;
         }
 
         .total-title {
@@ -210,12 +197,10 @@
         .actions-group {
             display: flex;
             gap: 1rem;
-            flex-wrap: wrap;
         }
 
         .btn-checkout {
             flex: 1;
-            min-width: 180px;
             padding: 12px;
             border-radius: 8px;
             border: none;
@@ -224,13 +209,12 @@
             font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
-            transition: opacity 0.2s ease, transform 0.2s ease;
+            transition: opacity 0.2s ease;
             text-align: center;
         }
 
         .btn-checkout:hover {
             opacity: 0.9;
-            transform: translateY(-1px);
         }
 
         .btn-skip {
@@ -245,14 +229,14 @@
             text-align: center;
         }
 
-        /* Modal Popup */
+        /* Modal Dynamic Styling */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.82);
             backdrop-filter: blur(8px);
             display: none;
             justify-content: center;
@@ -265,35 +249,81 @@
             background: #181818;
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 14px;
-            padding: 2rem;
-            max-width: 440px;
+            padding: 1.8rem;
+            max-width: 480px;
             width: 100%;
-            text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
-        .modal-box img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 1rem;
+        .modal-header-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 1rem;
         }
 
-        .modal-box h3 {
+        .modal-header-info img {
+            width: 42px;
+            height: 42px;
+        }
+
+        .modal-header-info h3 {
             font-size: 1.1rem;
-            margin-bottom: 0.5rem;
         }
 
-        .modal-box p {
-            font-size: 0.82rem;
-            color: rgba(255, 255, 255, 0.65);
+        .services-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
             margin-bottom: 1.5rem;
-            line-height: 1.5;
+            text-align: right;
+        }
+
+        .service-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .service-left {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        .service-left input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #00e5ff;
+            cursor: pointer;
+        }
+
+        .service-price {
+            font-size: 0.83rem;
+            color: #00e5ff;
+            font-weight: 600;
+        }
+
+        .reels-select {
+            background: #222;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
         }
 
         .modal-actions {
             display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
+            gap: 0.8rem;
         }
 
         footer {
@@ -309,7 +339,6 @@
             display: flex;
             gap: 1.5rem;
             align-items: center;
-            justify-content: center;
             direction: ltr;
         }
 
@@ -318,53 +347,22 @@
             height: 38px;
             object-fit: contain;
             opacity: 0.95;
-            transition: transform 0.2s, opacity 0.2s;
+            transition: transform 0.2s;
         }
 
         .social-icon-img:hover {
-            opacity: 1;
             transform: scale(1.15);
         }
 
-        /* 📱 Responsive Adjustments for Mobile */
         @media (max-width: 580px) {
-            .main-container {
-                padding: 1rem 0.8rem;
-            }
-
-            .connect-card {
-                padding: 1.5rem 1rem;
-            }
-
             .platform-item {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 0.8rem;
             }
-
-            .platform-info {
-                width: 100%;
-            }
-
             .btn-connect {
                 width: 100%;
             }
-
-            .total-summary-box {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
-
-            .actions-group {
-                flex-direction: column;
-            }
-
-            .btn-skip {
-                width: 100%;
-            }
-
-            .modal-actions {
+            .actions-group, .modal-actions {
                 flex-direction: column;
             }
         }
@@ -384,9 +382,9 @@
         <!-- Connect Card -->
         <div class="connect-card">
             <div class="card-header">
-                <h2 class="card-title">اختر المنصات المرفقة للإدارة</h2>
+                <h2 class="card-title">اختر المنصات والخدمات المطلوبة</h2>
                 <p class="card-subtitle">
-                    اضغط لربط حساب المنصة ومنح الصلاحيات المطلوبة لإدارتها واحتساب التكلفة.
+                    قم بربط المنصة وتحديد الخدمات المخصصة لاحتساب التكلفة بدقة.
                 </p>
             </div>
 
@@ -398,11 +396,11 @@
                         <img src="./facebook.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/5968/5968764.png';" class="platform-icon" alt="Facebook">
                         <div class="platform-text">
                             <h4>Facebook Pages</h4>
-                            <p>إدارة المنشورات، الرسائل والتحليلات</p>
+                            <p>نشر، تفاعل، ريلز وإدارة الرسائل</p>
                         </div>
                     </div>
-                    <button class="btn-connect" id="btn-facebook" onclick="handlePlatformClick('Facebook', 50, 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png')">
-                        ربط المنصة ($50/شهرياً)
+                    <button class="btn-connect" id="btn-facebook" onclick="openPlatformModal('facebook', 'Facebook Pages', 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png')">
+                        ربط المنصة
                     </button>
                 </div>
 
@@ -412,11 +410,11 @@
                         <img src="./instagram.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/2111/2111463.png';" class="platform-icon" alt="Instagram">
                         <div class="platform-text">
                             <h4>Instagram Business</h4>
-                            <p>جدولة الريلز، المنشورات والتفاعل</p>
+                            <p>جدولة الريلز والمنشورات والتفاعل</p>
                         </div>
                     </div>
-                    <button class="btn-connect" id="btn-instagram" onclick="handlePlatformClick('Instagram', 50, 'https://cdn-icons-png.flaticon.com/512/2111/2111463.png')">
-                        ربط المنصة ($50/شهرياً)
+                    <button class="btn-connect" id="btn-instagram" onclick="openPlatformModal('instagram', 'Instagram Business', 'https://cdn-icons-png.flaticon.com/512/2111/2111463.png')">
+                        ربط المنصة
                     </button>
                 </div>
 
@@ -426,11 +424,11 @@
                         <img src="./tiktok.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3046/3046121.png';" class="platform-icon" alt="TikTok">
                         <div class="platform-text">
                             <h4>TikTok Business</h4>
-                            <p>متابعة الحملات وتحليلات الفيديو</p>
+                            <p>نشر مقاطع الفيديو والردود التلقائية</p>
                         </div>
                     </div>
-                    <button class="btn-connect" id="btn-tiktok" onclick="handlePlatformClick('TikTok', 60, 'https://cdn-icons-png.flaticon.com/512/3046/3046121.png')">
-                        ربط المنصة ($60/شهرياً)
+                    <button class="btn-connect" id="btn-tiktok" onclick="openPlatformModal('tiktok', 'TikTok Business', 'https://cdn-icons-png.flaticon.com/512/3046/3046121.png')">
+                        ربط المنصة
                     </button>
                 </div>
 
@@ -443,8 +441,8 @@
                             <p>نشر المحتوى وتتبع تفاعل الشركات</p>
                         </div>
                     </div>
-                    <button class="btn-connect" id="btn-linkedin" onclick="handlePlatformClick('LinkedIn', 70, 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png')">
-                        ربط المنصة ($70/شهرياً)
+                    <button class="btn-connect" id="btn-linkedin" onclick="openPlatformModal('linkedin', 'LinkedIn Page', 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png')">
+                        ربط المنصة
                     </button>
                 </div>
 
@@ -474,16 +472,23 @@
 
     </div>
 
-    <!-- Modal Popup for Auth -->
+    <!-- Modal Popup for Services Selection -->
     <div class="modal-overlay" id="authModal">
         <div class="modal-box">
-            <img id="modalIcon" src="" alt="Platform Icon">
-            <h3 id="modalTitle">ربط حساب المنصة</h3>
-            <p>
-                سيتم منح منصة <strong>Proton</strong> الصلاحية لإدارة المحتوى، التحليلات، والحملات الخاصة بصفحتك على هذه المنصة.
-            </p>
+            <div class="modal-header-info">
+                <img id="modalIcon" src="" alt="Platform Icon">
+                <div>
+                    <h3 id="modalTitle">ربط منصة</h3>
+                    <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6);">حدد الخدمات المطلوبة لهذه المنصة</span>
+                </div>
+            </div>
+
+            <div class="services-options" id="servicesContainer">
+                <!-- يتم توليد الخيارات ديناميكياً هنا عبر JavaScript -->
+            </div>
+
             <div class="modal-actions">
-                <button class="btn-checkout" onclick="confirmPlatformConnection()">موافقة ومنح الصلاحية</button>
+                <button class="btn-checkout" onclick="confirmPlatformSelection()">تأكيد وربط المنصة</button>
                 <button class="btn-skip" onclick="closeAuthModal()">إلغاء</button>
             </div>
         </div>
@@ -491,63 +496,209 @@
 
     <script>
         const whatsappNumber = "+201066581983";
-        let connectedPlatforms = [];
-        let currentTarget = null; // يحفظ المنصة الجاري ربطها الآن
+        let activePlatforms = {}; // تخزين البيانات المختارة لكل منصة
+        let currentPlatformKey = null;
 
-        function handlePlatformClick(name, price, iconUrl) {
-            const index = connectedPlatforms.findIndex(p => p.name === name);
+        // خيارات الخدمات بأسعارها
+        const REEL_PRICE_PER_UNIT = 5; // سعر الريل الواحد 5$
 
-            // إذا كانت المنصة مربوطة بالفعل، يتم إلغاء ربطها فوراً
-            if (index !== -1) {
-                connectedPlatforms.splice(index, 1);
-                const btn = document.getElementById(`btn-${name.toLowerCase()}`);
-                btn.textContent = `ربط المنصة ($${price}/شهرياً)`;
-                btn.classList.remove('connected');
-                updateTotal();
+        function openPlatformModal(key, title, iconUrl) {
+            currentPlatformKey = key;
+            document.getElementById('modalTitle').textContent = `تحديد خدمات ${title}`;
+            document.getElementById('modalIcon').src = iconUrl;
+
+            const container = document.getElementById('servicesContainer');
+            container.innerHTML = ''; // تفريغ الخيارات الحسابية السابقة
+
+            // تكييف الخيارات بناءً على المنصة (تيك توك فقط ريلز وردود)
+            if (key === 'tiktok') {
+                container.innerHTML = `
+                    <div class="service-row">
+                        <label class="service-left">
+                            <input type="checkbox" id="srv_reels" checked onchange="toggleReelsDropdown()">
+                            <span>إضافة ريلز شهرياً:</span>
+                            <select id="reels_count" class="reels-select" onchange="calculateModalTotal()">
+                                ${generateReelsOptions()}
+                            </select>
+                        </label>
+                        <span class="service-price" id="reels_price_text">$25</span>
+                    </div>
+                    <div class="service-row">
+                        <label class="service-left">
+                            <input type="checkbox" id="srv_comments" checked onchange="calculateModalTotal()">
+                            <span>التفاعل والرد على التعليقات</span>
+                        </label>
+                        <span class="service-price">$20</span>
+                    </div>
+                    <div class="service-row">
+                        <label class="service-left">
+                            <input type="checkbox" id="srv_messages" checked onchange="calculateModalTotal()">
+                            <span>الرد على الرسائل والمحادثات</span>
+                        </label>
+                        <span class="service-price">$25</span>
+                    </div>
+                `;
             } else {
-                // إذا لم تكن مربوطة، نفتح نافذة الربط لتأكيد منح الصلاحيات أولاً
-                currentTarget = { name, price };
-                document.getElementById('modalTitle').textContent = `منح الصلاحيات لـ Proton على ${name}`;
-                document.getElementById('modalIcon').src = iconUrl;
-                document.getElementById('authModal').style.display = 'flex';
+                // المنصات الأخرى (فيس بوك، انستجرام، لينكد إن)
+                container.innerHTML = `
+                    <div class="service-row">
+                        <label class="service-left">
+                            <input type="checkbox" id="srv_posts" checked onchange="calculateModalTotal()">
+                            <span>النشر التلقائي للمنشورات + صورة</span>
+                        </label>
+                        <span class="service-price">$25</span>
+                    </div>
+                    <div class="service-row">
+                        <label class="service-left">
+                            <input type="checkbox" id="srv_reels" checked onchange="toggleReelsDropdown()">
+                            <span>إضافة ريلز شهرياً:</span>
+                            <select id="reels_count" class="reels-select" onchange="calculateModalTotal()">
+                                ${generateReelsOptions()}
+                            </select>
+                        </label>
+                        <span class="service-price" id="reels_price_text">$25</span>
+                    </div>
+                    <div class="service-row">
+                        <label class="service-left">
+                            <input type="checkbox" id="srv_comments" checked onchange="calculateModalTotal()">
+                            <span>التفاعل والرد على التعليقات</span>
+                        </label>
+                        <span class="service-price">$15</span>
+                    </div>
+                    <div class="service-row">
+                        <label class="service-left">
+                            <input type="checkbox" id="srv_messages" checked onchange="calculateModalTotal()">
+                            <span>الرد على الرسائل الخاصة</span>
+                        </label>
+                        <span class="service-price">$20</span>
+                    </div>
+                `;
+            }
+
+            calculateModalTotal();
+            document.getElementById('authModal').style.display = 'flex';
+        }
+
+        function generateReelsOptions() {
+            let options = '';
+            for (let i = 1; i <= 30; i++) {
+                // القيمة الافتراضية 5 ريلز
+                const selected = (i === 5) ? 'selected' : '';
+                options += `<option value="${i}" ${selected}>${i}</option>`;
+            }
+            return options;
+        }
+
+        function toggleReelsDropdown() {
+            const reelsCheckbox = document.getElementById('srv_reels');
+            const reelsSelect = document.getElementById('reels_count');
+            if (reelsSelect) {
+                reelsSelect.disabled = !reelsCheckbox.checked;
+            }
+            calculateModalTotal();
+        }
+
+        function calculateModalTotal() {
+            const reelsCheckbox = document.getElementById('srv_reels');
+            const reelsSelect = document.getElementById('reels_count');
+            const reelsPriceText = document.getElementById('reels_price_text');
+
+            if (reelsCheckbox && reelsSelect && reelsPriceText) {
+                if (reelsCheckbox.checked) {
+                    const count = parseInt(reelsSelect.value) || 0;
+                    reelsPriceText.textContent = `$${count * REEL_PRICE_PER_UNIT}`;
+                } else {
+                    reelsPriceText.textContent = '$0';
+                }
             }
         }
 
         function closeAuthModal() {
             document.getElementById('authModal').style.display = 'none';
-            currentTarget = null;
+            currentPlatformKey = null;
         }
 
-        function confirmPlatformConnection() {
-            if (currentTarget) {
-                connectedPlatforms.push(currentTarget);
-                const btn = document.getElementById(`btn-${currentTarget.name.toLowerCase()}`);
-                btn.textContent = 'تم الربط ✅';
-                btn.classList.add('connected');
-                updateTotal();
+        function confirmPlatformSelection() {
+            let platformTotal = 0;
+            let selectedServicesDetails = [];
+
+            const posts = document.getElementById('srv_posts');
+            const reels = document.getElementById('srv_reels');
+            const reelsCount = document.getElementById('reels_count');
+            const comments = document.getElementById('srv_comments');
+            const messages = document.getElementById('srv_messages');
+
+            if (posts && posts.checked) {
+                platformTotal += 25;
+                selectedServicesDetails.push('نشر منشورات وصور');
             }
-            closeAuthModal();
-        }
+            if (reels && reels.checked && reelsCount) {
+                const count = parseInt(reelsCount.value);
+                const cost = count * REEL_PRICE_PER_UNIT;
+                platformTotal += cost;
+                selectedServicesDetails.push(`${count} ريلز ($${cost})`);
+            }
+            if (comments && comments.checked) {
+                platformTotal += (currentPlatformKey === 'tiktok') ? 20 : 15;
+                selectedServicesDetails.push('الرد على التعليقات');
+            }
+            if (messages && messages.checked) {
+                platformTotal += (currentPlatformKey === 'tiktok') ? 25 : 20;
+                selectedServicesDetails.push('الرد على الرسائل');
+            }
 
-        function updateTotal() {
-            const totalPrice = connectedPlatforms.reduce((sum, item) => sum + item.price, 0);
-            document.getElementById('selectedCount').textContent = connectedPlatforms.length;
-            document.getElementById('totalPrice').textContent = totalPrice;
-        }
-
-        function redirectToWhatsApp() {
-            if (connectedPlatforms.length === 0) {
-                alert('يرجى ربط منصة واحدة على الأقل للمتابعة.');
+            if (platformTotal === 0) {
+                alert('يرجى اختيار خدمة واحدة على الأقل لهذه المنصة.');
                 return;
             }
 
-            const totalPrice = connectedPlatforms.reduce((sum, item) => sum + item.price, 0);
-            const platformNames = connectedPlatforms.map(p => p.name).join('، ');
-            const message = `مرحباً بروتون 👋\n\nأود تفعيل إدارة منصات التواصل الخاصة بنشاطي التجاري.\n\n📌 المنصات المربوطة (${connectedPlatforms.length}): ${platformNames}\n💰 التكلفة الإجمالية: $${totalPrice} شهرياً\n\nيرجى تزويدي بالخطوات التالية لتأكيد التفعيل وبدء العمل.`;
+            // حفظ بيانات المنصة
+            activePlatforms[currentPlatformKey] = {
+                total: platformTotal,
+                details: selectedServicesDetails
+            };
+
+            // تحديث شكل الزر
+            const btn = document.getElementById(`btn-${currentPlatformKey}`);
+            btn.textContent = `تم الربط ($${platformTotal})`;
+            btn.classList.add('connected');
+
+            updateMainSummary();
+            closeAuthModal();
+        }
+
+        function updateMainSummary() {
+            const keys = Object.keys(activePlatforms);
+            let grandTotal = 0;
+
+            keys.forEach(k => {
+                grandTotal += activePlatforms[k].total;
+            });
+
+            document.getElementById('selectedCount').textContent = keys.length;
+            document.getElementById('totalPrice').textContent = grandTotal;
+        }
+
+        function redirectToWhatsApp() {
+            const keys = Object.keys(activePlatforms);
+            if (keys.length === 0) {
+                alert('يرجى ربط منصة وتحديد الخدمات للمتابعة.');
+                return;
+            }
+
+            let grandTotal = 0;
+            let detailsText = '';
+
+            keys.forEach(key => {
+                const p = activePlatforms[key];
+                grandTotal += p.total;
+                detailsText += `\n🔹 **${key.toUpperCase()}** ($${p.total}):\n  - ${p.details.join('\n  - ')}\n`;
+            });
+
+            const message = `مرحباً بروتون 👋\n\nأود تفعيل إدارة الحسابات بالخدمات التالية:\n${detailsText}\n💰 **الإجمالي الكلي:** $${grandTotal} شهرياً\n\nيرجى التواصل لتأكيد التفعيل.`;
 
             const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-            window.open(whatsappUrl, '_blank');
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
         }
     </script>
 </body>
