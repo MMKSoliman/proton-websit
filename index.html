@@ -196,22 +196,48 @@
 
     </div>
 
-    <!-- كود بسيط لفحص حالة تسجيل الدخول وتبديل الأيقونة والنص -->
+    <!-- كود فحص حالة تسجيل الدخول والربط مع الباك إند -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // يفحص ما إذا كان المستخدم مسجلاً للدخول (يمكن ربطه بـ localStorage أو Cookies لاحقاً)
-            const isLoggedIn = localStorage.getItem("proton_user_token") !== null;
+        const API_BASE_URL = "https://api.protonag.com";
+
+        document.addEventListener("DOMContentLoaded", async function() {
+            const token = localStorage.getItem("proton_user_token");
 
             const authIcon = document.getElementById("authIcon");
             const authTooltip = document.getElementById("authTooltip");
             const authBtn = document.getElementById("authBtn");
 
+            let isLoggedIn = false;
+
+            if (token) {
+                try {
+                    // التحقق من صحة التوكن مع الباك إند (اختياري، يضمن أن الجلسة صالحة)
+                    const response = await fetch(`${API_BASE_URL}/accounts/me`, {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        isLoggedIn = true;
+                    } else {
+                        // لو التوكن انتهى أو غير صالح، نحذفه
+                        localStorage.removeItem("proton_user_token");
+                    }
+                } catch (error) {
+                    // في حالة عدم الاتصال بالخادم، نعتمد على وجود التوكن محلياً لتفادي تعطيل الواجهة
+                    isLoggedIn = true;
+                }
+            }
+
             if (isLoggedIn) {
                 authIcon.src = "./logout.png"; // أيقونة تسجيل الخروج
                 authIcon.onerror = function() { this.src = "./logout.png"; };
                 authTooltip.textContent = "تسجيل الخروج";
-                authBtn.href = "#"; // أو رابط تنفيذ الخروج
-                authBtn.onclick = function() {
+                authBtn.href = "#"; 
+                authBtn.onclick = function(e) {
+                    e.preventDefault();
                     localStorage.removeItem("proton_user_token");
                     window.location.reload();
                 };

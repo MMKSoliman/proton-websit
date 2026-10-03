@@ -23,7 +23,6 @@
         body, html {
             min-height: 100vh;
             width: 100%;
-            /* تطبيق Open Sans للإنجليزي و Cairo للعربي */
             font-family: 'Open Sans', 'Cairo', system-ui, -apple-system, sans-serif;
             background-color: #0d0d0d;
             color: #ffffff;
@@ -284,6 +283,12 @@
             transform: translateY(-1px);
         }
 
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .btn-secondary {
             padding: 11px 20px;
             border-radius: 8px;
@@ -364,7 +369,7 @@
                     
                     <div class="form-group">
                         <label>الاسم بالكامل</label>
-                        <input type="text" class="form-control" id="client_name" placeholder="محمد سليمان" required>
+                        <input type="text" class="form-control" id="client_name" placeholder="أحمد سليمان" required>
                     </div>
 
                     <div class="form-row">
@@ -574,10 +579,79 @@
             }
         }
 
-        function handleOnboardingSubmit(e) {
+        // دالة إرسال البيانات وربطها بالباك اند
+        async function handleOnboardingSubmit(e) {
             e.preventDefault();
-            alert("تم حفظ واستلام كافة بيانات نشاطك بنجاح!");
-            window.location.href = "./connect-social.html";
+
+            const formData = new FormData();
+
+            // 1️⃣ تعبئة بيانات العميل
+            formData.append('client_name', document.getElementById('client_name').value);
+            formData.append('client_phone', document.getElementById('client_phone').value);
+            formData.append('client_email', document.getElementById('client_email').value);
+
+            // 2️⃣ تفاصيل النشاط التجاري
+            formData.append('brand_name', document.getElementById('brand_name').value);
+            formData.append('business_type', document.getElementById('business_type').value);
+            formData.append('business_description', document.getElementById('business_description').value);
+            formData.append('target_audience', document.getElementById('target_audience').value);
+
+            // 3️⃣ الهوية البصرية
+            formData.append('primary_color', document.getElementById('primary_hex').value);
+            formData.append('secondary_color', document.getElementById('secondary_hex').value);
+            formData.append('font_family', document.getElementById('font_family').value);
+
+            // الملفات المرفقة
+            const logoFile = document.getElementById('logo_file').files[0];
+            if (logoFile) formData.append('logo_file', logoFile);
+
+            const guidelinesFile = document.getElementById('guidelines_file').files[0];
+            if (guidelinesFile) formData.append('guidelines_file', guidelinesFile);
+
+            // 4️⃣ بيانات الاتصال بالنشاط
+            formData.append('brand_phone', document.getElementById('brand_phone').value);
+            formData.append('brand_whatsapp', document.getElementById('brand_whatsapp').value);
+            formData.append('brand_email', document.getElementById('brand_email').value);
+            formData.append('brand_website', document.getElementById('brand_website').value);
+            formData.append('brand_address', document.getElementById('brand_address').value);
+
+            const unifiedFile = document.getElementById('unified_brand_file').files[0];
+            if (unifiedFile) formData.append('unified_brand_file', unifiedFile);
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري الحفظ وإرسال البيانات...';
+
+            try {
+                // إرسال البيانات عبر مسار الـ API (قم بتعديل مسار الـ endpoint حسب التوثيق لديك في https://api.protonag.com/docs)
+                const response = await fetch('https://api.protonag.com/v1/onboarding', {
+                    method: 'POST',
+                    body: formData,
+                    // تلميح: إذا كان السيرفر يتطلب توثيق بـ API Key أو ترويسات أخرى، يمكنك إضافتها هنا هكذا:
+                    // headers: { 'X-Api-Key': 'YOUR_API_KEY' }
+                });
+
+                let result;
+                try {
+                    result = await response.json();
+                } catch (err) {
+                    result = {};
+                }
+
+                if (response.ok) {
+                    alert("تم حفظ واستلام كافة بيانات نشاطك بنجاح!");
+                    window.location.href = "./connect-social.html";
+                } else {
+                    alert("تعذر حفظ البيانات: " + (result.message || "يرجى التحقق من المدخلات والمحاولة مرة أخرى."));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'حفظ وإكمال التهيئة';
+                }
+            } catch (error) {
+                console.error("Backend Error:", error);
+                alert("حدث خطأ في الاتصال بالخادم، تأكد من اتصالك بالإنترنت.");
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'حفظ وإكمال التهيئة';
+            }
         }
     </script>
 

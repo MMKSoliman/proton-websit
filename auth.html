@@ -317,7 +317,7 @@
                 </div>
 
                 <div class="form-group" id="forgotPasswordWrapper" style="text-align: left; margin-bottom: 1.5rem;">
-                    <a href="#" style="color: rgba(255,255,255,0.5); font-size: 0.8rem; text-decoration: none;" onclick="forgotPassword()">نسيت كلمة المرور؟</a>
+                    <a href="#" style="color: rgba(255,255,255,0.5); font-size: 0.8rem; text-decoration: none;" onclick="forgotPassword(event)">نسيت كلمة المرور؟</a>
                 </div>
 
                 <button type="submit" class="btn-submit" id="submitBtn">تسجيل الدخول</button>
@@ -332,6 +332,8 @@
     </div>
 
     <script>
+        // رابط الباك إند الأساسي على سيرفر Coolify
+        const API_BASE_URL = "https://api.protonag.com";
         let isSignUp = false;
 
         function toggleAuthMode(e) {
@@ -369,35 +371,102 @@
             }
         }
 
-        function handleAuthSubmit(e) {
+        async function handleAuthSubmit(e) {
             e.preventDefault();
             
+            const email = document.getElementById("emailInput").value;
             const password = document.getElementById("passwordInput").value;
             const confirmPassword = document.getElementById("confirmPasswordInput").value;
 
-            // إذا كنا في حالة إنشاء حساب جديد، نتحقق من تطابق كلمتي المرور
-            if (isSignUp && password !== confirmPassword) {
-                alert("كلمات المرور غير متطابقة، يرجى التأكد وإعادة المحاولة.");
-                return;
-            }
+            if (isSignUp) {
+                // التحقق من تطابق كلمتي المرور
+                if (password !== confirmPassword) {
+                    alert("كلمات المرور غير متطابقة، يرجى التأكد وإعادة المحاولة.");
+                    return;
+                }
 
-            // حفظ التوكين مؤقتاً للتجربة ثم التوجيه لصفحة جمع البيانات
-            localStorage.setItem("proton_user_token", "demo_token_123");
-            window.location.href = "./onboarding.html";
+                try {
+                    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ email: email, password: password })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.detail || "فشل إنشاء الحساب");
+                    }
+
+                    alert("تم إنشاء الحساب بنجاح، يرجى تسجيل الدخول.");
+                    toggleAuthMode(e); // تحويل لشاشة تسجيل الدخول
+                } catch (error) {
+                    alert(error.message || "حدث خطأ أثناء الاتصال بالخادم.");
+                }
+
+            } else {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ email: email, password: password })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.detail || "بيانات الدخول غير صحيحة");
+                    }
+
+                    // تخزين التوكن الحقيقي القادم من الباك إند
+                    localStorage.setItem("proton_user_token", data.access_token);
+                    window.location.href = "./onboarding.html";
+                } catch (error) {
+                    alert(error.message || "البريد الإلكتروني أو كلمة المرور غير صحيحة.");
+                }
+            }
         }
 
         function loginWithGoogle() {
-            localStorage.setItem("proton_user_token", "demo_google_token");
-            window.location.href = "./onboarding.html";
+            // توجيه المتصفح مباشرة إلى نقطة الـ Google OAuth في الباك إند
+            window.location.href = `${API_BASE_URL}/auth/google/login`;
         }
 
         function loginWithFacebook() {
-            localStorage.setItem("proton_user_token", "demo_fb_token");
-            window.location.href = "./onboarding.html";
+            // توجيه المتصفح مباشرة إلى نقطة الـ Facebook OAuth في الباك إند
+            window.location.href = `${API_BASE_URL}/auth/facebook/login`;
         }
 
-        function forgotPassword() {
-            alert("سيتم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.");
+        async function forgotPassword(e) {
+            e.preventDefault();
+            const email = document.getElementById("emailInput").value;
+            
+            if (!email) {
+                alert("يرجى إدخال البريد الإلكتروني أولاً.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+
+                if (!response.ok) {
+                    throw new Error("فشل إرسال طلب استعادة كلمة المرور");
+                }
+
+                alert("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.");
+            } catch (error) {
+                alert("حدث خطأ أثناء المحاولة، يرجى التحقق من البريد الإلكتروني.");
+            }
         }
     </script>
 

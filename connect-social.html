@@ -217,6 +217,11 @@
             opacity: 0.9;
         }
 
+        .btn-checkout:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .btn-skip {
             padding: 12px 20px;
             border-radius: 8px;
@@ -229,7 +234,6 @@
             text-align: center;
         }
 
-        /* Modal Dynamic Styling */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -382,9 +386,9 @@
         <!-- Connect Card -->
         <div class="connect-card">
             <div class="card-header">
-                <h2 class="card-title">اختر المنصات والخدمات المطلوبة</h2>
+                <h2 class="card-title">اختر المنصات والخدمات المطلوبة[cite: 10]</h2>
                 <p class="card-subtitle">
-                    قم بربط المنصة وتحديد الخدمات المخصصة لاحتساب التكلفة بدقة.
+                    قم بربط المنصة وتحديد الخدمات المخصصة لاحتساب التكلفة بدقة.[cite: 10]
                 </p>
             </div>
 
@@ -395,12 +399,12 @@
                     <div class="platform-info">
                         <img src="./facebook.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/5968/5968764.png';" class="platform-icon" alt="Facebook">
                         <div class="platform-text">
-                            <h4>Facebook Pages</h4>
-                            <p>نشر، تفاعل، ريلز وإدارة الرسائل</p>
+                            <h4>Facebook Pages[cite: 10]</h4>
+                            <p>نشر، تفاعل، ريلز وإدارة الرسائل[cite: 10]</p>
                         </div>
                     </div>
                     <button class="btn-connect" id="btn-facebook" onclick="openPlatformModal('facebook', 'Facebook Pages', 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png')">
-                        ربط المنصة
+                        ربط المنصة[cite: 10]
                     </button>
                 </div>
 
@@ -409,12 +413,12 @@
                     <div class="platform-info">
                         <img src="./instagram.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/2111/2111463.png';" class="platform-icon" alt="Instagram">
                         <div class="platform-text">
-                            <h4>Instagram Business</h4>
-                            <p>جدولة الريلز والمنشورات والتفاعل</p>
+                            <h4>Instagram Business[cite: 10]</h4>
+                            <p>جدولة الريلز والمنشورات والتفاعل[cite: 10]</p>
                         </div>
                     </div>
                     <button class="btn-connect" id="btn-instagram" onclick="openPlatformModal('instagram', 'Instagram Business', 'https://cdn-icons-png.flaticon.com/512/2111/2111463.png')">
-                        ربط المنصة
+                        ربط المنصة[cite: 10]
                     </button>
                 </div>
 
@@ -423,12 +427,12 @@
                     <div class="platform-info">
                         <img src="./tiktok.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3046/3046121.png';" class="platform-icon" alt="TikTok">
                         <div class="platform-text">
-                            <h4>TikTok Business</h4>
-                            <p>نشر مقاطع الفيديو والردود التلقائية</p>
+                            <h4>TikTok Business[cite: 10]</h4>
+                            <p>نشر مقاطع الفيديو والردود التلقائية[cite: 10]</p>
                         </div>
                     </div>
                     <button class="btn-connect" id="btn-tiktok" onclick="openPlatformModal('tiktok', 'TikTok Business', 'https://cdn-icons-png.flaticon.com/512/3046/3046121.png')">
-                        ربط المنصة
+                        ربط المنصة[cite: 10]
                     </button>
                 </div>
 
@@ -437,12 +441,12 @@
                     <div class="platform-info">
                         <img src="./linkedin.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3536/3536505.png';" class="platform-icon" alt="LinkedIn">
                         <div class="platform-text">
-                            <h4>LinkedIn Page</h4>
-                            <p>نشر المحتوى وتتبع تفاعل الشركات</p>
+                            <h4>LinkedIn Page[cite: 10]</h4>
+                            <p>نشر المحتوى وتتبع تفاعل الشركات[cite: 10]</p>
                         </div>
                     </div>
                     <button class="btn-connect" id="btn-linkedin" onclick="openPlatformModal('linkedin', 'LinkedIn Page', 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png')">
-                        ربط المنصة
+                        ربط المنصة[cite: 10]
                     </button>
                 </div>
 
@@ -451,13 +455,13 @@
             <!-- Total Box -->
             <div class="total-summary-box">
                 <span class="total-title">عدد المنصات المربوطة: <strong id="selectedCount" style="color:#fff;">0</strong></span>
-                <span class="total-amount">الإجمالي: $<span id="totalPrice">0</span> / شهرياً</span>
+                <span class="total-amount">الإجمالي: $<span id="totalPrice">0</span> / شهرياً[cite: 10]</span>
             </div>
 
             <!-- Action Buttons -->
             <div class="actions-group">
-                <button class="btn-checkout" onclick="redirectToWhatsApp()">إتمام الطلب وتفعيل الخطة</button>
-                <a href="./dashboard.html" class="btn-skip">تخطي الآن</a>
+                <button class="btn-checkout" id="checkoutBtn" onclick="submitAndRedirectToWhatsApp()">إتمام الطلب وتفعيل الخطة[cite: 10]</button>
+                <a href="./dashboard.html" class="btn-skip">تخطي الآن[cite: 10]</a>
             </div>
         </div>
 
@@ -478,29 +482,27 @@
             <div class="modal-header-info">
                 <img id="modalIcon" src="" alt="Platform Icon">
                 <div>
-                    <h3 id="modalTitle">ربط منصة</h3>
-                    <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6);">حدد الخدمات المطلوبة لهذه المنصة</span>
+                    <h3 id="modalTitle">ربط منصة[cite: 10]</h3>
+                    <span style="font-size: 0.75rem; color: rgba(255,255,255,0.6);">حدد الخدمات المطلوبة لهذه المنصة[cite: 10]</span>
                 </div>
             </div>
 
             <div class="services-options" id="servicesContainer">
-                <!-- يتم توليد الخيارات ديناميكياً هنا عبر JavaScript -->
+                <!-- ديناميكي -->
             </div>
 
             <div class="modal-actions">
-                <button class="btn-checkout" onclick="confirmPlatformSelection()">تأكيد وربط المنصة</button>
-                <button class="btn-skip" onclick="closeAuthModal()">إلغاء</button>
+                <button class="btn-checkout" onclick="confirmPlatformSelection()">تأكيد وربط المنصة[cite: 10]</button>
+                <button class="btn-skip" onclick="closeAuthModal()">إلغاء[cite: 10]</button>
             </div>
         </div>
     </div>
 
     <script>
         const whatsappNumber = "+201066581983";
-        let activePlatforms = {}; // تخزين البيانات المختارة لكل منصة
+        let activePlatforms = {};
         let currentPlatformKey = null;
-
-        // خيارات الخدمات بأسعارها
-        const REEL_PRICE_PER_UNIT = 5; // سعر الريل الواحد 5$
+        const REEL_PRICE_PER_UNIT = 5;
 
         function openPlatformModal(key, title, iconUrl) {
             currentPlatformKey = key;
@@ -508,9 +510,8 @@
             document.getElementById('modalIcon').src = iconUrl;
 
             const container = document.getElementById('servicesContainer');
-            container.innerHTML = ''; // تفريغ الخيارات الحسابية السابقة
+            container.innerHTML = '';
 
-            // تكييف الخيارات بناءً على المنصة (تيك توك فقط ريلز وردود)
             if (key === 'tiktok') {
                 container.innerHTML = `
                     <div class="service-row">
@@ -539,7 +540,6 @@
                     </div>
                 `;
             } else {
-                // المنصات الأخرى (فيس بوك، انستجرام، لينكد إن)
                 container.innerHTML = `
                     <div class="service-row">
                         <label class="service-left">
@@ -582,7 +582,6 @@
         function generateReelsOptions() {
             let options = '';
             for (let i = 1; i <= 30; i++) {
-                // القيمة الافتراضية 5 ريلز
                 const selected = (i === 5) ? 'selected' : '';
                 options += `<option value="${i}" ${selected}>${i}</option>`;
             }
@@ -652,13 +651,11 @@
                 return;
             }
 
-            // حفظ بيانات المنصة
             activePlatforms[currentPlatformKey] = {
                 total: platformTotal,
                 details: selectedServicesDetails
             };
 
-            // تحديث شكل الزر
             const btn = document.getElementById(`btn-${currentPlatformKey}`);
             btn.textContent = `تم الربط ($${platformTotal})`;
             btn.classList.add('connected');
@@ -679,26 +676,73 @@
             document.getElementById('totalPrice').textContent = grandTotal;
         }
 
-        function redirectToWhatsApp() {
+        // دالة الإرسال وربط البيانات بالباك اند ثم التوجيه للواتساب
+        async function submitAndRedirectToWhatsApp() {
             const keys = Object.keys(activePlatforms);
             if (keys.length === 0) {
-                alert('يرجى ربط منصة وتحديد الخدمات للمتابعة.');
+                alert('يرجى ربط منصة وتحديد الخدمات للمتابعة[cite: 10].');
                 return;
             }
 
             let grandTotal = 0;
-            let detailsText = '';
-
             keys.forEach(key => {
-                const p = activePlatforms[key];
-                grandTotal += p.total;
-                detailsText += `\n🔹 **${key.toUpperCase()}** ($${p.total}):\n  - ${p.details.join('\n  - ')}\n`;
+                grandTotal += activePlatforms[key].total;
             });
 
-            const message = `مرحباً بروتون 👋\n\nأود تفعيل إدارة الحسابات بالخدمات التالية:\n${detailsText}\n💰 **الإجمالي الكلي:** $${grandTotal} شهرياً\n\nيرجى التواصل لتأكيد التفعيل.`;
+            const payload = {
+                platforms: activePlatforms,
+                total_amount: grandTotal
+            };
 
-            const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            checkoutBtn.disabled = true;
+            checkoutBtn.textContent = 'جاري حفظ البيانات وتوجيهك...';
+
+            try {
+                // إرسال البيانات لمسار الـ API الخاص بالمنصات
+                const response = await fetch('https://api.protonag.com/v1/platforms', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                let result = {};
+                try {
+                    result = await response.json();
+                } catch (err) {}
+
+                if (response.ok) {
+                    // بعد نجاح الحفظ في الباك اند، يتم تجهيز رسالة الواتساب وفتحها
+                    let detailsText = '';
+                    keys.forEach(key => {
+                        const p = activePlatforms[key];
+                        detailsText += `\n🔹 **${key.toUpperCase()}** ($${p.total}):\n  - ${p.details.join('\n  - ')}\n`;
+                    });
+
+                    const message = `مرحباً بروتون 👋\n\nأود تفعيل إدارة الحسابات بالخدمات التالية:\n${detailsText}\n💰 **الإجمالي الكلي:** $${grandTotal} شهرياً\n\nيرجى التواصل لتأكيد التفعيل.`;
+                    const encodedMessage = encodeURIComponent(message);
+                    window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+                } else {
+                    alert("تعذر حفظ المنصات: " + (result.message || "يرجى المحاولة مرة أخرى."));
+                }
+            } catch (error) {
+                console.error("Backend Error:", error);
+                alert("حدث خطأ في الاتصال بالخادم، سيتم تحويلك للواتساب مباشرة.");
+                
+                // في حال فشل اتصال الباك اند، يتم تحويل العميل مباشرة للواتساب لضمان عدم ضياع الطلب
+                let detailsText = '';
+                keys.forEach(key => {
+                    const p = activePlatforms[key];
+                    detailsText += `\n🔹 **${key.toUpperCase()}** ($${p.total}):\n  - ${p.details.join('\n  - ')}\n`;
+                });
+                const message = `مرحباً بروتون 👋\n\nأود تفعيل إدارة الحسابات بالخدمات التالية:\n${detailsText}\n💰 **الإجمالي الكلي:** $${grandTotal} شهرياً\n\nيرجى التواصل لتأكيد التفعيل.`;
+                window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            } finally {
+                checkoutBtn.disabled = false;
+                checkoutBtn.textContent = 'إتمام الطلب وتفعيل الخطة';
+            }
         }
     </script>
 </body>
