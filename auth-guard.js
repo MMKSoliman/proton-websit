@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!response.ok) {
             // لو غير مسجل دخول، يتم توجيهه لتسجيل الدخول مع حفظ الرابط الحالي في الـ next
             const currentUrl = window.location.href;
-            window.location.href = `https://protonag.com/login.html?next=${encodeURIComponent(currentUrl)}`;
+            window.location.href = `https://protonag.com/auth.html?next=${encodeURIComponent(currentUrl)}`;
             throw new Error("Not authenticated");
         }
         return response.json();
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
             e.preventDefault();
             // مسح الكوكي أو طلب مسار تسجيل الخروج من الباك إند
             document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=protonag.com;";
-            window.location.href = "https://protonag.com/login.html";
+            window.location.href = "https://protonag.com/auth.html";
         });
     }
 });
