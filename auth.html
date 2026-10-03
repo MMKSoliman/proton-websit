@@ -75,10 +75,10 @@
             transform: scale(1.1);
         }
 
-        /* Tooltip Style (يظهر بجوار الأيقونة عند الاقتراب) */
+        /* Tooltip Style */
         .back-tooltip {
             position: absolute;
-            right: 110%; /* يظهر على يسار الأيقونة */
+            right: 110%;
             top: 50%;
             transform: translateY(-50%);
             background: rgba(20, 20, 20, 0.9);
@@ -96,7 +96,6 @@
             direction: rtl;
         }
 
-        /* سهم صغير مشير للأيقونة */
         .back-tooltip::after {
             content: "";
             position: absolute;
@@ -253,14 +252,12 @@
         .auth-footer-links a {
             color: #00e5ff;
             text-decoration: none;
-            transition: underline 0.2s;
         }
 
         .auth-footer-links a:hover {
             text-decoration: underline;
         }
 
-        /* 📱 Mobile Responsiveness */
         @media (max-width: 768px) {
             .back-icon-img {
                 width: 34px;
@@ -273,7 +270,6 @@
 
     <div class="auth-container">
         
-        <!-- أيقونة العودة للرئيسية مع Tooltip -->
         <header class="top-header">
             <a href="./index.html" class="back-btn-wrapper">
                 <span class="back-tooltip">العودة للرئيسية</span>
@@ -284,7 +280,6 @@
         <div class="auth-card">
             <h2 class="auth-title" id="formTitle">تسجيل الدخول</h2>
 
-            <!-- Social Logins -->
             <div class="social-buttons">
                 <button class="btn-social" onclick="loginWithGoogle()">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
@@ -298,8 +293,13 @@
 
             <div class="divider">أو باستخدام البريد الإلكتروني</div>
 
-            <!-- Email & Password Form -->
             <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                <!-- حقل الاسم الكامل (يظهر فقط عند إنشاء حساب جديد) -->
+                <div class="form-group" id="fullNameGroup" style="display: none;">
+                    <label>الاسم الكامل</label>
+                    <input type="text" class="form-control" placeholder="أدخل اسمك الكامل" id="fullNameInput">
+                </div>
+
                 <div class="form-group">
                     <label>البريد الإلكتروني</label>
                     <input type="email" class="form-control" placeholder="name@domain.com" required id="emailInput">
@@ -310,7 +310,6 @@
                     <input type="password" class="form-control" placeholder="••••••••" required id="passwordInput">
                 </div>
 
-                <!-- خانة تأكيد كلمة المرور (تظهر فقط عند إنشاء حساب جديد) -->
                 <div class="form-group" id="confirmPasswordGroup" style="display: none;">
                     <label>تأكيد كلمة المرور</label>
                     <input type="password" class="form-control" placeholder="••••••••" id="confirmPasswordInput">
@@ -332,7 +331,6 @@
     </div>
 
     <script>
-        // رابط الباك إند الأساسي على سيرفر Coolify
         const API_BASE_URL = "https://api.protonag.com";
         let isSignUp = false;
 
@@ -344,6 +342,8 @@
             const submitBtn = document.getElementById("submitBtn");
             const toggleText = document.getElementById("toggleText");
             const toggleBtn = document.getElementById("toggleBtn");
+            const fullNameGroup = document.getElementById("fullNameGroup");
+            const fullNameInput = document.getElementById("fullNameInput");
             const confirmPasswordGroup = document.getElementById("confirmPasswordGroup");
             const confirmPasswordInput = document.getElementById("confirmPasswordInput");
             const forgotPasswordWrapper = document.getElementById("forgotPasswordWrapper");
@@ -354,7 +354,9 @@
                 toggleText.textContent = "لديك حساب بالفعل؟";
                 toggleBtn.textContent = "تسجيل الدخول";
                 
-                // إظهار خانة تأكيد كلمة المرور وجعلها مطلوبة
+                fullNameGroup.style.display = "block";
+                fullNameInput.setAttribute("required", "true");
+                
                 confirmPasswordGroup.style.display = "block";
                 confirmPasswordInput.setAttribute("required", "true");
                 forgotPasswordWrapper.style.display = "none";
@@ -364,7 +366,9 @@
                 toggleText.textContent = "ليس لديك حساب؟";
                 toggleBtn.textContent = "إنشاء حساب جديد";
                 
-                // إخفاء خانة تأكيد كلمة المرور
+                fullNameGroup.style.display = "none";
+                fullNameInput.removeAttribute("required");
+
                 confirmPasswordGroup.style.display = "none";
                 confirmPasswordInput.removeAttribute("required");
                 forgotPasswordWrapper.style.display = "block";
@@ -376,32 +380,28 @@
             
             const email = document.getElementById("emailInput").value;
             const password = document.getElementById("passwordInput").value;
-            const confirmPassword = document.getElementById("confirmPasswordInput").value;
 
             if (isSignUp) {
-                // التحقق من تطابق كلمتي المرور
+                const fullName = document.getElementById("fullNameInput").value;
+                const confirmPassword = document.getElementById("confirmPasswordInput").value;
+
                 if (password !== confirmPassword) {
-                    alert("كلمات المرور غير متطابقة، يرجى التأكد وإعادة المحاولة.");
+                    alert("كلمات المرور غير متطابقة، يرجى التأكد.");
                     return;
                 }
 
                 try {
                     const response = await fetch(`${API_BASE_URL}/auth/register`, {
                         method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ email: email, password: password })
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ full_name: fullName, email: email, password: password })
                     });
 
                     const data = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(data.detail || "فشل إنشاء الحساب");
-                    }
+                    if (!response.ok) throw new Error(data.detail || "فشل إنشاء الحساب");
 
                     alert("تم إنشاء الحساب بنجاح، يرجى تسجيل الدخول.");
-                    toggleAuthMode(e); // تحويل لشاشة تسجيل الدخول
+                    toggleAuthMode(e);
                 } catch (error) {
                     alert(error.message || "حدث خطأ أثناء الاتصال بالخادم.");
                 }
@@ -410,19 +410,13 @@
                 try {
                     const response = await fetch(`${API_BASE_URL}/auth/login`, {
                         method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
+                        headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ email: email, password: password })
                     });
 
                     const data = await response.json();
+                    if (!response.ok) throw new Error(data.detail || "بيانات الدخول غير صحيحة");
 
-                    if (!response.ok) {
-                        throw new Error(data.detail || "بيانات الدخول غير صحيحة");
-                    }
-
-                    // تخزين التوكن الحقيقي القادم من الباك إند
                     localStorage.setItem("proton_user_token", data.access_token);
                     window.location.href = "./onboarding.html";
                 } catch (error) {
@@ -432,19 +426,16 @@
         }
 
         function loginWithGoogle() {
-            // توجيه المتصفح مباشرة إلى نقطة الـ Google OAuth في الباك إند
             window.location.href = `${API_BASE_URL}/auth/google/login`;
         }
 
         function loginWithFacebook() {
-            // توجيه المتصفح مباشرة إلى نقطة الـ Facebook OAuth في الباك إند
             window.location.href = `${API_BASE_URL}/auth/facebook/login`;
         }
 
         async function forgotPassword(e) {
             e.preventDefault();
             const email = document.getElementById("emailInput").value;
-            
             if (!email) {
                 alert("يرجى إدخال البريد الإلكتروني أولاً.");
                 return;
@@ -453,19 +444,14 @@
             try {
                 const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email: email })
                 });
 
-                if (!response.ok) {
-                    throw new Error("فشل إرسال طلب استعادة كلمة المرور");
-                }
-
+                if (!response.ok) throw new Error("فشل إرسال طلب استعادة كلمة المرور");
                 alert("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.");
             } catch (error) {
-                alert("حدث خطأ أثناء المحاولة، يرجى التحقق من البريد الإلكتروني.");
+                alert("حدث خطأ أثناء المحاولة.");
             }
         }
     </script>
