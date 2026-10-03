@@ -20,11 +20,11 @@
         if (!response.ok) {
             // إذا لم يكن مسجلاً، يتم توجيهه لتسجيل الدخول مع الاحتفاظ بالرابط الذي كان يقصده
             const currentUrl = window.location.href;
-            window.location.href = `https://protonag.com/login.html?next=${encodeURIComponent(currentUrl)}`;
+            window.location.href = `https://protonag.com/auth.html?next=${encodeURIComponent(currentUrl)}`;
         }
     })
     .catch(() => {
-        window.location.href = "https://protonag.com/login.html";
+        window.location.href = "https://protonag.com/auth.html";
     });
 </script>
 
