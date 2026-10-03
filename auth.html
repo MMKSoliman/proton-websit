@@ -334,6 +334,18 @@
         const API_BASE_URL = "https://api.protonag.com";
         let isSignUp = false;
 
+        // التحقق مما إذا كان هناك Token قادم مع الـ URL بعد العودة من Google أو Facebook OAuth
+        window.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tokenFromUrl = urlParams.get("token");
+            if (tokenFromUrl) {
+                localStorage.setItem("proton_user_token", tokenFromUrl);
+                // إزالة التوكن من الـ URL لتنظيفه وتحويل المستخدم للوحة التحكم
+                window.history.replaceState({}, document.title, window.location.pathname);
+                window.location.href = "./dashboard.html"; // أو الصفحة المخصصة للاستمرار
+            }
+        });
+
         function toggleAuthMode(e) {
             e.preventDefault();
             isSignUp = !isSignUp;
@@ -418,7 +430,7 @@
                     if (!response.ok) throw new Error(data.detail || "بيانات الدخول غير صحيحة");
 
                     localStorage.setItem("proton_user_token", data.access_token);
-                    window.location.href = "./onboarding.html";
+                    window.location.href = "./dashboard.html";
                 } catch (error) {
                     alert(error.message || "البريد الإلكتروني أو كلمة المرور غير صحيحة.");
                 }
