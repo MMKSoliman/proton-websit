@@ -201,30 +201,6 @@
 
     <div class="main-container">
 
-        <!-- Header -->
-        <header class="top-header">
-            <!-- زر الرئيسية أو العودة -->
-            <a href="./index.html" class="back-btn-wrapper">
-                <img src="./home.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="الرئيسية" class="back-icon-img">
-            </a>
-
-            <!-- منطقة الملف الشخصي وقائمة المستخدم -->
-            <div class="user-profile-container">
-                <div id="user-profile-trigger">
-                    <img id="user-avatar" src="https://protonag.com/logout.png" alt="User Avatar">
-                    <span id="full_name">تسجيل الدخول</span>
-                </div>
-
-                <!-- القائمة المنسدلة -->
-                <div id="user-dropdown-menu">
-                    <a href="https://protonag.com/settings.html">إعدادات الحساب</a>
-                    <a href="https://protonag.com/terms.html">شروط الاستخدام</a>
-                    <a href="https://protonag.com/privacy.html">سياسة الخصوصية</a>
-                    <a href="#" id="logout-btn">تسجيل الخروج</a>
-                </div>
-            </div>
-        </header>
-
         <!-- Social Media Icons Footer -->
         <footer>
             <div class="social-links">
@@ -248,6 +224,7 @@
     </div>
 
     <!-- ملف الحماية والتحقق من حالة المستخدم عبر الـ Cookies -->
+    <script src="./header.js" defer></script>
     <script src="./auth-guard.js"></script>
 
 </body>
