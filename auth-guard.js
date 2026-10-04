@@ -1,12 +1,17 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // تحقق إذا كنا في صفحة تسجيل الدخول بالفعل، فلا تفعل شيئاً لتجنب التكرار
+    if (window.location.pathname.includes("login.html")) {
+        return;
+    }
+
     fetch("https://api.protonag.com/auth/me", {
         method: "GET",
         credentials: "include"
     })
     .then(response => {
         if (!response.ok) {
-            // إذا لم يكن مسجلاً، وجهه فوراً للوجين
-            window.location.href = "https://protonag.com/auth.html?next=" + encodeURIComponent(window.location.href);
+            // توجيه لصفحة تسجيل الدخول مرة واحدة فقط
+            window.location.href = "https://protonag.com/login.html?next=" + encodeURIComponent(window.location.pathname);
             throw new Error("Not authenticated");
         }
         return response.json();
@@ -19,8 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("user-avatar").src = data.profile_picture;
         }
     })
-    .catch(error => {
-        console.error("Auth error:", error);
+    .catch(error => console.error("Auth error:", error));
         // احتياطياً، لو حدث خطأ في الاتصال بالسيرفر أو التحقق، يمكنك توجيهه للوجين
         // window.location.href = "https://protonag.com/auth.html";
     });
