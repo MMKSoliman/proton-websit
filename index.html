@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-    <script src="./auth-guard.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proton</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="./favicon.png">
+
+    <!-- Google Fonts: Cairo & Open Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -19,8 +23,9 @@
         body, html {
             min-height: 100vh;
             width: 100%;
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: 'Open Sans', 'Cairo', system-ui, -apple-system, sans-serif;
             background-color: #0d0d0d;
+            color: #ffffff;
         }
 
         /* Container Layout */
@@ -37,78 +42,104 @@
             background: #0d0d0d url('./bg.png') center/cover no-repeat;
         }
 
-        /* Top Header Action Area (Top Right) */
+        /* Top Header Action Area */
         .top-header {
             width: 100%;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
+            padding: 15px 30px;
+            box-sizing: border-box;
             z-index: 20;
         }
 
-        .auth-btn-wrapper {
-            position: relative;
-            display: inline-flex;
+        .back-btn-wrapper {
+            display: flex;
             align-items: center;
-            cursor: pointer;
             text-decoration: none;
-            gap: 0.6rem;
         }
 
-        .auth-icon-img {
-            width: 38px;
-            height: 38px;
+        .back-icon-img {
+            width: 35px;
+            height: 35px;
             object-fit: contain;
             display: block;
             transition: transform 0.2s ease, opacity 0.2s ease;
             opacity: 0.95;
         }
 
-        .auth-btn-wrapper:hover .auth-icon-img {
+        .back-btn-wrapper:hover .back-icon-img {
             opacity: 1;
             transform: scale(1.1);
         }
 
-        /* Tooltip Style (ظهر بجوار الأيقونة عند الاقتراب) */
-        .auth-tooltip {
-            position: absolute;
-            right: 110%; /* يظهر على يسار الأيقونة */
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(20, 20, 20, 0.9);
-            color: #ffffff;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
+        /* User Profile & Dropdown Menu */
+        .user-profile-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        #user-profile-trigger {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            gap: 10px;
+        }
+
+        #user-avatar {
+            width: 40px !important;
+            height: 40px !important;
+            min-width: 40px !important;
+            min-height: 40px !important;
+            max-width: 40px !important;
+            max-height: 40px !important;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
+        #full_name {
+            color: #fff;
+            font-weight: bold;
+            font-size: 14px;
             white-space: nowrap;
-            pointer-events: none;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.25s ease, transform 0.25s ease;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            direction: rtl;
         }
 
-        /* سهم صغير مشير للأيقونة */
-        .auth-tooltip::after {
-            content: "";
+        #user-dropdown-menu {
+            display: none;
             position: absolute;
-            top: 50%;
-            left: 100%;
-            transform: translateY(-50%);
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent transparent transparent rgba(20, 20, 20, 0.9);
+            right: 0;
+            top: 50px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            width: 220px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
+            overflow: hidden;
+            text-align: right;
         }
 
-        .auth-btn-wrapper:hover .auth-tooltip {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(-50%) translateX(-4px);
+        #user-dropdown-menu a {
+            display: block;
+            padding: 12px 16px;
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 1px solid #2a2a2a;
+            font-size: 14px;
+            transition: background 0.2s;
         }
 
-        /* Footer & Icons */
+        #user-dropdown-menu a:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        #user-dropdown-menu a#logout-btn {
+            color: #ff4d4d;
+            border-bottom: none;
+        }
+
+        /* Footer & Social Icons */
         footer {
             width: 100%;
             display: flex;
@@ -140,7 +171,7 @@
             transform: scale(1.15);
         }
 
-        /* 📱 Mobile Responsiveness & Scroll Fix */
+        /* 📱 Mobile Responsiveness */
         @media (max-width: 768px) {
             body, html {
                 overflow-y: auto !important;
@@ -151,11 +182,15 @@
                 min-height: 100dvh;
             }
 
+            .top-header {
+                padding: 10px 15px;
+            }
+
             .social-links {
                 gap: 1.2rem;
             }
 
-            .social-icon-img, .auth-icon-img {
+            .social-icon-img, .back-icon-img {
                 width: 34px;
                 height: 34px;
             }
@@ -166,31 +201,29 @@
 
     <div class="main-container">
 
-        <!-- Top Header: Dynamic Auth Button -->
         <!-- Header -->
-<!-- Header -->
-<header class="top-header" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; width: 100%; box-sizing: border-box;">
-    <!-- زر الرئيسية -->
-    <a href="./index.html" class="back-btn-wrapper" style="display: flex; align-items: center;">
-        <img src="./home.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="الرئيسية" class="back-icon-img" style="width: 35px; height: 35px; object-fit: contain;">
-    </a>
+        <header class="top-header">
+            <!-- زر الرئيسية أو العودة -->
+            <a href="./index.html" class="back-btn-wrapper">
+                <img src="./home.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="الرئيسية" class="back-icon-img">
+            </a>
 
-    <!-- منطقة الملف الشخصي (مضبوطة الابعاد بدقة لتجنب التكبير) -->
-    <div class="user-profile-container" style="position: relative; display: inline-block;">
-        <div id="user-profile-trigger" style="display: flex; align-items: center; cursor: pointer; gap: 10px;">
-            <img id="user-avatar" src="https://protonag.com/logout.png" alt="User Avatar" style="width: 40px !important; height: 40px !important; min-width: 40px !important; min-height: 40px !important; max-width: 40px !important; max-height: 40px !important; border-radius: 50%; object-fit: cover; display: block;">
-            <span id="full_name" style="color: #fff; font-weight: bold; font-size: 14px; white-space: nowrap;">تسجيل الدخول</span>
-        </div>
+            <!-- منطقة الملف الشخصي وقائمة المستخدم -->
+            <div class="user-profile-container">
+                <div id="user-profile-trigger">
+                    <img id="user-avatar" src="https://protonag.com/logout.png" alt="User Avatar">
+                    <span id="full_name">تسجيل الدخول</span>
+                </div>
 
-        <!-- القائمة المنسدلة -->
-        <div id="user-dropdown-menu" style="display: none; position: absolute; right: 0; top: 50px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; width: 220px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; overflow: hidden; text-align: right;">
-            <a href="https://protonag.com/settings.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">إعدادات الحساب</a>
-            <a href="https://protonag.com/terms.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">شروط الاستخدام</a>
-            <a href="https://protonag.com/privacy.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">سياسة الخصوصية</a>
-            <a href="#" id="logout-btn" style="display: block; padding: 12px 16px; color: #ff4d4d; text-decoration: none; font-size: 14px;">تسجيل الخروج</a>
-        </div>
-    </div>
-</header>
+                <!-- القائمة المنسدلة -->
+                <div id="user-dropdown-menu">
+                    <a href="https://protonag.com/settings.html">إعدادات الحساب</a>
+                    <a href="https://protonag.com/terms.html">شروط الاستخدام</a>
+                    <a href="https://protonag.com/privacy.html">سياسة الخصوصية</a>
+                    <a href="#" id="logout-btn">تسجيل الخروج</a>
+                </div>
+            </div>
+        </header>
 
         <!-- Social Media Icons Footer -->
         <footer>
@@ -214,59 +247,8 @@
 
     </div>
 
-    <!-- كود فحص حالة تسجيل الدخول والربط مع الباك إند -->
-    <script>
-        const API_BASE_URL = "https://api.protonag.com";
-
-        document.addEventListener("DOMContentLoaded", async function() {
-            const token = localStorage.getItem("proton_user_token");
-
-            const authIcon = document.getElementById("authIcon");
-            const authTooltip = document.getElementById("authTooltip");
-            const authBtn = document.getElementById("authBtn");
-
-            let isLoggedIn = false;
-
-            if (token) {
-                try {
-                    // التحقق من صحة التوكن مع الباك إند (اختياري، يضمن أن الجلسة صالحة)
-                    const response = await fetch(`${API_BASE_URL}/accounts/me`, {
-                        method: "GET",
-                        headers: {
-                            "Authorization": `Bearer ${token}`
-                        }
-                    });
-                    
-                    if (response.ok) {
-                        isLoggedIn = true;
-                    } else {
-                        // لو التوكن انتهى أو غير صالح، نحذفه
-                        localStorage.removeItem("proton_user_token");
-                    }
-                } catch (error) {
-                    // في حالة عدم الاتصال بالخادم، نعتمد على وجود التوكن محلياً لتفادي تعطيل الواجهة
-                    isLoggedIn = true;
-                }
-            }
-
-            if (isLoggedIn) {
-                authIcon.src = "./logout.png"; // أيقونة تسجيل الخروج
-                authIcon.onerror = function() { this.src = "./logout.png"; };
-                authTooltip.textContent = "تسجيل الخروج";
-                authBtn.href = "#"; 
-                authBtn.onclick = function(e) {
-                    e.preventDefault();
-                    localStorage.removeItem("proton_user_token");
-                    window.location.reload();
-                };
-            } else {
-                authIcon.src = "./login.png"; // أيقونة تسجيل الدخول
-                authIcon.onerror = function() { this.src = "./login.png"; };
-                authTooltip.textContent = "تسجيل الدخول";
-                authBtn.href = "./auth.html";
-            }
-        });
-    </script>
+    <!-- ملف الحماية والتحقق من حالة المستخدم عبر الـ Cookies -->
+    <script src="./auth-guard.js"></script>
 
 </body>
 </html>
