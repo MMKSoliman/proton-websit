@@ -302,133 +302,135 @@
     </div>
 
     <!-- السكريبتات في الأسفل لضمان عملها بشكل سليم -->
-    <script src="./auth-guard.js"></script>
-    <script>
-        const API_BASE_URL = "https://api.protonag.com";
-        let isSignUp = false;
+<script src="./auth-guard.js"></script>
+<script>
+    const API_BASE_URL = "https://api.protonag.com";
+    let isSignUp = false;
 
-        function toggleAuthMode(e) {
-            e.preventDefault();
-            isSignUp = !isSignUp;
+    function toggleAuthMode(e) {
+        e.preventDefault();
+        isSignUp = !isSignUp;
+        
+        const formTitle = document.getElementById("formTitle");
+        const submitBtn = document.getElementById("submitBtn");
+        const toggleText = document.getElementById("toggleText");
+        const toggleBtn = document.getElementById("toggleBtn");
+        const fullNameGroup = document.getElementById("fullNameGroup");
+        const fullNameInput = document.getElementById("fullNameInput");
+        const confirmPasswordGroup = document.getElementById("confirmPasswordGroup");
+        const confirmPasswordInput = document.getElementById("confirmPasswordInput");
+        const forgotPasswordWrapper = document.getElementById("forgotPasswordWrapper");
+
+        if (isSignUp) {
+            formTitle.textContent = "إنشاء حساب جديد";
+            submitBtn.textContent = "إنشاء الحساب";
+            toggleText.textContent = "لديك حساب بالفعل؟";
+            toggleBtn.textContent = "تسجيل الدخول";
             
-            const formTitle = document.getElementById("formTitle");
-            const submitBtn = document.getElementById("submitBtn");
-            const toggleText = document.getElementById("toggleText");
-            const toggleBtn = document.getElementById("toggleBtn");
-            const fullNameGroup = document.getElementById("fullNameGroup");
-            const fullNameInput = document.getElementById("fullNameInput");
-            const confirmPasswordGroup = document.getElementById("confirmPasswordGroup");
-            const confirmPasswordInput = document.getElementById("confirmPasswordInput");
-            const forgotPasswordWrapper = document.getElementById("forgotPasswordWrapper");
-
-            if (isSignUp) {
-                formTitle.textContent = "إنشاء حساب جديد";
-                submitBtn.textContent = "إنشاء الحساب";
-                toggleText.textContent = "لديك حساب بالفعل؟";
-                toggleBtn.textContent = "تسجيل الدخول";
-                
-                fullNameGroup.style.display = "block";
-                fullNameInput.setAttribute("required", "true");
-                
-                confirmPasswordGroup.style.display = "block";
-                confirmPasswordInput.setAttribute("required", "true");
-                forgotPasswordWrapper.style.display = "none";
-            } else {
-                formTitle.textContent = "تسجيل الدخول";
-                submitBtn.textContent = "تسجيل الدخول";
-                toggleText.textContent = "ليس لديك حساب؟";
-                toggleBtn.textContent = "إنشاء حساب جديد";
-                
-                fullNameGroup.style.display = "none";
-                fullNameInput.removeAttribute("required");
-
-                confirmPasswordGroup.style.display = "none";
-                confirmPasswordInput.removeAttribute("required");
-                forgotPasswordWrapper.style.display = "block";
-            }
-        }
-
-        async function handleAuthSubmit(e) {
-            e.preventDefault();
+            fullNameGroup.style.display = "block";
+            fullNameInput.setAttribute("required", "true");
             
-            const email = document.getElementById("emailInput").value;
-            const password = document.getElementById("passwordInput").value;
+            confirmPasswordGroup.style.display = "block";
+            confirmPasswordInput.setAttribute("required", "true");
+            forgotPasswordWrapper.style.display = "none";
+        } else {
+            formTitle.textContent = "تسجيل الدخول";
+            submitBtn.textContent = "تسجيل الدخول";
+            toggleText.textContent = "ليس لديك حساب؟";
+            toggleBtn.textContent = "إنشاء حساب جديد";
+            
+            fullNameGroup.style.display = "none";
+            fullNameInput.removeAttribute("required");
 
-            if (isSignUp) {
-                const fullName = document.getElementById("fullNameInput").value;
-                const confirmPassword = document.getElementById("confirmPasswordInput").value;
-
-                if (password !== confirmPassword) {
-                    alert("كلمات المرور غير متطابقة، يرجى التأكد.");
-                    return;
-                }
-
-                try {
-                    const response = await fetch(`${API_BASE_URL}/auth/register`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ full_name: fullName, email: email, password: password })
-                    });
-
-                    const data = await response.json();
-                    if (!response.ok) throw new Error(data.detail || "فشل إنشاء الحساب");
-
-                    alert("تم إنشاء الحساب بنجاح، يرجى تسجيل الدخول.");
-                    toggleAuthMode(e);
-                } catch (error) {
-                    alert(error.message || "حدث خطأ أثناء الاتصال بالخادم.");
-                }
-
-            } else {
-                try {
-                    const response = await fetch(`${API_BASE_URL}/auth/login`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        credentials: "include", // ضروري جداً لكي يقبل المتصفح حفظ الـ Cookie القادمة من السيرفر
-                        body: JSON.stringify({ email: email, password: password })
-                    });
-
-                    const data = await response.json();
-                    if (!response.ok) throw new Error(data.detail || "بيانات الدخول غير صحيحة");
-
-                    // التوجيه للوحة التحكم مباشرة بعد نجاح تخزين الـ Cookie تلقائياً
-                    window.location.href = "./dashboard.html";
-                } catch (error) {
-                    alert(error.message || "البريد الإلكتروني أو كلمة المرور غير صحيحة.");
-                }
-            }
+            confirmPasswordGroup.style.display = "none";
+            confirmPasswordInput.removeAttribute("required");
+            forgotPasswordWrapper.style.display = "block";
         }
+    }
 
-        function loginWithGoogle() {
-            window.location.href = `${API_BASE_URL}/auth/google/login`;
-        }
+    async function handleAuthSubmit(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById("emailInput").value;
+        const password = document.getElementById("passwordInput").value;
 
-        function loginWithFacebook() {
-            window.location.href = `${API_BASE_URL}/auth/facebook/login`;
-        }
+        if (isSignUp) {
+            const fullName = document.getElementById("fullNameInput").value;
+            const confirmPassword = document.getElementById("confirmPasswordInput").value;
 
-        async function forgotPassword(e) {
-            e.preventDefault();
-            const email = document.getElementById("emailInput").value;
-            if (!email) {
-                alert("يرجى إدخال البريد الإلكتروني أولاً.");
+            if (password !== confirmPassword) {
+                alert("كلمات المرور غير متطابقة، يرجى التأكد.");
                 return;
             }
 
             try {
-                const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: email })
+                    body: JSON.stringify({ full_name: fullName, email: email, password: password })
                 });
 
-                if (!response.ok) throw new Error("فشل إرسال طلب استعادة كلمة المرور");
-                alert("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.");
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || "فشل إنشاء الحساب");
+
+                alert("تم إنشاء الحساب بنجاح، يرجى تسجيل الدخول.");
+                toggleAuthMode(e);
             } catch (error) {
-                alert("حدث خطأ أثناء المحاولة.");
+                alert(error.message || "حدث خطأ أثناء الاتصال بالخادم.");
+            }
+
+        } else {
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: email, password: password })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || "بيانات الدخول غير صحيحة");
+
+                // حفظ التوكن في الـ localStorage لتجنب مشاكل الكوكيز نهائياً
+                localStorage.setItem("access_token", data.access_token);
+
+                // التوجيه للوحة التحكم مباشرة
+                window.location.href = "./dashboard.html";
+            } catch (error) {
+                alert(error.message || "البريد الإلكتروني أو كلمة المرور غير صحيحة.");
             }
         }
-    </script>
+    }
+
+    function loginWithGoogle() {
+        window.location.href = `${API_BASE_URL}/auth/google/login`;
+    }
+
+    function loginWithFacebook() {
+        window.location.href = `${API_BASE_URL}/auth/facebook/login`;
+    }
+
+    async function forgotPassword(e) {
+        e.preventDefault();
+        const email = document.getElementById("emailInput").value;
+        if (!email) {
+            alert("يرجى إدخال البريد الإلكتروني أولاً.");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: email })
+            });
+
+            if (!response.ok) throw new Error("فشل إرسال طلب استعادة كلمة المرور");
+            alert("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.");
+        } catch (error) {
+            alert("حدث خطأ أثناء المحاولة.");
+        }
+    }
+</script>
 
 </body>
 </html>
