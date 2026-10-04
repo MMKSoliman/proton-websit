@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <!-- يفضل الاعتماد على ملف حماية الصفحات الخارجي أو الـ fetch، تم توحيد الاعتماد هنا -->
     <script src="./auth-guard.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,24 +11,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-
-<script>
-    // التحقق مما إذا كان المستخدم مسجل دخول عن طريق طلب سريع للباك إند
-    fetch("https://api.protonag.com/auth/me", {
-        method: "GET",
-        credentials: "include" // مهم جداً لإرسال الـ Cookie مع الطلب
-    })
-    .then(response => {
-        if (!response.ok) {
-            // إذا لم يكن مسجلاً، يتم توجيهه لتسجيل الدخول مع الاحتفاظ بالرابط الذي كان يقصده
-            const currentUrl = window.location.href;
-            window.location.href = `https://protonag.com/auth.html?next=${encodeURIComponent(currentUrl)}`;
-        }
-    })
-    .catch(() => {
-        window.location.href = "https://protonag.com/auth.html";
-    });
-</script>
 
     <style>
         *, button, input, select, textarea {
@@ -62,9 +45,10 @@
             width: 100%;
             max-width: 100%;
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
-            padding: 0 1rem;
+            padding: 15px 30px;
+            box-sizing: border-box;
             z-index: 20;
         }
 
@@ -77,8 +61,8 @@
         }
 
         .back-icon-img {
-            width: 38px;
-            height: 38px;
+            width: 35px;
+            height: 35px;
             object-fit: contain;
             transition: transform 0.2s ease, opacity 0.2s ease;
             opacity: 0.95;
@@ -248,7 +232,6 @@
             text-align: center;
         }
 
-        /* Modal Dynamic Styling */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -392,29 +375,26 @@
     <div class="main-container">
 
         <!-- Header -->
-<!-- Header -->
-<header class="top-header" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; width: 100%; box-sizing: border-box;">
-    <!-- زر الرئيسية -->
-    <a href="./index.html" class="back-btn-wrapper" style="display: flex; align-items: center;">
-        <img src="./home.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="الرئيسية" class="back-icon-img" style="width: 35px; height: 35px; object-fit: contain;">
-    </a>
+        <header class="top-header">
+            <a href="./index.html" class="back-btn-wrapper">
+                <img src="./home.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="الرئيسية" class="back-icon-img">
+            </a>
 
-    <!-- منطقة الملف الشخصي (مضبوطة الابعاد بدقة لتجنب التكبير) -->
-    <div class="user-profile-container" style="position: relative; display: inline-block;">
-        <div id="user-profile-trigger" style="display: flex; align-items: center; cursor: pointer; gap: 10px;">
-            <img id="user-avatar" src="https://protonag.com/logout.png" alt="User Avatar" style="width: 40px !important; height: 40px !important; min-width: 40px !important; min-height: 40px !important; max-width: 40px !important; max-height: 40px !important; border-radius: 50%; object-fit: cover; display: block;">
-            <span id="full_name" style="color: #fff; font-weight: bold; font-size: 14px; white-space: nowrap;">تسجيل الدخول</span>
-        </div>
+            <div class="user-profile-container" style="position: relative; display: inline-block;">
+                <div id="user-profile-trigger" style="display: flex; align-items: center; cursor: pointer; gap: 10px;">
+                    <!-- تم تصحيح مسار الصورة الافتراضية هنا لتكون صورة رمزية مناسبة -->
+                    <img id="user-avatar" src="https://protonag.com/default-avatar.png" onerror="this.src='./icon1.png';" alt="User Avatar" style="width: 40px !important; height: 40px !important; border-radius: 50%; object-fit: cover; display: block;">
+                    <span id="full_name" style="color: #fff; font-weight: bold; font-size: 14px; white-space: nowrap;">تسجيل الدخول</span>
+                </div>
 
-        <!-- القائمة المنسدلة -->
-        <div id="user-dropdown-menu" style="display: none; position: absolute; right: 0; top: 50px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; width: 220px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; overflow: hidden; text-align: right;">
-            <a href="https://protonag.com/settings.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">إعدادات الحساب</a>
-            <a href="https://protonag.com/terms.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">شروط الاستخدام</a>
-            <a href="https://protonag.com/privacy.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">سياسة الخصوصية</a>
-            <a href="#" id="logout-btn" style="display: block; padding: 12px 16px; color: #ff4d4d; text-decoration: none; font-size: 14px;">تسجيل الخروج</a>
-        </div>
-    </div>
-</header>
+                <div id="user-dropdown-menu" style="display: none; position: absolute; right: 0; top: 50px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; width: 220px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; overflow: hidden; text-align: right;">
+                    <a href="https://protonag.com/settings.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">إعدادات الحساب</a>
+                    <a href="https://protonag.com/terms.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">شروط الاستخدام</a>
+                    <a href="https://protonag.com/privacy.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">سياسة الخصوصية</a>
+                    <a href="#" id="logout-btn" style="display: block; padding: 12px 16px; color: #ff4d4d; text-decoration: none; font-size: 14px;">تسجيل الخروج</a>
+                </div>
+            </div>
+        </header>
 
         <!-- Connect Card -->
         <div class="connect-card">
@@ -426,7 +406,6 @@
             </div>
 
             <div class="platforms-list">
-                
                 <!-- Facebook -->
                 <div class="platform-item">
                     <div class="platform-info">
@@ -482,7 +461,6 @@
                         ربط المنصة
                     </button>
                 </div>
-
             </div>
 
             <!-- Total Box -->
@@ -501,9 +479,9 @@
         <!-- Footer -->
         <footer>
             <div class="social-links">
-                <a href="mailto:soliman@protonag.com" target="_blank"><img src="./icon1.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="E-Mail" class="social-icon-img"></a>
-                <a href="https://www.facebook.com/Soliman.Proton" target="_blank"><img src="./icon2.png" onerror="this.onerror=null; this.src='./icon2.png';" alt="Facebook" class="social-icon-img"></a>
-                <a href="https://wa.me/+201066581983" target="_blank"><img src="./icon3.png" onerror="this.onerror=null; this.src='./icon3.png';" alt="WhatsApp" class="social-icon-img"></a>
+                <a href="mailto:soliman@protonag.com" target="_blank"><img src="./icon1.png" alt="E-Mail" class="social-icon-img"></a>
+                <a href="https://www.facebook.com/Soliman.Proton" target="_blank"><img src="./icon2.png" alt="Facebook" class="social-icon-img"></a>
+                <a href="https://wa.me/+201066581983" target="_blank"><img src="./icon3.png" alt="WhatsApp" class="social-icon-img"></a>
             </div>
         </footer>
 
@@ -520,9 +498,7 @@
                 </div>
             </div>
 
-            <div class="services-options" id="servicesContainer">
-                <!-- يتم توليد الخيارات ديناميكياً هنا عبر JavaScript -->
-            </div>
+            <div class="services-options" id="servicesContainer"></div>
 
             <div class="modal-actions">
                 <button class="btn-checkout" onclick="confirmPlatformSelection()">تأكيد وربط المنصة</button>
@@ -533,11 +509,9 @@
 
     <script>
         const whatsappNumber = "+201066581983";
-        let activePlatforms = {}; // تخزين البيانات المختارة لكل منصة
+        let activePlatforms = {}; 
         let currentPlatformKey = null;
-
-        // خيارات الخدمات بأسعارها
-        const REEL_PRICE_PER_UNIT = 5; // سعر الريل الواحد 5$
+        const REEL_PRICE_PER_UNIT = 5; 
 
         function openPlatformModal(key, title, iconUrl) {
             currentPlatformKey = key;
@@ -545,9 +519,8 @@
             document.getElementById('modalIcon').src = iconUrl;
 
             const container = document.getElementById('servicesContainer');
-            container.innerHTML = ''; // تفريغ الخيارات الحسابية السابقة
+            container.innerHTML = ''; 
 
-            // تكييف الخيارات بناءً على المنصة (تيك توك فقط ريلز وردود)
             if (key === 'tiktok') {
                 container.innerHTML = `
                     <div class="service-row">
@@ -576,7 +549,6 @@
                     </div>
                 `;
             } else {
-                // المنصات الأخرى (فيس بوك، انستجرام، لينكد إن)
                 container.innerHTML = `
                     <div class="service-row">
                         <label class="service-left">
@@ -619,7 +591,6 @@
         function generateReelsOptions() {
             let options = '';
             for (let i = 1; i <= 30; i++) {
-                // القيمة الافتراضية 5 ريلز
                 const selected = (i === 5) ? 'selected' : '';
                 options += `<option value="${i}" ${selected}>${i}</option>`;
             }
@@ -643,7 +614,7 @@
             if (reelsCheckbox && reelsSelect && reelsPriceText) {
                 if (reelsCheckbox.checked) {
                     const count = parseInt(reelsSelect.value) || 0;
-                    reelsPriceText.textContent = `$${count * REEL_PRICE_PER_UNIT}`;
+                    reelsPriceText.textContent = `$${count * REEL_PER_UNIT_CHECK = count * REEL_PRICE_PER_UNIT || count * 5}`;
                 } else {
                     reelsPriceText.textContent = '$0';
                 }
@@ -689,13 +660,11 @@
                 return;
             }
 
-            // حفظ بيانات المنصة
             activePlatforms[currentPlatformKey] = {
                 total: platformTotal,
                 details: selectedServicesDetails
             };
 
-            // تحديث شكل الزر
             const btn = document.getElementById(`btn-${currentPlatformKey}`);
             btn.textContent = `تم الربط ($${platformTotal})`;
             btn.classList.add('connected');
