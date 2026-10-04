@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     .then(response => {
         if (!response.ok) {
             // إذا لم يكن مسجلاً، وجهه فوراً للوجين
-            window.location.href = "https://protonag.com/login.html?next=" + encodeURIComponent(window.location.href);
+            window.location.href = "https://protonag.com/auth.html?next=" + encodeURIComponent(window.location.href);
             throw new Error("Not authenticated");
         }
         return response.json();
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
         logoutBtn.addEventListener("click", function(e) {
             e.preventDefault();
             document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=protonag.com;";
-            window.location.href = "https://protonag.com/login.html";
+            window.location.href = "https://protonag.com/auth.html";
         });
     }
 });
