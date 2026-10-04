@@ -252,15 +252,27 @@
 
     </div>
 
-    <script>
+<script>
         // دالة جلب حالة الحساب من الباك اند وتفعيل القائمة المنسدلة عند تحميل الصفحة
         window.addEventListener('DOMContentLoaded', async () => {
+            // 1. التقاط التوكن من الرابط (في حال العودة من جوجل أو فيسبوك) وحفظه محلياً
+            const urlParams = new URLSearchParams(window.location.search);
+            const tokenFromUrl = urlParams.get("token");
+            if (tokenFromUrl) {
+                localStorage.setItem("access_token", tokenFromUrl);
+                // تنظيف الرابط وإزالة التوكن لأسباب أمنية
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            // جلب التوكن المحفوظ لإرساله مع الطلبات
+            const token = localStorage.getItem('access_token');
+
             try {
                 const response = await fetch('https://api.protonag.com/v1/dashboard/status', {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json'
-                        // 'Authorization': 'Bearer ' + localStorage.getItem('auth_token')
+                        'Content-Type': 'application/json',
+                        'Authorization': token ? 'Bearer ' + token : ''
                     }
                 });
 
@@ -279,6 +291,10 @@
                     if (data.full_name) {
                         document.getElementById('full_name').textContent = data.full_name;
                     }
+                } else if (response.status === 401) {
+                    // إذا انتهت صلاحية التوكن، يتم توجيه المستخدم لتسجيل الدخول
+                    localStorage.removeItem('access_token');
+                    window.location.href = './index.html';
                 }
             } catch (error) {
                 console.error("Dashboard Sync Error:", error);
@@ -312,11 +328,13 @@
         // دالة تسجيل الخروج وربطها بالباك اند
         async function handleLogout() {
             if (confirm('هل أنت متأكد من رغبتك في تسجيل الخروج؟')) {
+                const token = localStorage.getItem('access_token');
                 try {
                     await fetch('https://api.protonag.com/v1/auth/logout', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Authorization': token ? 'Bearer ' + token : ''
                         }
                     });
                 } catch (e) {
@@ -329,6 +347,5 @@
             }
         }
     </script>
-
 </body>
 </html>
