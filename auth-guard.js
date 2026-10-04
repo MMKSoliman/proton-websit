@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", function() {
         return response.json();
     })
     .then(data => {
-        if (document.getElementById("user-name")) {
-            document.getElementById("user-name").textContent = data.full_name || "مستخدم";
+        if (document.getElementById("full-name")) {
+            document.getElementById("full-name").textContent = data.full_name || "مستخدم";
         }
         if (document.getElementById("user-avatar") && data.profile_picture) {
             document.getElementById("user-avatar").src = data.profile_picture;
