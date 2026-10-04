@@ -11,8 +11,10 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     .then(response => {
         if (!response.ok) {
-            // توجيه لصفحة تسجيل الدخول مرة واحدة فقط
-            window.location.href = "https://protonag.com/auth.html?next=" + encodeURIComponent(window.location.pathname);
+            // التحقق لمنع تكرار التوجيه المفرط إذا كان المستخدم في نفس الصفحة بالفعل
+            if (!window.location.pathname.includes("auth.html")) {
+                window.location.href = "https://protonag.com/auth.html?next=" + encodeURIComponent(window.location.pathname);
+            }
             throw new Error("Not authenticated");
         }
         return response.json();
@@ -26,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
     .catch(error => {
-        console.error("Auth error:", error);
+        console.warn("Auth check failed:", error.message);
     });
 
     // 3. تفعيل القائمة المنسدلة
@@ -49,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (logoutBtn) {
         logoutBtn.addEventListener("click", function(e) {
             e.preventDefault();
+            // مسح الكوكي بالطريقة الصحيحة المتوافقة مع النطاق
             document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=protonag.com;";
             window.location.href = "https://protonag.com/auth.html";
         });
