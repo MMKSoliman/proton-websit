@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
     .catch(error => {
         console.error("Auth error:", error);
         // احتياطياً، لو حدث خطأ في الاتصال بالسيرفر أو التحقق، يمكنك توجيهه للوجين
-        // window.location.href = "https://protonag.com/login.html";
+        // window.location.href = "https://protonag.com/auth.html";
     });
 
     // تفعيل القائمة المنسدلة
