@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     // تحقق إذا كنا في صفحة تسجيل الدخول بالفعل، فلا تفعل شيئاً لتجنب التكرار
-    if (window.location.pathname.includes("login.html")) {
+    if (window.location.pathname.includes("auth.html")) {
         return;
     }
 
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
     .then(response => {
         if (!response.ok) {
             // توجيه لصفحة تسجيل الدخول مرة واحدة فقط
-            window.location.href = "https://protonag.com/login.html?next=" + encodeURIComponent(window.location.pathname);
+            window.location.href = "https://protonag.com/auth.html?next=" + encodeURIComponent(window.location.pathname);
             throw new Error("Not authenticated");
         }
         return response.json();
