@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
-    // 2. جلب بيانات المستخدم
-    fetch("https://api.protonag.com/auth/me", {
+    // 2. جلب بيانات المستخدم من المسار الصحيح accounts/me
+    fetch("https://api.protonag.com/accounts/me", {
         method: "GET",
         credentials: "include"
     })
