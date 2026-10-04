@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-	<script src="./auth-guard.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proton - تسجيل الدخول</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="./favicon.png">
-	
-	<!-- Google Fonts: Cairo (Arabic) & Open Sans (English) -->
+    
+    <!-- Google Fonts: Cairo (Arabic) & Open Sans (English) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -25,13 +24,13 @@
             min-height: 100vh;
             width: 100%;
             font-family: 'Open Sans', 'Cairo', system-ui, -apple-system, sans-serif;
-    		background-color: #0d0d0d;
-    		color: #ffffff;
+            background-color: #0d0d0d;
+            color: #ffffff;
         }
-		
-		button, input {
-    		font-family: 'Open Sans', 'Cairo', system-ui, -apple-system, sans-serif;
-		}
+        
+        button, input {
+            font-family: 'Open Sans', 'Cairo', system-ui, -apple-system, sans-serif;
+        }
 
         /* Container Layout */
         .auth-container {
@@ -74,44 +73,6 @@
         .back-btn-wrapper:hover .back-icon-img {
             opacity: 1;
             transform: scale(1.1);
-        }
-
-        /* Tooltip Style */
-        .back-tooltip {
-            position: absolute;
-            right: 110%;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(20, 20, 20, 0.9);
-            color: #ffffff;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            pointer-events: none;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.25s ease, transform 0.25s ease;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            direction: rtl;
-        }
-
-        .back-tooltip::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 100%;
-            transform: translateY(-50%);
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent transparent transparent rgba(20, 20, 20, 0.9);
-        }
-
-        .back-btn-wrapper:hover .back-tooltip {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(-50%) translateX(-4px);
         }
 
         /* Card Glassmorphism Effect */
@@ -258,13 +219,6 @@
         .auth-footer-links a:hover {
             text-decoration: underline;
         }
-
-        @media (max-width: 768px) {
-            .back-icon-img {
-                width: 34px;
-                height: 34px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -272,28 +226,28 @@
     <div class="auth-container">
         
        <!-- Header -->
-<header class="top-header" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; width: 100%; box-sizing: border-box;">
-    <!-- زر الرئيسية -->
-    <a href="./index.html" class="back-btn-wrapper" style="display: flex; align-items: center;">
-        <img src="./home.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="الرئيسية" class="back-icon-img" style="width: 35px; height: 35px; object-fit: contain;">
-    </a>
+       <header class="top-header" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; width: 100%; box-sizing: border-box;">
+           <!-- زر الرئيسية -->
+           <a href="./index.html" class="back-btn-wrapper" style="display: flex; align-items: center;">
+               <img src="./home.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="الرئيسية" class="back-icon-img" style="width: 35px; height: 35px; object-fit: contain;">
+           </a>
 
-    <!-- منطقة الملف الشخصي (مضبوطة الابعاد بدقة لتجنب التكبير) -->
-    <div class="user-profile-container" style="position: relative; display: inline-block;">
-        <div id="user-profile-trigger" style="display: flex; align-items: center; cursor: pointer; gap: 10px;">
-            <img id="user-avatar" src="https://protonag.com/logout.png" alt="User Avatar" style="width: 40px !important; height: 40px !important; min-width: 40px !important; min-height: 40px !important; max-width: 40px !important; max-height: 40px !important; border-radius: 50%; object-fit: cover; display: block;">
-            <span id="full_name" style="color: #fff; font-weight: bold; font-size: 14px; white-space: nowrap;">تسجيل الدخول</span>
-        </div>
+           <!-- منطقة الملف الشخصي -->
+           <div class="user-profile-container" style="position: relative; display: inline-block;">
+               <div id="user-profile-trigger" style="display: flex; align-items: center; cursor: pointer; gap: 10px;">
+                   <img id="user-avatar" src="https://protonag.com/logout.png" alt="User Avatar" style="width: 40px !important; height: 40px !important; min-width: 40px !important; min-height: 40px !important; max-width: 40px !important; max-height: 40px !important; border-radius: 50%; object-fit: cover; display: block;">
+                   <span id="full_name" style="color: #fff; font-weight: bold; font-size: 14px; white-space: nowrap;">تسجيل الدخول</span>
+               </div>
 
-        <!-- القائمة المنسدلة -->
-        <div id="user-dropdown-menu" style="display: none; position: absolute; right: 0; top: 50px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; width: 220px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; overflow: hidden; text-align: right;">
-            <a href="https://protonag.com/settings.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">إعدادات الحساب</a>
-            <a href="https://protonag.com/terms.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">شروط الاستخدام</a>
-            <a href="https://protonag.com/privacy.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">سياسة الخصوصية</a>
-            <a href="#" id="logout-btn" style="display: block; padding: 12px 16px; color: #ff4d4d; text-decoration: none; font-size: 14px;">تسجيل الخروج</a>
-        </div>
-    </div>
-</header>
+               <!-- القائمة المنسدلة -->
+               <div id="user-dropdown-menu" style="display: none; position: absolute; right: 0; top: 50px; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; width: 220px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; overflow: hidden; text-align: right;">
+                   <a href="https://protonag.com/settings.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">إعدادات الحساب</a>
+                   <a href="https://protonag.com/terms.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">شروط الاستخدام</a>
+                   <a href="https://protonag.com/privacy.html" style="display: block; padding: 12px 16px; color: #fff; text-decoration: none; border-bottom: 1px solid #2a2a2a; font-size: 14px;">سياسة الخصوصية</a>
+                   <a href="#" id="logout-btn" style="display: block; padding: 12px 16px; color: #ff4d4d; text-decoration: none; font-size: 14px;">تسجيل الخروج</a>
+               </div>
+           </div>
+       </header>
 
         <div class="auth-card">
             <h2 class="auth-title" id="formTitle">تسجيل الدخول</h2>
@@ -312,7 +266,6 @@
             <div class="divider">أو باستخدام البريد الإلكتروني</div>
 
             <form id="authForm" onsubmit="handleAuthSubmit(event)">
-                <!-- حقل الاسم الكامل (يظهر فقط عند إنشاء حساب جديد) -->
                 <div class="form-group" id="fullNameGroup" style="display: none;">
                     <label>الاسم الكامل</label>
                     <input type="text" class="form-control" placeholder="أدخل اسمك الكامل" id="fullNameInput">
@@ -348,21 +301,11 @@
 
     </div>
 
+    <!-- السكريبتات في الأسفل لضمان عملها بشكل سليم -->
+    <script src="./auth-guard.js"></script>
     <script>
         const API_BASE_URL = "https://api.protonag.com";
         let isSignUp = false;
-
-        // التحقق مما إذا كان هناك Token قادم مع الـ URL بعد العودة من Google أو Facebook OAuth
-        window.addEventListener("DOMContentLoaded", () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const tokenFromUrl = urlParams.get("token");
-            if (tokenFromUrl) {
-                localStorage.setItem("proton_user_token", tokenFromUrl);
-                // إزالة التوكن من الـ URL لتنظيفه وتحويل المستخدم للوحة التحكم
-                window.history.replaceState({}, document.title, window.location.pathname);
-                window.location.href = "./dashboard.html"; // أو الصفحة المخصصة للاستمرار
-            }
-        });
 
         function toggleAuthMode(e) {
             e.preventDefault();
@@ -441,13 +384,14 @@
                     const response = await fetch(`${API_BASE_URL}/auth/login`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
+                        credentials: "include", // ضروري جداً لكي يقبل المتصفح حفظ الـ Cookie القادمة من السيرفر
                         body: JSON.stringify({ email: email, password: password })
                     });
 
                     const data = await response.json();
                     if (!response.ok) throw new Error(data.detail || "بيانات الدخول غير صحيحة");
 
-                    localStorage.setItem("proton_user_token", data.access_token);
+                    // التوجيه للوحة التحكم مباشرة بعد نجاح تخزين الـ Cookie تلقائياً
                     window.location.href = "./dashboard.html";
                 } catch (error) {
                     alert(error.message || "البريد الإلكتروني أو كلمة المرور غير صحيحة.");
