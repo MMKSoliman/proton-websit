@@ -180,7 +180,7 @@
             userAvatarIcon.src = './logout.png';
             
             userMenu.innerHTML = `
-                <a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>
+                <a href="./auth.html" class="proton-dropdown-item">تسجيل الدخول</a>
                 ${settingsLink}
                 ${privacyLink}
                 ${termsLink}
