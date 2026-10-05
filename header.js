@@ -215,7 +215,7 @@
                 if (data.profile_picture) {
                     userAvatarIcon.src = data.profile_picture;
                 } else {
-                    userAvatarIcon.src = 'https://www.svgrepo.com/show/498369/profile-circle.svg';
+                    userAvatarIcon.src = "./login.png";
                 }
 
                 userMenu.innerHTML = `
