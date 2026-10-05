@@ -1,5 +1,5 @@
 (function() {
-    // 1. حقن تنسيقات الـ CSS الخاصة بالهيدر العلوي والقوائم المنسدلة
+    // 1. حقن تنسيقات الـ CSS الخاصة بالهيدر والقوائم المنسدلة وتوحيد أبعاد الأيقونات
     const style = document.createElement('style');
     style.innerHTML = `
         .proton-global-header {
@@ -40,9 +40,11 @@
             border-color: rgba(0, 255, 200, 0.5);
             background: rgba(30, 30, 30, 0.95);
         }
-        .proton-header-btn img {
-            width: 28px;
-            height: 28px;
+        /* توحيد مقاس الأيقونات لتكون متطابقة تماماً مع أيقونة الرئيسية */
+        .proton-header-btn img,
+        .proton-header-btn svg {
+            width: 20px !important;
+            height: 20px !important;
             border-radius: 50%;
             object-fit: cover;
         }
@@ -103,7 +105,7 @@
             <!-- القائمة المنسدلة للرئيسية والتنقل بين الصفحات -->
             <div class="proton-dropdown-container">
                 <button class="proton-header-btn" id="homeDropdownBtn" title="الرئيسية والصفحات">
-                    <img src="./home.png" alt="Proton Home" style="width: 20px; height: 20px; border-radius: 0; object-fit: contain;">
+                    <img src="./home.png" alt="Proton Home" style="border-radius: 0; object-fit: contain;">
                     <span>الرئيسية</span>
                 </button>
                 <div class="proton-dropdown-menu" id="pagesDropdownMenu">
@@ -121,7 +123,7 @@
                     <span id="userAuthText">تسجيل الدخول</span>
                 </button>
                 <div class="proton-dropdown-menu" id="userDropdownMenu">
-                    <!-- يتم تعديل محتواها ديناميكياً حسب حالة الدخول -->
+                    <a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>
                 </div>
             </div>
         </div>
@@ -148,10 +150,11 @@
             e.stopPropagation();
             const token = localStorage.getItem('access_token');
             if (!token) {
-                // إذا لم يكن مسجلاً، انقر ليوجهه لصفحة الدخول فوراً
+                // إذا لم يكن مسجلاً للدخول، الانتقال لصفحة تسجيل الدخول مباشرة
                 window.location.href = './index.html';
                 return;
             }
+            // إذا كان مسجلاً، نقوم بفتح/إغلاق القائمة المنسدلة الخاصة به
             userMenu.classList.toggle('active');
             pagesMenu.classList.remove('active');
         });
@@ -173,12 +176,9 @@
         const userMenu = document.getElementById('userDropdownMenu');
 
         if (!token) {
-            // حالة: غير مسجل دخول
             userAuthText.textContent = 'تسجيل الدخول';
             userAvatarIcon.src = './logout.png';
-            userMenu.innerHTML = `
-                <a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>
-            `;
+            userMenu.innerHTML = `<a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>`;
             return;
         }
 
@@ -194,7 +194,6 @@
             if (response.ok) {
                 const data = await response.json();
                 
-                // عرض الاسم الأول للمستخدم
                 if (data.full_name) {
                     const firstName = data.full_name.split(' ')[0];
                     userAuthText.textContent = firstName;
@@ -202,21 +201,19 @@
                     userAuthText.textContent = 'حسابي';
                 }
                 
-                // تعيين صورة الحساب الشخصية (إن وجدت، وإلا استخدام صورة افتراضية)
                 if (data.profile_picture) {
                     userAvatarIcon.src = data.profile_picture;
                 } else {
                     userAvatarIcon.src = 'https://www.svgrepo.com/show/498369/profile-circle.svg';
                 }
 
-                // تعبئة القائمة المنسدلة الخاصة بالحساب المسجل
+                // تعبئة القائمة المنسدلة مع ضمان ربط حدث تسجيل الخروج برمجياً
                 userMenu.innerHTML = `
                     <a href="./dashboard.html" class="proton-dropdown-item">لوحة التحكم</a>
                     <a href="./onboarding.html" class="proton-dropdown-item">إعدادات الحساب</a>
                     <a href="#" class="proton-dropdown-item logout" id="logoutBtn">تسجيل الخروج</a>
                 `;
 
-                // تفعيل زر تسجيل الخروج
                 document.getElementById('logoutBtn').addEventListener('click', (e) => {
                     e.preventDefault();
                     localStorage.removeItem('access_token');
@@ -224,7 +221,6 @@
                 });
 
             } else {
-                // توكن منتهي أو غير صالح
                 localStorage.removeItem('access_token');
                 userAuthText.textContent = 'تسجيل الدخول';
                 userAvatarIcon.src = './logout.png';
