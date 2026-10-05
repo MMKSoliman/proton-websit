@@ -116,14 +116,14 @@
                 </div>
             </div>
 
-            <!-- قائمة الحساب وإدارة الجلسة (تسجيل الدخول / الخروج) -->
+            <!-- قائمة الحساب وإدارة الجلسة -->
             <div class="proton-dropdown-container" id="userAuthContainer">
                 <button class="proton-header-btn" id="userDropdownBtn">
                     <img src="./logout.png" alt="User" id="userAvatarIcon">
                     <span id="userAuthText">تسجيل الدخول</span>
                 </button>
                 <div class="proton-dropdown-menu" id="userDropdownMenu">
-                    <a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>
+                    <!-- يتم تعبئتها ديناميكياً بواسطة الدالة أدناه -->
                 </div>
             </div>
         </div>
@@ -146,15 +146,9 @@
             userMenu.classList.remove('active');
         });
 
+        // جعل قائمة المستخدم تعمل دائماً بالتبديل (فتح/إغلاق) في الحالتين
         userBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const token = localStorage.getItem('access_token');
-            if (!token) {
-                // إذا لم يكن مسجلاً للدخول، الانتقال لصفحة تسجيل الدخول مباشرة
-                window.location.href = './auth.html';
-                return;
-            }
-            // إذا كان مسجلاً، نقوم بفتح/إغلاق القائمة المنسدلة الخاصة به
             userMenu.classList.toggle('active');
             pagesMenu.classList.remove('active');
         });
@@ -165,7 +159,7 @@
             userMenu.classList.remove('active');
         });
 
-        // جلب حالة المستخدم الحالية
+        // جلب حالة المستخدم وتحديث محتوى القائمة
         checkUserAuthState();
     });
 
@@ -175,10 +169,22 @@
         const userAvatarIcon = document.getElementById('userAvatarIcon');
         const userMenu = document.getElementById('userDropdownMenu');
 
+        // الروابط الثابتة المطلوبة في القائمة
+        const privacyLink = `<a href="./privacy.html" class="proton-dropdown-item">سياسة الخصوصية</a>`;
+        const termsLink = `<a href="./terms.html" class="proton-dropdown-item">شروط الإستخدام</a>`;
+        const settingsLink = `<a href="./onboarding.html" class="proton-dropdown-item">إعدادات الحساب</a>`;
+
         if (!token) {
+            // الحالة: غير مسجل دخول
             userAuthText.textContent = 'تسجيل الدخول';
             userAvatarIcon.src = './logout.png';
-            userMenu.innerHTML = `<a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>`;
+            
+            userMenu.innerHTML = `
+                <a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>
+                ${settingsLink}
+                ${privacyLink}
+                ${termsLink}
+            `;
             return;
         }
 
@@ -194,6 +200,7 @@
             if (response.ok) {
                 const data = await response.json();
                 
+                // عرض الاسم الأول للمستخدم
                 if (data.full_name) {
                     const firstName = data.full_name.split(' ')[0];
                     userAuthText.textContent = firstName;
@@ -201,19 +208,22 @@
                     userAuthText.textContent = 'حسابي';
                 }
                 
+                // تعيين صورة الحساب الشخصية
                 if (data.profile_picture) {
                     userAvatarIcon.src = data.profile_picture;
                 } else {
                     userAvatarIcon.src = 'https://www.svgrepo.com/show/498369/profile-circle.svg';
                 }
 
-                // تعبئة القائمة المنسدلة مع ضمان ربط حدث تسجيل الخروج برمجياً
+                // تعبئة القائمة بالناصر المطلوبة بعد تسجيل الدخول
                 userMenu.innerHTML = `
-                    <a href="./dashboard.html" class="proton-dropdown-item">لوحة التحكم</a>
-                    <a href="./onboarding.html" class="proton-dropdown-item">إعدادات الحساب</a>
+                    ${settingsLink}
+                    ${privacyLink}
+                    ${termsLink}
                     <a href="#" class="proton-dropdown-item logout" id="logoutBtn">تسجيل الخروج</a>
                 `;
 
+                // تفعيل حدث زر تسجيل الخروج
                 document.getElementById('logoutBtn').addEventListener('click', (e) => {
                     e.preventDefault();
                     localStorage.removeItem('access_token');
@@ -221,13 +231,26 @@
                 });
 
             } else {
+                // توكن منتهي أو غير صالح
                 localStorage.removeItem('access_token');
                 userAuthText.textContent = 'تسجيل الدخول';
                 userAvatarIcon.src = './logout.png';
-                userMenu.innerHTML = `<a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>`;
+                userMenu.innerHTML = `
+                    <a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>
+                    ${settingsLink}
+                    ${privacyLink}
+                    ${termsLink}
+                `;
             }
         } catch (err) {
             console.error("Auth check error:", err);
+            // في حال حدوث خطأ شبكة، اعرض العناصر الافتراضية
+            userMenu.innerHTML = `
+                <a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>
+                ${settingsLink}
+                ${privacyLink}
+                ${termsLink}
+            `;
         }
     }
 })();
