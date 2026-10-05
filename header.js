@@ -227,7 +227,7 @@
                 document.getElementById('logoutBtn').addEventListener('click', (e) => {
                     e.preventDefault();
                     localStorage.removeItem('access_token');
-                    window.location.href = './index.html';
+                    window.location.href = './auth.html';
                 });
 
             } else {
@@ -236,7 +236,7 @@
                 userAuthText.textContent = 'تسجيل الدخول';
                 userAvatarIcon.src = './logout.png';
                 userMenu.innerHTML = `
-                    <a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>
+                    <a href="./auth.html" class="proton-dropdown-item">تسجيل الدخول</a>
                     ${settingsLink}
                     ${privacyLink}
                     ${termsLink}
@@ -246,7 +246,7 @@
             console.error("Auth check error:", err);
             // في حال حدوث خطأ شبكة، اعرض العناصر الافتراضية
             userMenu.innerHTML = `
-                <a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>
+                <a href="./auth.html" class="proton-dropdown-item">تسجيل الدخول</a>
                 ${settingsLink}
                 ${privacyLink}
                 ${termsLink}
