@@ -579,7 +579,7 @@
 
             try {
                 // إرسال البيانات للرابط النسبي أو الكامل للخادم
-                const response = await fetch('https://protonag.com/api/onboarding/save', {
+                const response = await fetch('https://api.protonag.com/onboarding/save', {
                     method: 'POST',
                     credentials: 'include', // مهم جداً لإرسال الكوكيز (Auth Token) مع الطلب
                     body: formData
