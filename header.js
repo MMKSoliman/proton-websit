@@ -151,7 +151,7 @@
             const token = localStorage.getItem('access_token');
             if (!token) {
                 // إذا لم يكن مسجلاً للدخول، الانتقال لصفحة تسجيل الدخول مباشرة
-                window.location.href = './index.html';
+                window.location.href = './auth.html';
                 return;
             }
             // إذا كان مسجلاً، نقوم بفتح/إغلاق القائمة المنسدلة الخاصة به
