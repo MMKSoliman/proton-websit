@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // التحقق الهادئ من بيانات المستخدم دون عمل ريفريش أو لوب عند الخطأ
-    fetch("https://api.protonag.com/accounts/me", {
+    fetch("https://api.protonag.com/v1/auth/me", {
         method: "GET",
         headers: {
             "Authorization": "Bearer " + token,
