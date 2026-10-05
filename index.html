@@ -26,6 +26,7 @@
             font-family: 'Open Sans', 'Cairo', system-ui, -apple-system, sans-serif;
             background-color: #0d0d0d;
             color: #ffffff;
+            overflow-x: hidden;
         }
 
         /* Container Layout */
@@ -36,9 +37,8 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            align-items: center;
             padding: 2rem;
-            
-            /* Background Image Support */
             background: #0d0d0d url('./bg.png') center/cover no-repeat;
         }
 
@@ -49,94 +49,19 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 30px;
-            box-sizing: border-box;
             z-index: 20;
         }
 
-        .back-btn-wrapper {
+        /* Center Content Area (لضبط الكروت في المنتصف تماماً) */
+        .center-content {
+            flex: 1;
             display: flex;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            text-decoration: none;
-        }
-
-        .back-icon-img {
-            width: 35px;
-            height: 35px;
-            object-fit: contain;
-            display: block;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-            opacity: 0.95;
-        }
-
-        .back-btn-wrapper:hover .back-icon-img {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        /* User Profile & Dropdown Menu */
-        .user-profile-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        #user-profile-trigger {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            gap: 10px;
-        }
-
-        #user-avatar {
-            width: 40px !important;
-            height: 40px !important;
-            min-width: 40px !important;
-            min-height: 40px !important;
-            max-width: 40px !important;
-            max-height: 40px !important;
-            border-radius: 50%;
-            object-fit: cover;
-            display: block;
-        }
-
-        #full_name {
-            color: #fff;
-            font-weight: bold;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        #user-dropdown-menu {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 50px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 8px;
-            width: 220px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 1000;
-            overflow: hidden;
-            text-align: right;
-        }
-
-        #user-dropdown-menu a {
-            display: block;
-            padding: 12px 16px;
-            color: #fff;
-            text-decoration: none;
-            border-bottom: 1px solid #2a2a2a;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
-
-        #user-dropdown-menu a:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        #user-dropdown-menu a#logout-btn {
-            color: #ff4d4d;
-            border-bottom: none;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
         }
 
         /* Footer & Social Icons */
@@ -145,7 +70,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding-bottom: 1.5rem;
+            padding: 1rem 0;
             z-index: 10;
         }
 
@@ -173,24 +98,20 @@
 
         /* 📱 Mobile Responsiveness */
         @media (max-width: 768px) {
-            body, html {
-                overflow-y: auto !important;
-            }
-
             .main-container {
-                padding: 1.5rem 1rem;
+                padding: 1rem;
                 min-height: 100dvh;
             }
 
             .top-header {
-                padding: 10px 15px;
+                padding: 10px 5px;
             }
 
             .social-links {
                 gap: 1.2rem;
             }
 
-            .social-icon-img, .back-icon-img {
+            .social-icon-img {
                 width: 34px;
                 height: 34px;
             }
@@ -200,30 +121,34 @@
 <body>
 
     <div class="main-container">
+        
+        <!-- مساحة الهيدر العلوية (إن وجدت) -->
+        <div class="top-header">
+            <!-- عناصر الهيدر -->
+        </div>
 
-        <!-- Social Media Icons Footer -->
+        <!-- محتوى الصفحة في المنتصف (الكروت / الشعار) -->
+        <div class="center-content">
+            <!-- ضع محتوى الصفحة هنا، وسيكون متمركزاً تماماً في الديسك توب والموبايل -->
+        </div>
+
+        <!-- Social Media Icons Footer (يتم تحميله تلقائياً) -->
         <footer>
-            <div class="social-links">
-                <!-- E-Mail -->
-                <a href="mailto:soliman@protonag.com" target="_blank">
-                    <img src="./Icon1.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="E-Mail" class="social-icon-img">
-                </a>
-                
-                <!-- Facebook -->
-                <a href="https://www.facebook.com/Soliman.Proton" target="_blank">
-                    <img src="./Icon2.png" onerror="this.onerror=null; this.src='./icon2.png';" alt="Facebook" class="social-icon-img">
-                </a>
-                
-                <!-- WhatsApp -->
-                <a href="https://wa.me/+201066581983" target="_blank">
-                    <img src="./Icon3.png" onerror="this.onerror=null; this.src='./icon3.png';" alt="WhatsApp" class="social-icon-img">
-                </a>
-            </div>
+            <div id="footer-container"></div>
         </footer>
 
     </div>
 
-    <!-- ملف الحماية والتحقق من حالة المستخدم عبر الـ Cookies -->
+    <!-- سكربت جلب الفوتر الموحد تلقائياً -->
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-container').innerHTML = data;
+            });
+    </script>
+
+    <!-- ملفات الجافا سكريبت الخاصة بالموقع -->
     <script src="./header.js" defer></script>
     <script src="./auth-guard.js"></script>
 
