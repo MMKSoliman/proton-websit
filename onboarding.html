@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <script src="./auth-guard.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proton - تهيئة حسابك ونشاطك</title>
@@ -39,7 +38,6 @@
             justify-content: space-between;
             align-items: center;
             padding: 2rem 1.5rem;
-            /* الخلفية الأصلية المضبوطة بدقة */
             background: #0d0d0d url('./bg1.png') no-repeat center center;
             background-size: cover;
         }
@@ -54,7 +52,6 @@
             z-index: 20;
         }
 
-        /* 🎯 توسيط الكارت تماماً في منتصف الشاشة مع مساحة مريحة للأعلى والأسفل */
         .center-content {
             flex: 1;
             display: flex;
@@ -67,7 +64,6 @@
             z-index: 10;
         }
 
-        /* Onboarding Card Form */
         .onboarding-card {
             width: 100%;
             background: rgba(18, 18, 18, 0.88);
@@ -257,7 +253,6 @@
             cursor: pointer;
         }
 
-        /* Footer الموحد */
         footer {
             width: 100%;
             display: flex;
@@ -284,7 +279,7 @@
 
         <!-- الهيدر العلوي -->
         <div class="top-header">
-            <!-- سيتم تضمين أزرار العودة والبروفايل تلقائياً أو عبر الهيدر -->
+            <!-- أزرار العودة والبروفايل -->
         </div>
 
         <!-- محتوى الصفحة في المنتصف تماماً -->
@@ -449,31 +444,25 @@
             </div>
         </div>
 
-        <!-- محتوى الصفحة في المنتصف (الكروت / الشعار) -->
-        <div class="center-content">
-            <!-- ضع محتوى الصفحة هنا، وسيكون متمركزاً تماماً في الديسك توب والموبايل -->
-        </div>
-
-        <!-- Social Media Icons Footer (يتم تحميله تلقائياً) -->
+        <!-- Footer الموحد -->
         <footer>
             <div id="footer-container"></div>
         </footer>
 
-        </div>
-    
-        <!-- سكربت جلب الفوتر الموحد تلقائياً -->
-        <script>
-            fetch('footer.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('footer-container').innerHTML = data;
-                });
-        </script>
-    
-        <!-- ملفات الجافا سكريبت الخاصة بالموقع -->
-        <script src="./header.js" defer></script>
-        <script src="./auth-guard.js"></script>
-        <script>
+    </div>
+
+    <!-- السكربتات والوظائف -->
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-container').innerHTML = data;
+            });
+    </script>
+
+    <script src="./header.js" defer></script>
+    <script src="./auth-guard.js"></script>
+    <script>
         let currentStep = 1;
         const totalSteps = 4;
 
@@ -531,7 +520,6 @@
             }
         }
 
-        // دالة إرسال البيانات وربطها بالباك اند
         async function handleOnboardingSubmit(e) {
             e.preventDefault();
 
