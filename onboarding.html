@@ -595,7 +595,7 @@
                 if (response.ok) {
                     alert("تم حفظ واستلام كافة بيانات نشاطك بنجاح!");
                     // التوجيه لصفحة ربط المنصات حسب الاستجابة أو الرابط الثابت
-                    window.location.href = result.redirect_url || "./platforms-connection.html";
+                    window.location.href = result.redirect_url || "./connect-social.html";
                 } else {
                     alert("تعذر حفظ البيانات: " + (result.message || "يرجى التحقق من المدخلات والمحاولة مرة أخرى."));
                     submitBtn.disabled = false;
