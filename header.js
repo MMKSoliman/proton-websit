@@ -1,5 +1,5 @@
 (function() {
-    // 1. حقن تنسيقات الـ CSS الخاصة بالهيدر العلوي لضمان عدم التعارض وتثبيتها في أقصى اليمين
+    // 1. حقن تنسيقات الـ CSS الخاصة بالهيدر العلوي والقوائم المنسدلة
     const style = document.createElement('style');
     style.innerHTML = `
         .proton-global-header {
@@ -11,14 +11,14 @@
             justify-content: space-between;
             align-items: center;
             z-index: 9999;
-            pointer-events: none; /* للسماح بالنقر على ما تحت الفراغ إن وجد */
+            pointer-events: none;
         }
         .proton-header-actions {
             display: flex;
             align-items: center;
             gap: 12px;
             pointer-events: auto;
-            margin-left: auto; /* دفع العناصر لأقصى اليمين في اتجاه RTL */
+            margin-left: auto;
         }
         .proton-header-btn {
             display: flex;
@@ -46,7 +46,7 @@
             border-radius: 50%;
             object-fit: cover;
         }
-        /* القائمة المنسدلة لأيقونة الموقع */
+        /* حاويات القوائم المنسدلة */
         .proton-dropdown-container {
             position: relative;
             pointer-events: auto;
@@ -59,7 +59,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            width: 200px;
+            width: 210px;
             display: none;
             flex-direction: column;
             overflow: hidden;
@@ -75,10 +75,19 @@
             font-size: 13px;
             transition: background 0.2s;
             border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .proton-dropdown-item:hover {
             background: rgba(255,255,255,0.08);
             color: #fff;
+        }
+        .proton-dropdown-item.logout {
+            color: #ff4d4d;
+        }
+        .proton-dropdown-item.logout:hover {
+            background: rgba(255, 77, 77, 0.1);
         }
     `;
     document.head.appendChild(style);
@@ -88,14 +97,13 @@
     headerWrapper.className = 'proton-global-header';
     
     headerWrapper.innerHTML = `
-        <!-- أقصى اليسار أو حسب التنسيق: أزرار التحكم -->
         <div></div>
         
         <div class="proton-header-actions">
-            <!-- أيقونة الموقع الرئيسية مع القائمة المنسدلة لجميع الصفحات -->
+            <!-- القائمة المنسدلة للرئيسية والتنقل بين الصفحات -->
             <div class="proton-dropdown-container">
                 <button class="proton-header-btn" id="homeDropdownBtn" title="الرئيسية والصفحات">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <img src="./home.png" alt="Proton Home" style="width: 20px; height: 20px; border-radius: 0; object-fit: contain;">
                     <span>الرئيسية</span>
                 </button>
                 <div class="proton-dropdown-menu" id="pagesDropdownMenu">
@@ -106,45 +114,71 @@
                 </div>
             </div>
 
-            <!-- أيقونة المستخدم (تتغير تلقائياً حسب حالة تسجيل الدخول) -->
-            <a href="./index.html" class="proton-header-btn" id="userAuthBtn">
-                <img src="https://protonag.com/logout.png" alt="User" id="userAvatarIcon">
-                <span id="userAuthText">تسجيل الدخول</span>
-            </a>
+            <!-- قائمة الحساب وإدارة الجلسة (تسجيل الدخول / الخروج) -->
+            <div class="proton-dropdown-container" id="userAuthContainer">
+                <button class="proton-header-btn" id="userDropdownBtn">
+                    <img src="./logout.png" alt="User" id="userAvatarIcon">
+                    <span id="userAuthText">تسجيل الدخول</span>
+                </button>
+                <div class="proton-dropdown-menu" id="userDropdownMenu">
+                    <!-- يتم تعديل محتواها ديناميكياً حسب حالة الدخول -->
+                </div>
+            </div>
         </div>
     `;
 
-    // إدراج الهيدر في بداية الـ body تلقائياً
+    // إدراج الهيدر في الصفحة تلقائياً عند التحميل
     document.addEventListener('DOMContentLoaded', () => {
         document.body.prepend(headerWrapper);
 
-        // تفاعلات القائمة المنسدلة للرئيسية
+        // تفاعلات القوائم المنسدلة
         const homeBtn = document.getElementById('homeDropdownBtn');
         const pagesMenu = document.getElementById('pagesDropdownMenu');
+        
+        const userBtn = document.getElementById('userDropdownBtn');
+        const userMenu = document.getElementById('userDropdownMenu');
 
         homeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             pagesMenu.classList.toggle('active');
+            userMenu.classList.remove('active');
         });
 
-        window.addEventListener('click', () => {
+        userBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                // إذا لم يكن مسجلاً، انقر ليوجهه لصفحة الدخول فوراً
+                window.location.href = './index.html';
+                return;
+            }
+            userMenu.classList.toggle('active');
             pagesMenu.classList.remove('active');
         });
 
-        // 3. التحقق من حالة تسجيل الدخول عبر جلب بيانات المستخدم من الباك إند
+        // إغلاق القوائم عند النقر في أي مكان خارجها
+        window.addEventListener('click', () => {
+            pagesMenu.classList.remove('active');
+            userMenu.classList.remove('active');
+        });
+
+        // جلب حالة المستخدم الحالية
         checkUserAuthState();
     });
 
     async function checkUserAuthState() {
         const token = localStorage.getItem('access_token');
         const userAuthText = document.getElementById('userAuthText');
-        const userAuthBtn = document.getElementById('userAuthBtn');
         const userAvatarIcon = document.getElementById('userAvatarIcon');
+        const userMenu = document.getElementById('userDropdownMenu');
 
         if (!token) {
-            // غير مسجل دخول
+            // حالة: غير مسجل دخول
             userAuthText.textContent = 'تسجيل الدخول';
-            userAuthBtn.href = './index.html'; // أو صفحة الدخول الخاصة بك
+            userAvatarIcon.src = './logout.png';
+            userMenu.innerHTML = `
+                <a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>
+            `;
             return;
         }
 
@@ -159,7 +193,8 @@
 
             if (response.ok) {
                 const data = await response.json();
-                // مسجل دخول: عرض الاسم الأول وصورة الحساب
+                
+                // عرض الاسم الأول للمستخدم
                 if (data.full_name) {
                     const firstName = data.full_name.split(' ')[0];
                     userAuthText.textContent = firstName;
@@ -167,17 +202,33 @@
                     userAuthText.textContent = 'حسابي';
                 }
                 
+                // تعيين صورة الحساب الشخصية (إن وجدت، وإلا استخدام صورة افتراضية)
                 if (data.profile_picture) {
                     userAvatarIcon.src = data.profile_picture;
+                } else {
+                    userAvatarIcon.src = 'https://www.svgrepo.com/show/498369/profile-circle.svg';
                 }
 
-                // عند الضغط يوجهه للوحة التحكم مباشرة بدلاً من صفحة الدخول
-                userAuthBtn.href = './dashboard.html';
+                // تعبئة القائمة المنسدلة الخاصة بالحساب المسجل
+                userMenu.innerHTML = `
+                    <a href="./dashboard.html" class="proton-dropdown-item">لوحة التحكم</a>
+                    <a href="./onboarding.html" class="proton-dropdown-item">إعدادات الحساب</a>
+                    <a href="#" class="proton-dropdown-item logout" id="logoutBtn">تسجيل الخروج</a>
+                `;
+
+                // تفعيل زر تسجيل الخروج
+                document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('access_token');
+                    window.location.href = './index.html';
+                });
+
             } else {
                 // توكن منتهي أو غير صالح
                 localStorage.removeItem('access_token');
                 userAuthText.textContent = 'تسجيل الدخول';
-                userAuthBtn.href = './index.html';
+                userAvatarIcon.src = './logout.png';
+                userMenu.innerHTML = `<a href="./index.html" class="proton-dropdown-item">تسجيل الدخول</a>`;
             }
         } catch (err) {
             console.error("Auth check error:", err);
