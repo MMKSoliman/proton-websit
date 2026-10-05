@@ -1,21 +1,28 @@
+// auth-guard.js - ملف التحقق المركزي لحماية الصفحات ومنع اللوب
 document.addEventListener("DOMContentLoaded", function() {
     const currentPath = window.location.pathname;
     
-    // إذا كنا في صفحة الدخول أو الرئيسية العامة، لا تفعل شيئاً
+    // إذا كنا في صفحة تسجيل الدخول أو الرئيسية العامة، لا تفعل شيئاً
     if (currentPath.includes("auth.html") || currentPath.includes("index.html") || currentPath === "/") {
         return;
     }
 
-    // فحص التوكن بالاحتمالين لضمان عدم ضياعه
-    const token = localStorage.getItem("access_token") || localStorage.getItem("token");
+    // البحث عن التوكن
+    const token = localStorage.getItem("access_token");
     
+    // إذا لم يكن هناك توكن، نوجهه لصفحة الدخول مرة واحدة فقط وبشروط تمنع التكرار (تمنع اللوب)
     if (!token) {
-        // إذا لم يكن مسجلاً، يتم توجيهه لصفحة الدخول مرة واحدة فقط
-        window.location.href = "./auth.html?next=" + encodeURIComponent(currentPath);
+        if (!sessionStorage.getItem("redirected_to_auth")) {
+            sessionStorage.setItem("redirected_to_auth", "true");
+            window.location.href = "./auth.html";
+        }
         return;
+    } else {
+        // إذا وجدنا توكن، نمسح علامة التحويل لعمل الموقع بسلاسة
+        sessionStorage.removeItem("redirected_to_auth");
     }
 
-    // التحقق من صحة التوكن مع الخادم بهدوء دون الدخول في لوب
+    // التحقق الهادئ من بيانات المستخدم دون عمل ريفريش أو لوب عند الخطأ
     fetch("https://api.protonag.com/accounts/me", {
         method: "GET",
         headers: {
@@ -25,11 +32,12 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     .then(response => {
         if (response.status === 401) {
-            // التوكن منتهي أو غير صالح حقاً
+            // التوكن منتهي الصلاحية حقاً، نمسحه ونوجهه لصفحة الدخول مرة واحدة
             localStorage.removeItem("access_token");
-            localStorage.removeItem("token");
             window.location.href = "./auth.html";
-        } else if (response.ok) {
+            return;
+        }
+        if (response.ok) {
             return response.json();
         }
     })
@@ -44,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     })
     .catch(error => {
-        console.warn("Auth check network warning:", error);
-        // لا تقم بإعادة التوجيه عند حدوث خطأ في الشبكة لكي لا ندخل في لوب!
+        console.warn("Auth check warning:", error);
+        // تم منع أي توجيه عشوائي هنا لمنع حدوث اللوب تماماً
     });
 });
