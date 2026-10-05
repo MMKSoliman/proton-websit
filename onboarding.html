@@ -161,6 +161,11 @@
             border-color: #00e5ff;
         }
 
+        select.form-control option {
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
         .color-picker-wrapper {
             display: flex;
             align-items: center;
@@ -327,6 +332,15 @@
                                 <label>نوع النشاط التجاري</label>
                                 <input type="text" class="form-control" id="business_type" placeholder="مثال: متجر ملابس، شركة برمجيات..." required>
                             </div>
+                        </div>
+
+                        <!-- خانة اللغة المفضلة للبراند المضافة حديثاً -->
+                        <div class="form-group">
+                            <label>اللغة المفضلة للبراند (Preferred Language)</label>
+                            <select class="form-control" id="preferred_language" required>
+                                <option value="ar" selected>العربية (Arabic)</option>
+                                <option value="en">الإنجليزية (English)</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -520,12 +534,23 @@
 
             const formData = new FormData();
 
+            // استخراج معرف العميل أو المستخدم من الـ token أو الخادم إذا لزم، أو إرساله
+            // استخراج الـ token من الـ URL إذا وجد وحفظه في الكوكيز
+            const urlParams = new URLSearchParams(window.location.search);
+            const tokenParam = urlParams.get('token');
+            if (tokenParam) {
+                document.cookie = `access_token=${tokenParam}; path=/; secure; samesite=strict`;
+            }
+
+            // جلب الـ user_id أو client_id عبر استدعاء /auth/me أو الاعتماد على الـ Backend لمعرفته من الكوكي
+            // هنا نجمع كافة الحقول للنموذج
             formData.append('client_name', document.getElementById('client_name').value);
             formData.append('client_phone', document.getElementById('client_phone').value);
             formData.append('client_email', document.getElementById('client_email').value);
 
             formData.append('brand_name', document.getElementById('brand_name').value);
             formData.append('business_type', document.getElementById('business_type').value);
+            formData.append('preferred_language', document.getElementById('preferred_language').value);
             formData.append('business_description', document.getElementById('business_description').value);
             formData.append('target_audience', document.getElementById('target_audience').value);
 
@@ -553,8 +578,10 @@
             submitBtn.textContent = 'جاري الحفظ وإرسال البيانات...';
 
             try {
-                const response = await fetch('https://api.protonag.com/v1/onboarding', {
+                // إرسال البيانات للرابط النسبي أو الكامل للخادم
+                const response = await fetch('https://protonag.com/api/onboarding/save', {
                     method: 'POST',
+                    credentials: 'include', // مهم جداً لإرسال الكوكيز (Auth Token) مع الطلب
                     body: formData
                 });
 
@@ -567,7 +594,8 @@
 
                 if (response.ok) {
                     alert("تم حفظ واستلام كافة بيانات نشاطك بنجاح!");
-                    window.location.href = "./connect-social.html";
+                    // التوجيه لصفحة ربط المنصات حسب الاستجابة أو الرابط الثابت
+                    window.location.href = result.redirect_url || "./platforms-connection.html";
                 } else {
                     alert("تعذر حفظ البيانات: " + (result.message || "يرجى التحقق من المدخلات والمحاولة مرة أخرى."));
                     submitBtn.disabled = false;
