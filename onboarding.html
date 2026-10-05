@@ -449,26 +449,31 @@
             </div>
         </div>
 
-        <!-- Footer الموحد (يتم استدعاؤه تلقائياً) -->
+        <!-- محتوى الصفحة في المنتصف (الكروت / الشعار) -->
+        <div class="center-content">
+            <!-- ضع محتوى الصفحة هنا، وسيكون متمركزاً تماماً في الديسك توب والموبايل -->
+        </div>
+
+        <!-- Social Media Icons Footer (يتم تحميله تلقائياً) -->
         <footer>
             <div id="footer-container"></div>
         </footer>
 
-    </div>
-
-    <!-- سكربت جلب الفوتر الموحد تلقائياً -->
-    <script>
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-container').innerHTML = data;
-            });
-    </script>
-
-    <!-- ملفات الجافا سكريبت الخاصة بالموقع -->
-    <script src="./header.js" defer></script>
-    <script src="./auth-guard.js" defer></script>
-    <script>
+        </div>
+    
+        <!-- سكربت جلب الفوتر الموحد تلقائياً -->
+        <script>
+            fetch('footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                });
+        </script>
+    
+        <!-- ملفات الجافا سكريبت الخاصة بالموقع -->
+        <script src="./header.js" defer></script>
+        <script src="./auth-guard.js"></script>
+        <script>
         let currentStep = 1;
         const totalSteps = 4;
 
