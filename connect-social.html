@@ -21,7 +21,7 @@
         }
 
         body, html {
-            min-height: 100vh;
+            height: 100%;
             width: 100%;
             background-color: #0d0d0d;
             color: #ffffff;
@@ -36,46 +36,87 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 1rem;
+            padding: 2rem 1.5rem 1rem 1.5rem;
             background: #0d0d0d url('./bg1.png') center/cover no-repeat;
-            box-sizing: border-box;
         }
 
+        /* Top Header & Icons Navigation */
         .top-header {
             width: 100%;
-            max-width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 30px;
-            box-sizing: border-box;
+            padding: 10px 20px;
             z-index: 20;
         }
 
-        .back-btn-wrapper {
+        /* Tooltip Container */
+        .icon-nav-wrapper {
             position: relative;
             display: inline-flex;
             align-items: center;
-            cursor: pointer;
+            justify-content: center;
             text-decoration: none;
+            cursor: pointer;
         }
 
-        .back-icon-img {
-            width: 35px;
-            height: 35px;
+        .nav-icon-img {
+            width: 38px;
+            height: 38px;
             object-fit: contain;
             transition: transform 0.2s ease, opacity 0.2s ease;
             opacity: 0.95;
         }
 
-        .back-btn-wrapper:hover .back-icon-img {
+        .icon-nav-wrapper:hover .nav-icon-img {
             opacity: 1;
             transform: scale(1.1);
         }
 
-        .connect-card {
+        /* Tooltip Styling */
+        .icon-nav-wrapper::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: 118%;
+            right: 50%;
+            transform: translateX(50%) translateY(-5px);
+            background: rgba(18, 18, 18, 0.95);
+            color: #00e5ff;
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            z-index: 30;
+        }
+
+        .icon-nav-wrapper:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(50%) translateY(0);
+        }
+
+        /* Center Content Wrapper */
+        .center-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             width: 100%;
             max-width: 620px;
+            margin: 1rem auto;
+            z-index: 10;
+        }
+
+        .connect-card {
+            width: 100%;
             background: rgba(18, 18, 18, 0.88);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
@@ -83,8 +124,6 @@
             border-radius: 16px;
             padding: 2rem 1.5rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-            margin: 1.5rem 0;
-            z-index: 10;
         }
 
         .card-header {
@@ -328,32 +367,11 @@
             gap: 0.8rem;
         }
 
-        footer {
+        #footer-container {
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding-top: 1rem;
-            z-index: 10;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-            direction: ltr;
-        }
-
-        .social-icon-img {
-            width: 38px;
-            height: 38px;
-            object-fit: contain;
-            opacity: 0.95;
-            transition: transform 0.2s;
-        }
-
-        .social-icon-img:hover {
-            transform: scale(1.15);
         }
 
         @media (max-width: 580px) {
@@ -374,94 +392,95 @@
 
     <div class="main-container">
 
-        <!-- Connect Card -->
-        <div class="connect-card">
-            <div class="card-header">
-                <h2 class="card-title">اختر المنصات والخدمات المطلوبة</h2>
-                <p class="card-subtitle">
-                    قم بربط المنصة وتحديد الخدمات المخصصة لاحتساب التكلفة بدقة.
-                </p>
-            </div>
+        <!-- الهيدر العلوي -->
+        <div class="top-header">
+            <!-- سيتم تعبئته ديناميكياً بواسطة header.js -->
+        </div>
 
-            <div class="platforms-list">
-                <!-- Facebook -->
-                <div class="platform-item">
-                    <div class="platform-info">
-                        <img src="./facebook.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/5968/5968764.png';" class="platform-icon" alt="Facebook">
-                        <div class="platform-text">
-                            <h4>Facebook Pages</h4>
-                            <p>نشر، تفاعل، ريلز وإدارة الرسائل</p>
-                        </div>
-                    </div>
-                    <button class="btn-connect" id="btn-facebook" onclick="openPlatformModal('facebook', 'Facebook Pages', 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png')">
-                        ربط المنصة
-                    </button>
+        <!-- محتوى الصفحة في المنتصف -->
+        <div class="center-content">
+            <div class="connect-card">
+                <div class="card-header">
+                    <h2 class="card-title">اختر المنصات والخدمات المطلوبة</h2>
+                    <p class="card-subtitle">
+                        قم بربط المنصة وتحديد الخدمات المخصصة لاحتساب التكلفة بدقة.
+                    </p>
                 </div>
 
-                <!-- Instagram -->
-                <div class="platform-item">
-                    <div class="platform-info">
-                        <img src="./instagram.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/2111/2111463.png';" class="platform-icon" alt="Instagram">
-                        <div class="platform-text">
-                            <h4>Instagram Business</h4>
-                            <p>جدولة الريلز والمنشورات والتفاعل</p>
+                <div class="platforms-list">
+                    <!-- Facebook -->
+                    <div class="platform-item">
+                        <div class="platform-info">
+                            <img src="./facebook.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/5968/5968764.png';" class="platform-icon" alt="Facebook">
+                            <div class="platform-text">
+                                <h4>Facebook Pages</h4>
+                                <p>نشر، تفاعل، ريلز وإدارة الرسائل</p>
+                            </div>
                         </div>
+                        <button class="btn-connect" id="btn-facebook" onclick="openPlatformModal('facebook', 'Facebook Pages', 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png')">
+                            ربط المنصة
+                        </button>
                     </div>
-                    <button class="btn-connect" id="btn-instagram" onclick="openPlatformModal('instagram', 'Instagram Business', 'https://cdn-icons-png.flaticon.com/512/2111/2111463.png')">
-                        ربط المنصة
-                    </button>
+
+                    <!-- Instagram -->
+                    <div class="platform-item">
+                        <div class="platform-info">
+                            <img src="./instagram.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/2111/2111463.png';" class="platform-icon" alt="Instagram">
+                            <div class="platform-text">
+                                <h4>Instagram Business</h4>
+                                <p>جدولة الريلز والمنشورات والتفاعل</p>
+                            </div>
+                        </div>
+                        <button class="btn-connect" id="btn-instagram" onclick="openPlatformModal('instagram', 'Instagram Business', 'https://cdn-icons-png.flaticon.com/512/2111/2111463.png')">
+                            ربط المنصة
+                        </button>
+                    </div>
+
+                    <!-- TikTok -->
+                    <div class="platform-item">
+                        <div class="platform-info">
+                            <img src="./tiktok.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3046/3046121.png';" class="platform-icon" alt="TikTok">
+                            <div class="platform-text">
+                                <h4>TikTok Business</h4>
+                                <p>نشر مقاطع الفيديو والردود التلقائية</p>
+                            </div>
+                        </div>
+                        <button class="btn-connect" id="btn-tiktok" onclick="openPlatformModal('tiktok', 'TikTok Business', 'https://cdn-icons-png.flaticon.com/512/3046/3046121.png')">
+                            ربط المنصة
+                        </button>
+                    </div>
+
+                    <!-- LinkedIn -->
+                    <div class="platform-item">
+                        <div class="platform-info">
+                            <img src="./linkedin.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3536/3536505.png';" class="platform-icon" alt="LinkedIn">
+                            <div class="platform-text">
+                                <h4>LinkedIn Page</h4>
+                                <p>نشر المحتوى وتتبع تفاعل الشركات</p>
+                            </div>
+                        </div>
+                        <button class="btn-connect" id="btn-linkedin" onclick="openPlatformModal('linkedin', 'LinkedIn Page', 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png')">
+                            ربط المنصة
+                        </button>
+                    </div>
                 </div>
 
-                <!-- TikTok -->
-                <div class="platform-item">
-                    <div class="platform-info">
-                        <img src="./tiktok.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3046/3046121.png';" class="platform-icon" alt="TikTok">
-                        <div class="platform-text">
-                            <h4>TikTok Business</h4>
-                            <p>نشر مقاطع الفيديو والردود التلقائية</p>
-                        </div>
-                    </div>
-                    <button class="btn-connect" id="btn-tiktok" onclick="openPlatformModal('tiktok', 'TikTok Business', 'https://cdn-icons-png.flaticon.com/512/3046/3046121.png')">
-                        ربط المنصة
-                    </button>
+                <!-- Total Box -->
+                <div class="total-summary-box">
+                    <span class="total-title">عدد المنصات المربوطة: <strong id="selectedCount" style="color:#fff;">0</strong></span>
+                    <span class="total-amount">الإجمالي: $<span id="totalPrice">0</span> / شهرياً</span>
                 </div>
 
-                <!-- LinkedIn -->
-                <div class="platform-item">
-                    <div class="platform-info">
-                        <img src="./linkedin.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3536/3536505.png';" class="platform-icon" alt="LinkedIn">
-                        <div class="platform-text">
-                            <h4>LinkedIn Page</h4>
-                            <p>نشر المحتوى وتتبع تفاعل الشركات</p>
-                        </div>
-                    </div>
-                    <button class="btn-connect" id="btn-linkedin" onclick="openPlatformModal('linkedin', 'LinkedIn Page', 'https://cdn-icons-png.flaticon.com/512/3536/3536505.png')">
-                        ربط المنصة
-                    </button>
+                <!-- Action Buttons -->
+                <div class="actions-group">
+                    <button class="btn-checkout" onclick="redirectToWhatsApp()">إتمام الطلب وتفعيل الخطة</button>
+                    <a href="./dashboard.html" class="btn-skip">تخطي الآن</a>
                 </div>
-            </div>
-
-            <!-- Total Box -->
-            <div class="total-summary-box">
-                <span class="total-title">عدد المنصات المربوطة: <strong id="selectedCount" style="color:#fff;">0</strong></span>
-                <span class="total-amount">الإجمالي: $<span id="totalPrice">0</span> / شهرياً</span>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="actions-group">
-                <button class="btn-checkout" onclick="redirectToWhatsApp()">إتمام الطلب وتفعيل الخطة</button>
-                <a href="./dashboard.html" class="btn-skip">تخطي الآن</a>
             </div>
         </div>
 
-        <!-- Footer -->
-        <footer>
-            <div class="social-links">
-                <a href="mailto:soliman@protonag.com" target="_blank"><img src="./icon1.png" alt="E-Mail" class="social-icon-img"></a>
-                <a href="https://www.facebook.com/Soliman.Proton" target="_blank"><img src="./icon2.png" alt="Facebook" class="social-icon-img"></a>
-                <a href="https://wa.me/+201066581983" target="_blank"><img src="./icon3.png" alt="WhatsApp" class="social-icon-img"></a>
-            </div>
-        </footer>
+        <!-- Footer الموحد -->
+        <div id="footer-container"></div>
 
     </div>
 
@@ -484,6 +503,15 @@
             </div>
         </div>
     </div>
+
+    <!-- جلب الفوتر الخارجي -->
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-container').innerHTML = data;
+            });
+    </script>
 
     <script src="./header.js" defer></script>
     <script src="./auth-guard.js" defer></script>
@@ -594,7 +622,7 @@
             if (reelsCheckbox && reelsSelect && reelsPriceText) {
                 if (reelsCheckbox.checked) {
                     const count = parseInt(reelsSelect.value) || 0;
-                    reelsPriceText.textContent = `$${count * REEL_PER_UNIT_CHECK = count * REEL_PRICE_PER_UNIT || count * 5}`;
+                    reelsPriceText.textContent = `$${count * REEL_PRICE_PER_UNIT}`;
                 } else {
                     reelsPriceText.textContent = '$0';
                 }
