@@ -227,100 +227,52 @@
     </div>
 
 <script>
-        // دالة جلب حالة الحساب من الباك اند وتفعيل القائمة المنسدلة عند تحميل الصفحة
-        window.addEventListener('DOMContentLoaded', async () => {
-            // 1. التقاط التوكن من الرابط (في حال العودة من جوجل أو فيسبوك) وحفظه محلياً
-            const urlParams = new URLSearchParams(window.location.search);
-            const tokenFromUrl = urlParams.get("token");
-            if (tokenFromUrl) {
-                localStorage.setItem("access_token", tokenFromUrl);
-                // تنظيف الرابط وإزالة التوكن لأسباب أمنية
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
+       // كود جلب حالة الداشبورد وتحديث محتوى الصفحة فقط
+    window.addEventListener('DOMContentLoaded', async () => {
+    // 1. التقاط التوكن من الرابط (في حال العودة من جوجل أو فيسبوك) وحفظه محلياً
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get("token");
+    if (tokenFromUrl) {
+        localStorage.setItem("access_token", tokenFromUrl);
+        // تنظيف الرابط وإزالة التوكن لأسباب أمنية
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
 
-            // جلب التوكن المحفوظ لإرساله مع الطلبات
-            const token = localStorage.getItem('access_token');
+    // جلب التوكن المحفوظ لإرساله مع الطلبات
+    const token = localStorage.getItem('access_token');
 
-            try {
-                const response = await fetch('https://api.protonag.com/v1/dashboard/status', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': token ? 'Bearer ' + token : ''
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    
-                    if (data.status_text) {
-                        document.getElementById('statusBadge').textContent = data.status_text;
-                    }
-                    if (data.title) {
-                        document.getElementById('cardTitle').textContent = data.title;
-                    }
-                    if (data.subtitle) {
-                        document.getElementById('cardSubtitle').textContent = data.subtitle;
-                    }
-                    if (data.full_name) {
-                        document.getElementById('full_name').textContent = data.full_name;
-                    }
-                } else if (response.status === 401) {
-                    // إذا انتهت صلاحية التوكن، يتم توجيه المستخدم لتسجيل الدخول
-                    localStorage.removeItem('access_token');
-                    window.location.href = './index.html';
-                }
-            } catch (error) {
-                console.error("Dashboard Sync Error:", error);
-            }
-
-            // التحكم في إظهار وإخفاء القائمة المنسدلة للبروفايل
-            const profileTrigger = document.getElementById('user-profile-trigger');
-            const dropdownMenu = document.getElementById('user-dropdown-menu');
-            
-            if (profileTrigger && dropdownMenu) {
-                profileTrigger.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-                });
-
-                window.addEventListener('click', () => {
-                    dropdownMenu.style.display = 'none';
-                });
-            }
-
-            // تفعيل زر تسجيل الخروج برمجياً
-            const logoutBtn = document.getElementById('logout-btn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    handleLogout();
-                });
+    try {
+        const response = await fetch('https://api.protonag.com/v1/dashboard/status', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token ? 'Bearer ' + token : ''
             }
         });
 
-        // دالة تسجيل الخروج وربطها بالباك اند
-        async function handleLogout() {
-            if (confirm('هل أنت متأكد من رغبتك في تسجيل الخروج؟')) {
-                const token = localStorage.getItem('access_token');
-                try {
-                    await fetch('https://api.protonag.com/v1/auth/logout', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': token ? 'Bearer ' + token : ''
-                        }
-                    });
-                } catch (e) {
-                    console.error("Logout request error:", e);
-                }
-
-                // مسح البيانات المحلية والتوجيه للرئيسية
-                localStorage.clear();
-                window.location.href = './index.html';
+        if (response.ok) {
+            const data = await response.json();
+            
+            if (data.status_text && document.getElementById('statusBadge')) {
+                document.getElementById('statusBadge').textContent = data.status_text;
+            }
+            if (data.title && document.getElementById('cardTitle')) {
+                document.getElementById('cardTitle').textContent = data.title;
+            }
+            if (data.subtitle && document.getElementById('cardSubtitle')) {
+                document.getElementById('cardSubtitle').textContent = data.subtitle;
+            }
+            if (data.full_name && document.getElementById('full_name')) {
+                document.getElementById('full_name').textContent = data.full_name;
             }
         }
+        // تم إلغاء التوجيه التلقائي المسبب للوب هنا، وتركت حراسة الصفحات لملف auth-guard.js المركزي
+    } catch (error) {
+        console.error("Dashboard Sync Error:", error);
+    }
+    });
     </script>
+    <script src="./auth-guard.js" defer></script>
     <script src="./header.js" defer></script>
 </body>
 </html>
