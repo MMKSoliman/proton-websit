@@ -149,7 +149,7 @@
         }
 
         try {
-            const response = await fetch('https://api.protonag.com/v1/auth/me', {
+            const response = await fetch('https://api.protonag.com/auth/me', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
