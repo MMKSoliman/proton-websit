@@ -114,7 +114,7 @@
 
             <div class="proton-dropdown-container" id="userAuthContainer">
                 <button class="proton-header-btn" id="userDropdownBtn">
-                    <img src="./logout.png" alt="User" id="userAvatarIcon">
+                    <img src="./login.png" alt="User" id="userAvatarIcon">
                     <span id="userAuthText">جاري التحقق...</span>
                 </button>
                 <div class="proton-dropdown-menu" id="userDropdownMenu"></div>
@@ -181,7 +181,7 @@
 
         if (!token) {
             userAuthText.textContent = 'تسجيل الدخول';
-            userAvatarIcon.src = './logout.png';
+            userAvatarIcon.src = './login.png';
             userMenu.innerHTML = `
                 <a href="./auth.html" class="proton-dropdown-item">تسجيل الدخول</a>
                 ${settingsLink}
