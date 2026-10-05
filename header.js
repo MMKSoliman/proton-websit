@@ -150,19 +150,22 @@
         checkUserAuthState();
     });
 
-    // دالة مساعدة لالتقاط التوكن من الـ URL أو الـ LocalStorage أو الـ Cookies
+    // دالة لاستخراج التوكن وحفظه بالمتصفح
     function getAuthToken() {
         const urlParams = new URLSearchParams(window.location.search);
         const tokenParam = urlParams.get('token');
         if (tokenParam) {
             localStorage.setItem('access_token', tokenParam);
+            // إزالة التوكن من الـ URL لتنظيفه
+            urlParams.delete('token');
+            const newRelativePathQuery = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+            window.history.replaceState(null, '', newRelativePathQuery);
             return tokenParam;
         }
 
         let token = localStorage.getItem('access_token');
         if (token) return token;
 
-        // البحث في الكوكيز
         const match = document.cookie.match(new RegExp('(^| )access_token=([^;]+)'));
         if (match) return match[2];
 
@@ -180,20 +183,13 @@
         const settingsLink = `<a href="./onboarding.html" class="proton-dropdown-item">إعدادات الحساب</a>`;
 
         if (!token) {
-            userAuthText.textContent = 'تسجيل الدخول';
-            userAvatarIcon.src = './login.png';
-            userMenu.innerHTML = `
-                <a href="./auth.html" class="proton-dropdown-item">تسجيل الدخول</a>
-                ${settingsLink}
-                ${privacyLink}
-                ${termsLink}
-            `;
+            setUserLoggedOut(userAuthText, userAvatarIcon, userMenu, settingsLink, privacyLink, termsLink);
             return;
         }
 
         try {
-            // تصحيح مسار الـ API ليتوافق مع هيكل الـ Backend لديك
-            const response = await fetch('https://protonag.com/api/auth/me', {
+            // استخدام رابط الـ API الصحيح المتوافق مع الـ Backend (/auth/me)
+            const response = await fetch('https://api.protonag.com/auth/me', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -205,14 +201,19 @@
             if (response.ok) {
                 const data = await response.json();
                 
+                // تخزين معرف المستخدم والبيانات محلياً للاعتماد عليها مباشرة
+                if (data.user_id) {
+                    localStorage.setItem('user_id', data.user_id);
+                }
                 if (data.full_name) {
-                    const firstName = data.full_name.split(' ')[0];
-                    userAuthText.textContent = firstName;
+                    localStorage.setItem('user_name', data.full_name);
+                    userAuthText.textContent = data.full_name.split(' ')[0];
                 } else {
                     userAuthText.textContent = 'حسابي';
                 }
                 
                 if (data.profile_picture) {
+                    localStorage.setItem('user_picture', data.profile_picture);
                     userAvatarIcon.src = data.profile_picture;
                 } else {
                     userAvatarIcon.src = "./login.png";
@@ -222,36 +223,49 @@
                     ${settingsLink}
                     ${privacyLink}
                     ${termsLink}
-                    <a href="#" class="proton-dropdown-item logout" id="logoutBtn">تسجيل الدخول الخروج</a>
+                    <a href="#" class="proton-dropdown-item logout" id="logoutBtn">تسجيل الخروج</a>
                 `;
 
                 document.getElementById('logoutBtn').addEventListener('click', (e) => {
                     e.preventDefault();
                     localStorage.removeItem('access_token');
+                    localStorage.removeItem('user_id');
+                    localStorage.removeItem('user_name');
+                    localStorage.removeItem('user_picture');
                     document.cookie = 'access_token=; Max-Age=0; path=/;';
                     window.location.href = './auth.html';
                 });
 
             } else {
-                localStorage.removeItem('access_token');
-                userAuthText.textContent = 'تسجيل الدخول';
-                userAvatarIcon.src = './logout.png';
-                userMenu.innerHTML = `
-                    <a href="./auth.html" class="proton-dropdown-item">تسجيل الدخول</a>
-                    ${settingsLink}
-                    ${privacyLink}
-                    ${termsLink}
-                `;
+                // إذا انتهت صلاحية التوكن، نحاول الاعتماد على البيانات المخزنة مؤقتاً أو تسجيل الخروج
+                const cachedName = localStorage.getItem('user_name');
+                const cachedPic = localStorage.getItem('user_picture');
+                
+                if (cachedName && cachedPic) {
+                    userAuthText.textContent = cachedName.split(' ')[0];
+                    userAvatarIcon.src = cachedPic;
+                } else {
+                    throw new Error("Invalid session");
+                }
             }
         } catch (err) {
             console.error("Auth check error:", err);
-            userAuthText.textContent = 'حسابي';
-            userMenu.innerHTML = `
-                <a href="./auth.html" class="proton-dropdown-item">تسجيل الدخول</a>
-                ${settingsLink}
-                ${privacyLink}
-                ${termsLink}
-            `;
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('user_id');
+            localStorage.removeItem('user_name');
+            localStorage.removeItem('user_picture');
+            setUserLoggedOut(userAuthText, userAvatarIcon, userMenu, settingsLink, privacyLink, termsLink);
         }
+    }
+
+    function setUserLoggedOut(textEl, iconEl, menuEl, sLink, pLink, tLink) {
+        textEl.textContent = 'تسجيل الدخول';
+        iconEl.src = './login.png';
+        menuEl.innerHTML = `
+            <a href="./auth.html" class="proton-dropdown-item">تسجيل الدخول</a>
+            ${sLink}
+            ${pLink}
+            ${tLink}
+        `;
     }
 })();
