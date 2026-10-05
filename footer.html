@@ -1,16 +1,53 @@
-<div class="social-links">
-    <!-- E-Mail -->
-    <a href="mailto:soliman@protonag.com" target="_blank">
-        <img src="./Icon1.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="E-Mail" class="social-icon-img">
-    </a>
-    
-    <!-- Facebook -->
-    <a href="https://www.facebook.com/Soliman.Proton" target="_blank">
-        <img src="./Icon2.png" onerror="this.onerror=null; this.src='./icon2.png';" alt="Facebook" class="social-icon-img">
-    </a>
-    
-    <!-- WhatsApp -->
-    <a href="https://wa.me/+201066581983" target="_blank">
-        <img src="./Icon3.png" onerror="this.onerror=null; this.src='./icon3.png';" alt="WhatsApp" class="social-icon-img">
-    </a>
-</div>
+<footer class="site-footer">
+    <div class="social-links">
+        <!-- E-Mail -->
+        <a href="mailto:soliman@protonag.com" target="_blank" aria-label="Email">
+            <img src="./Icon1.png" onerror="this.onerror=null; this.src='./icon1.png';" alt="E-Mail" class="social-icon-img">
+        </a>
+        
+        <!-- Facebook -->
+        <a href="https://www.facebook.com/Soliman.Proton" target="_blank" aria-label="Facebook">
+            <img src="./Icon2.png" onerror="this.onerror=null; this.src='./icon2.png';" alt="Facebook" class="social-icon-img">
+        </a>
+        
+        <!-- WhatsApp -->
+        <a href="https://wa.me/+201066581983" target="_blank" aria-label="WhatsApp">
+            <img src="./Icon3.png" onerror="this.onerror=null; this.src='./icon3.png';" alt="WhatsApp" class="social-icon-img">
+        </a>
+    </div>
+    <p class="footer-copy">جميع الحقوق محفوظة &copy; 2026 Proton</p>
+</footer>
+
+<style>
+    .site-footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 0;
+        width: 100%;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .social-icon-img {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+        transition: transform 0.2s ease;
+    }
+
+    .social-icon-img:hover {
+        transform: scale(1.1);
+    }
+
+    .footer-copy {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.5);
+    }
+</style>
