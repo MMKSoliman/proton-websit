@@ -1,17 +1,45 @@
-<div class="social-links">
-    <!-- E-Mail -->
-    <a href="mailto:soliman@protonag.com" target="_blank" aria-label="Email">
-        <img src="./icon1.png" alt="E-Mail" class="social-icon-img">
-    </a>
-    
-    <!-- Facebook -->
-    <a href="https://www.facebook.com/Soliman.Proton" target="_blank" aria-label="Facebook">
-        <img src="./icon2.png" alt="Facebook" class="social-icon-img">
-    </a>
-    
-    <!-- WhatsApp -->
-    <a href="https://wa.me/+201066581983" target="_blank" aria-label="WhatsApp">
-        <img src="./icon3.png" alt="WhatsApp" class="social-icon-img">
-    </a>
+<div class="site-footer-content">
+    <div class="social-links">
+        <a href="mailto:soliman@protonag.com" target="_blank" aria-label="Email">
+            <img src="./icon1.png" alt="E-Mail" class="social-icon-img">
+        </a>
+        <a href="https://www.facebook.com/Soliman.Proton" target="_blank" aria-label="Facebook">
+            <img src="./icon2.png" alt="Facebook" class="social-icon-img">
+        </a>
+        <a href="https://wa.me/+201066581983" target="_blank" aria-label="WhatsApp">
+            <img src="./icon3.png" alt="WhatsApp" class="social-icon-img">
+        </a>
+    </div>
+    <p class="footer-copy">جميع الحقوق محفوظة &copy; 2026 Proton</p>
 </div>
-<p class="footer-copy">جميع الحقوق محفوظة &copy; 2026 Proton</p>
+
+<style>
+    .site-footer-content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 1.5rem 0;
+    }
+    .social-links {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        justify-content: center;
+    }
+    .social-icon-img {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+        transition: transform 0.2s ease;
+    }
+    .social-icon-img:hover {
+        transform: scale(1.1);
+    }
+    .footer-copy {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.5);
+    }
+</style>
