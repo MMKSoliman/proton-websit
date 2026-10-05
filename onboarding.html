@@ -39,7 +39,9 @@
             justify-content: space-between;
             align-items: center;
             padding: 2rem 1.5rem;
-            background: #0d0d0d url('./bg1.png') center/cover no-repeat;
+            /* الخلفية الأصلية المضبوطة بدقة */
+            background: #0d0d0d url('./bg1.png') no-repeat center center;
+            background-size: cover;
         }
 
         .top-header {
@@ -52,7 +54,7 @@
             z-index: 20;
         }
 
-        /* 🎯 توسيط الكارت تماماً في منتصف الشاشة عمودياً وأفقياً */
+        /* 🎯 توسيط الكارت تماماً في منتصف الشاشة مع مساحة مريحة للأعلى والأسفل */
         .center-content {
             flex: 1;
             display: flex;
@@ -61,7 +63,7 @@
             align-items: center;
             width: 100%;
             max-width: 580px;
-            margin: auto;
+            margin: 2rem auto;
             z-index: 10;
         }
 
@@ -282,7 +284,7 @@
 
         <!-- الهيدر العلوي -->
         <div class="top-header">
-            <!-- سيتم تضمين أزرار العودة والبروفایل تلقائياً أو عبر الهيدر -->
+            <!-- سيتم تضمين أزرار العودة والبروفايل تلقائياً أو عبر الهيدر -->
         </div>
 
         <!-- محتوى الصفحة في المنتصف تماماً -->
