@@ -681,8 +681,8 @@
             formData.append('brand_ws', document.getElementById('brand_ws').value);
             formData.append('address', document.getElementById('address').value);
 
-            const unifiedFile = document.getElementById('unified_brand_file').files[0];
-            if (unifiedFile) formData.append('unified_brand_file', unifiedFile);
+            const unifiedFile = document.getElementById('bcard_file').files[0];
+            if (unifiedFile) formData.append('bcard_file', unifiedFile);
 
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
