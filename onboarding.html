@@ -215,20 +215,20 @@
             margin-top: 1rem;
         }
 
-        /* صندوق خيارات الهوية البصرية الواضح */
+        /* صندوق خيارات الهوية البصرية */
         .identity-options-box {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            padding: 1.2rem;
+            padding: 1.5rem;
             text-align: center;
             margin-bottom: 1.2rem;
         }
 
         .identity-options-box p {
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
             font-weight: 600;
         }
 
@@ -239,11 +239,23 @@
             flex-wrap: wrap;
         }
 
+        .btn-has-identity {
+            background: linear-gradient(135deg, #0047ab, #00e5ff);
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
         .btn-pro-request {
             background: linear-gradient(135deg, #ff8c00, #ffea00);
             color: #000;
             border: none;
-            padding: 9px 16px;
+            padding: 10px 16px;
             border-radius: 6px;
             font-size: 0.85rem;
             font-weight: 700;
@@ -255,7 +267,7 @@
             background: rgba(255, 255, 255, 0.1);
             color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 9px 16px;
+            padding: 10px 16px;
             border-radius: 6px;
             font-size: 0.85rem;
             cursor: pointer;
@@ -390,20 +402,21 @@
                         </div>
                     </div>
 
-                    <!-- 3️⃣ الخطوة الثالثة: الهوية البصرية (تظهر الخيارات أولاً لمنع التشتت) -->
+                    <!-- 3️⃣ الخطوة الثالثة: الهوية البصرية وخياراتها -->
                     <div class="step" id="step3">
                         <span class="step-title-badge">3. الهوية البصرية للعلامة التجارية</span>
                         
-                        <!-- صندوق الخيارات (هل لديك هوية؟) -->
+                        <!-- صندوق الخيارات المانع للتشتت -->
                         <div class="identity-options-box" id="identityChoiceBox">
-                            <p>أليس لديك هوية بصرية جاهزة حالياً؟</p>
+                            <p>هل لديك هوية بصرية جاهزة لعلامتك التجارية؟</p>
                             <div class="identity-action-btns">
+                                <button type="button" class="btn-has-identity" onclick="showIdentityFields()">نعم، لدي هوية بصرية</button>
                                 <button type="button" class="btn-pro-request" onclick="requestIdentityFromProton()">طلب تصميم هوية من بروتون</button>
-                                <button type="button" class="btn-skip-identity" onclick="skipIdentityAndSave()">تخطي مؤقتاً</button>
+                                <button type="button" class="btn-skip-identity" onclick="skipIdentityAndProceed()">تخطي مؤقتاً</button>
                             </div>
                         </div>
 
-                        <!-- الحقول تظهر فقط عند رغبة العميل بملئها -->
+                        <!-- الحقول الفعلية (التي تظهر عند الضغط على "نعم، لدي هوية بصرية") -->
                         <div id="identityFieldsContainer" style="display: none;">
                             <div class="form-row">
                                 <div class="form-group">
@@ -527,7 +540,14 @@
             }
         }
 
-        // التوجيه المباشر للواتساب برقم +201066581983 مع رسالة جاهزة
+        // إظهار حقول الهوية البصرية بناءً على الصورة
+        function showIdentityFields() {
+            hasIdentity = true;
+            document.getElementById('identityChoiceBox').style.display = 'none';
+            document.getElementById('identityFieldsContainer').style.display = 'block';
+        }
+
+        // طلب الهوية من بروتون (فتح واتساب)
         function requestIdentityFromProton() {
             const brandName = document.getElementById('brand_name').value || "شركتي";
             const whatsappNumber = "+201066581983";
@@ -536,10 +556,9 @@
             window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
         }
 
-        // تخطي الهوية وإرسال البيانات مباشرة
-        async function skipIdentityAndSave() {
+        // التخطي والانتقال للخطوة الرابعة
+        function skipIdentityAndProceed() {
             hasIdentity = false;
-            // إذا أراد العميل التخطي هنا، يمكننا الانتقال للخطوة التالية أو الحفظ مباشرة
             changeStep(1);
         }
 
@@ -613,7 +632,7 @@
             formData.append('business_description', document.getElementById('business_description').value);
             formData.append('target_audience', document.getElementById('target_audience').value);
 
-            // إرسال بيانات الهوية فقط إذا لم يتم إخفاؤها
+            // إرسال بيانات الهوية فقط إذا قام المستخدم بإدخالها
             if (hasIdentity) {
                 formData.append('primary_color', document.getElementById('primary_hex').value);
                 formData.append('secondary_color', document.getElementById('secondary_hex').value);
