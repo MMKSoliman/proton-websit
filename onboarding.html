@@ -215,7 +215,7 @@
             margin-top: 1rem;
         }
 
-        /* صندوق خيارات الهوية البصرية */
+        /* تنسيق أزرار الخطوة الثالثة فوق بعضها بشكل عمودي متناسق */
         .identity-options-box {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -226,52 +226,66 @@
         }
 
         .identity-options-box p {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 1.4rem;
             font-weight: 600;
         }
 
-        .identity-action-btns {
+        .identity-action-stack {
             display: flex;
-            gap: 0.8rem;
-            justify-content: center;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 0.9rem;
+            align-items: stretch;
+            max-width: 380px;
+            margin: 0 auto;
         }
 
         .btn-has-identity {
             background: linear-gradient(135deg, #0047ab, #00e5ff);
             color: #fff;
             border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 700;
+            padding: 11px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
             cursor: pointer;
             font-family: inherit;
+            transition: opacity 0.2s;
         }
 
         .btn-pro-request {
             background: linear-gradient(135deg, #ff8c00, #ffea00);
             color: #000;
             border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-size: 0.85rem;
+            padding: 14px 18px; /* أكبر قليلاً من باقي الأزرار */
+            border-radius: 8px;
+            font-size: 0.98rem;
             font-weight: 700;
             cursor: pointer;
             font-family: inherit;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .btn-pro-request:hover {
+            transform: translateY(-1px);
         }
 
         .btn-skip-identity {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-size: 0.85rem;
+            padding: 11px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
             cursor: pointer;
             font-family: inherit;
+            transition: background 0.2s;
+        }
+
+        .btn-skip-identity:hover {
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .btn-group {
@@ -402,21 +416,21 @@
                         </div>
                     </div>
 
-                    <!-- 3️⃣ الخطوة الثالثة: الهوية البصرية وخياراتها -->
+                    <!-- 3️⃣ الخطوة الثالثة: الهوية البصرية وخياراتها المرتبة عمودياً -->
                     <div class="step" id="step3">
                         <span class="step-title-badge">3. الهوية البصرية للعلامة التجارية</span>
                         
-                        <!-- صندوق الخيارات المانع للتشتت -->
+                        <!-- صندوق الخيارات (أزرار فوق بعضها حسب طلبك) -->
                         <div class="identity-options-box" id="identityChoiceBox">
                             <p>هل لديك هوية بصرية جاهزة لعلامتك التجارية؟</p>
-                            <div class="identity-action-btns">
+                            <div class="identity-action-stack">
                                 <button type="button" class="btn-has-identity" onclick="showIdentityFields()">نعم، لدي هوية بصرية</button>
                                 <button type="button" class="btn-pro-request" onclick="requestIdentityFromProton()">طلب تصميم هوية من بروتون</button>
                                 <button type="button" class="btn-skip-identity" onclick="skipIdentityAndProceed()">تخطي مؤقتاً</button>
                             </div>
                         </div>
 
-                        <!-- الحقول الفعلية (التي تظهر عند الضغط على "نعم، لدي هوية بصرية") -->
+                        <!-- الحقول الفعلية (التي تظهر عند اختيار وجود هووية)[cite: 13, 14] -->
                         <div id="identityFieldsContainer" style="display: none;">
                             <div class="form-row">
                                 <div class="form-group">
@@ -506,7 +520,7 @@
 
                     <!-- أزرار التنقل -->
                     <div class="btn-group">
-                        <button type="button" class="btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display: none;">السابق</button>
+                        <button type="button" class="btn-secondary" id="prevBtn" onclick="handlePrevStep()" style="display: none;">السابق</button>
                         <button type="button" class="btn-submit" id="nextBtn" onclick="changeStep(1)">التالي</button>
                         <button type="submit" class="btn-submit" id="submitBtn" style="display: none;">حفظ وإكمال التهيئة</button>
                     </div>
@@ -540,14 +554,15 @@
             }
         }
 
-        // إظهار حقول الهوية البصرية بناءً على الصورة
+        // إظهار حقول الهوية البصرية وإخفاء صندوق الأسئلة وإظهار زر التالي للانتقال للخطوة الرابعة
         function showIdentityFields() {
             hasIdentity = true;
             document.getElementById('identityChoiceBox').style.display = 'none';
             document.getElementById('identityFieldsContainer').style.display = 'block';
+            document.getElementById('nextBtn').style.display = 'block'; // إظهار زر التالي ليتمكن من الانتقال للخطوة الرابعة
         }
 
-        // طلب الهوية من بروتون (فتح واتساب)
+        // طلب الهوية من بروتون (فتح واتساب مع الرقم المطلوب والرسالة الجاهزة)
         function requestIdentityFromProton() {
             const brandName = document.getElementById('brand_name').value || "شركتي";
             const whatsappNumber = "+201066581983";
@@ -556,10 +571,23 @@
             window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
         }
 
-        // التخطي والانتقال للخطوة الرابعة
+        // تخطي الهوية والانتقال مباشرة للخطوة الرابعة أو الحفظ
         function skipIdentityAndProceed() {
             hasIdentity = false;
             changeStep(1);
+        }
+
+        // معالجة زر السابق بدقة في الخطوة الثالثة
+        function handlePrevStep() {
+            if (currentStep === 3 && document.getElementById('identityFieldsContainer').style.display === 'block') {
+                // إذا كان العميل داخل تفاصيل الهوية (الصورة الأولى)، يعود لشاشة خيارات الهوية (الصورة الثانية)[cite: 13, 14]
+                document.getElementById('identityFieldsContainer').style.display = 'none';
+                document.getElementById('identityChoiceBox').style.display = 'block';
+                document.getElementById('nextBtn').style.display = 'none'; // إخفاء زر التالي لأننا في شاشة الاختيارات
+            } else {
+                // الانتقال للخطوة السابقة الطبيعية
+                changeStep(-1);
+            }
         }
 
         function changeStep(direction) {
@@ -579,7 +607,6 @@
 
         function validateCurrentStep() {
             const currentStepEl = document.getElementById(`step${currentStep}`);
-            // التحقق من الحقول المرئية فقط
             const inputs = currentStepEl.querySelectorAll('input[required]:not([style*="display: none"]), select[required], textarea[required]');
             
             for (let input of inputs) {
@@ -602,7 +629,12 @@
 
             prevBtn.style.display = currentStep === 1 ? 'none' : 'block';
             
-            if (currentStep === totalSteps) {
+            if (currentStep === 3) {
+                // في الخطوة الثالثة: إذا كانت الحقول غير ظاهرة (شاشة الاختيارات)، نخفي زر التالي تماماً
+                const isFieldsVisible = document.getElementById('identityFieldsContainer').style.display === 'block';
+                nextBtn.style.display = isFieldsVisible ? 'block' : 'none';
+                submitBtn.style.display = 'none';
+            } else if (currentStep === totalSteps) {
                 nextBtn.style.display = 'none';
                 submitBtn.style.display = 'block';
             } else {
@@ -632,7 +664,6 @@
             formData.append('business_description', document.getElementById('business_description').value);
             formData.append('target_audience', document.getElementById('target_audience').value);
 
-            // إرسال بيانات الهوية فقط إذا قام المستخدم بإدخالها
             if (hasIdentity) {
                 formData.append('primary_color', document.getElementById('primary_hex').value);
                 formData.append('secondary_color', document.getElementById('secondary_hex').value);
