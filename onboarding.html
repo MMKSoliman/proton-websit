@@ -367,17 +367,17 @@
                         
                         <div class="form-group">
                             <label>الاسم بالكامل</label>
-                            <input type="text" class="form-control" id="client_name" placeholder="محمد سليمان" required>
+                            <input type="text" class="form-control" id="user_name" placeholder="محمد سليمان" required>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
                                 <label>رقم الهاتف / الواتساب الشخصي</label>
-                                <input type="tel" class="form-control" id="client_phone" placeholder="+20 10XXXXXXXX" required>
+                                <input type="tel" class="form-control" id="user_phone_number" placeholder="+20 10XXXXXXXX" required>
                             </div>
                             <div class="form-group">
                                 <label>البريد الإلكتروني الشخصي</label>
-                                <input type="email" class="form-control" id="client_email" placeholder="client@domain.com" required>
+                                <input type="email" class="form-control" id="email" placeholder="client@domain.com" required>
                             </div>
                         </div>
                     </div>
@@ -393,13 +393,13 @@
                             </div>
                             <div class="form-group">
                                 <label>نوع النشاط التجاري</label>
-                                <input type="text" class="form-control" id="business_type" placeholder="مثال: متجر ملابس، شركة برمجيات..." required>
+                                <input type="text" class="form-control" id="brand_type" placeholder="مثال: متجر ملابس، شركة برمجيات..." required>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label>اللغة المفضلة للبراند (Preferred Language)</label>
-                            <select class="form-control" id="preferred_language" required>
+                            <select class="form-control" id="language" required>
                                 <option value="ar" selected>العربية (Arabic)</option>
                                 <option value="en">الإنجليزية (English)</option>
                             </select>
@@ -407,12 +407,12 @@
 
                         <div class="form-group">
                             <label>وصف مفصل للنشاط والخدمات</label>
-                            <textarea class="form-control" id="business_description" style="min-height: 70px;" placeholder="اكتب نبذة عن ما تقدمه للعملاء..." required></textarea>
+                            <textarea class="form-control" id="niche" style="min-height: 70px;" placeholder="اكتب نبذة عن ما تقدمه للعملاء..." required></textarea>
                         </div>
 
                         <div class="form-group">
                             <label>العملاء المستهدفين (Target Audience)</label>
-                            <input type="text" class="form-control" id="target_audience" placeholder="مثال: أصحاب الشركات، الشباب من 20-35 سنة" required>
+                            <input type="text" class="form-control" id="audience" placeholder="مثال: أصحاب الشركات، الشباب من 20-35 سنة" required>
                         </div>
                     </div>
 
@@ -434,14 +434,14 @@
                                 <div class="form-group">
                                     <label>اللون الرئيسي (Primary Color)</label>
                                     <div class="color-picker-wrapper">
-                                        <input type="color" class="color-picker-input" id="primary_color" value="#0047ab" onchange="document.getElementById('primary_hex').value=this.value">
+                                        <input type="color" class="color-picker-input" id="color_1" value="#0047ab" onchange="document.getElementById('primary_hex').value=this.value">
                                         <input type="text" class="form-control" id="primary_hex" value="#0047ab">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>اللون الفرعي (Secondary Color)</label>
                                     <div class="color-picker-wrapper">
-                                        <input type="color" class="color-picker-input" id="secondary_color" value="#00e5ff" onchange="document.getElementById('secondary_hex').value=this.value">
+                                        <input type="color" class="color-picker-input" id="color_2" value="#00e5ff" onchange="document.getElementById('secondary_hex').value=this.value">
                                         <input type="text" class="form-control" id="secondary_hex" value="#00e5ff">
                                     </div>
                                 </div>
@@ -449,7 +449,7 @@
 
                             <div class="form-group">
                                 <label>خط البراند المفضل (Font Family)</label>
-                                <input type="text" class="form-control" id="font_family" placeholder="مثال: Cairo, Open Sans, Tajawal">
+                                <input type="text" class="form-control" id="font" placeholder="مثال: Cairo, Open Sans, Tajawal">
                             </div>
 
                             <div class="form-row">
@@ -462,9 +462,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label>دليل الهوية (Brand Guidelines)</label>
-                                    <div class="file-box" onclick="document.getElementById('guidelines_file').click()">
-                                        <span class="file-box-label" id="guidelines_label">📄 رفع ملف PDF/ZIP</span>
-                                        <input type="file" id="guidelines_file" accept=".pdf,.zip,.rar" onchange="updateFileName(this, 'guidelines_label')">
+                                    <div class="file-box" onclick="document.getElementById('guide_file').click()">
+                                        <span class="file-box-label" id="guide_label">📄 رفع ملف PDF/ZIP</span>
+                                        <input type="file" id="guide_file" accept=".pdf,.zip,.rar" onchange="updateFileName(this, 'guide_label')">
                                     </div>
                                 </div>
                             </div>
@@ -473,33 +473,33 @@
 
                     <!-- 4️⃣ الخطوة الرابعة -->
                     <div class="step" id="step4">
-                        <span class="step-title-badge">4. بيانات الاتصال بالنشاط والبديل الشامل</span>
+                        <span class="step-title-badge">4. بيانات الاتصال بالنشاط والدليل الشامل</span>
                         
                         <div class="form-row">
                             <div class="form-group">
-                                <label>هاتف البراند (brand_phone)</label>
-                                <input type="tel" class="form-control" id="brand_phone" placeholder="+20 10XXXXXXXX">
+                                <label>هاتف البراند (Brand phone nunber)</label>
+                                <input type="tel" class="form-control" id="phone_nunber" placeholder="+20 10XXXXXXXX">
                             </div>
                             <div class="form-group">
-                                <label>واتساب البراند (brand_whatsapp)</label>
-                                <input type="tel" class="form-control" id="brand_whatsapp" placeholder="+20 10XXXXXXXX">
+                                <label>واتساب البراند (Brand WhatsApp)</label>
+                                <input type="tel" class="form-control" id="brand_wa" placeholder="+20 10XXXXXXXX">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label>بريد البراند (brand_email)</label>
+                                <label>بريد البراند (Brand Email)</label>
                                 <input type="email" class="form-control" id="brand_email" placeholder="info@brand.com">
                             </div>
                             <div class="form-group">
-                                <label>موقع البراند (brand_website)</label>
-                                <input type="url" class="form-control" id="brand_website" placeholder="https://brand.com">
+                                <label>موقع البراند (Brand Website)</label>
+                                <input type="url" class="form-control" id="brand_ws" placeholder="https://brand.com">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label>عنوان المقر / الفرع (brand_address)</label>
-                            <input type="text" class="form-control" id="brand_address" placeholder="القاهرة، مصر">
+                            <label>عنوان المقر / الفرع (Brand Address)</label>
+                            <input type="text" class="form-control" id="address" placeholder="القاهرة، مصر">
                         </div>
 
                         <div class="business-card-section">
@@ -509,9 +509,9 @@
                             <p style="font-size:0.75rem; color:rgba(255,255,255,0.6); margin-bottom:0.6rem;">
                                 يمكنك رفع صورة كارت العمل أو ملف شامل يحتوي على اللوجو، الألوان، الخطوط وبيانات التواصل بجودة عالية.
                             </p>
-                            <div class="file-box" onclick="document.getElementById('unified_brand_file').click()">
-                                <span class="file-box-label" id="unified_file_label">💳 رفع ملف كارت العمل / البراند الشامل</span>
-                                <input type="file" id="unified_brand_file" accept="image/*,.pdf,.zip" onchange="updateFileName(this, 'unified_file_label')">
+                            <div class="file-box" onclick="document.getElementById('bcard_file').click()">
+                                <span class="file-box-label" id="bcard_label">💳 رفع ملف كارت العمل / البراند الشامل</span>
+                                <input type="file" id="bcard_file" accept="image/*,.pdf,.zip" onchange="updateFileName(this, 'bcard_file_label')">
                             </div>
                         </div>
                     </div>
@@ -650,33 +650,36 @@
                 document.cookie = `access_token=${tokenParam}; path=/; secure; samesite=strict`;
             }
 
-            formData.append('client_name', document.getElementById('client_name').value);
-            formData.append('client_phone', document.getElementById('client_phone').value);
-            formData.append('client_email', document.getElementById('client_email').value);
+            formData.append('user_name', document.getElementById('user_name').value);
+            formData.append('user_phone_number', document.getElementById('user_phone_number').value);
+            formData.append('email', document.getElementById('email').value);
 
             formData.append('brand_name', document.getElementById('brand_name').value);
-            formData.append('business_type', document.getElementById('business_type').value);
-            formData.append('preferred_language', document.getElementById('preferred_language').value);
-            formData.append('business_description', document.getElementById('business_description').value);
-            formData.append('target_audience', document.getElementById('target_audience').value);
+            formData.append('brand_type', document.getElementById('brand_type').value);
+            formData.append('lang', document.getElementById('lang').value);
+            formData.append('niche', document.getElementById('niche').value);
+            formData.append('audience', document.getElementById('audience').value);
 
             if (hasIdentity) {
-                formData.append('primary_color', document.getElementById('primary_hex').value);
-                formData.append('secondary_color', document.getElementById('secondary_hex').value);
-                formData.append('font_family', document.getElementById('font_family').value);
+                formData.append('color_1', document.getElementById('primary_hex').value);
+                formData.append('color_2', document.getElementById('secondary_hex').value);
+                formData.append('font', document.getElementById('font').value);
 
                 const logoFile = document.getElementById('logo_file').files[0];
                 if (logoFile) formData.append('logo_file', logoFile);
 
-                const guidelinesFile = document.getElementById('guidelines_file').files[0];
-                if (guidelinesFile) formData.append('guidelines_file', guidelinesFile);
+                const guidelinesFile = document.getElementById('guide_file').files[0];
+                if (guidelinesFile) formData.append('guide_file', guidelinesFile);
+
+                 const bcardFile = document.getElementById('bcard_file').files[0];
+                if (bcardFile) formData.append('bcard_file', bcardFile);
             }
 
-            formData.append('brand_phone', document.getElementById('brand_phone').value);
-            formData.append('brand_whatsapp', document.getElementById('brand_whatsapp').value);
+            formData.append('phone_number', document.getElementById('phone_numbe').value);
+            formData.append('brand_wa', document.getElementById('brand_wa').value);
             formData.append('brand_email', document.getElementById('brand_email').value);
-            formData.append('brand_website', document.getElementById('brand_website').value);
-            formData.append('brand_address', document.getElementById('brand_address').value);
+            formData.append('brand_ws', document.getElementById('brand_ws').value);
+            formData.append('address', document.getElementById('address').value);
 
             const unifiedFile = document.getElementById('unified_brand_file').files[0];
             if (unifiedFile) formData.append('unified_brand_file', unifiedFile);
