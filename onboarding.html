@@ -215,7 +215,6 @@
             margin-top: 1rem;
         }
 
-        /* تنسيق قسم خيارات الهوية البصرية الاختيارية */
         .identity-options-box {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -334,7 +333,7 @@
 
                 <form id="onboardingForm" onsubmit="handleOnboardingSubmit(event)">
                     
-                    <!-- 1️⃣ الخطوة الأولى -->
+                    <!-- 1️⃣ الخطوة الأولى: معلومات التواصل -->
                     <div class="step active" id="step1">
                         <span class="step-title-badge">1. معلومات التواصل الشخصية</span>
                         
@@ -355,7 +354,7 @@
                         </div>
                     </div>
 
-                    <!-- 2️⃣ الخطوة الثانية -->
+                    <!-- 2️⃣ الخطوة الثانية: تفاصيل النشاط التجاري -->
                     <div class="step" id="step2">
                         <span class="step-title-badge">2. تفاصيل النشاط التجاري</span>
                         
@@ -389,63 +388,61 @@
                         </div>
                     </div>
 
-                    <!-- 3️⃣ الخطوة الثالثة: الهوية البصرية (مع خيار التخطي أو الطلب) -->
+                    <!-- 3️⃣ الخطوة الثالثة: الهوية البصرية (كما في الصورة المطابقة تماماً) -->
                     <div class="step" id="step3">
                         <span class="step-title-badge">3. الهوية البصرية للعلامة التجارية</span>
                         
-                        <!-- صندوق التنبيه وسؤال امتلاك الهوية -->
+                        <!-- خيار مساعد اختياري لو لم تكن الهوية جاهزة -->
                         <div class="identity-options-box" id="identityToggleBox">
                             <p>أليس لديك هوية بصرية جاهزة حالياً؟</p>
                             <div class="identity-action-btns">
                                 <button type="button" class="btn-pro-request" onclick="requestIdentityFromProton()">طلب تصميم هوية من بروتون</button>
-                                <button type="button" class="btn-skip-identity" onclick="skipIdentityStep()">تخطي (ليس لدي هوية حالياً)</button>
+                                <button type="button" class="btn-skip-identity" onclick="skipIdentityStep()">تخطي مؤقتاً</button>
                             </div>
                         </div>
 
-                        <!-- الحقول مخفية افتراضياً وتظهر فقط عند الرغبة في إضافتها -->
-                        <div id="identityFieldsContainer" style="display: none;">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>اللون الرئيسي (Primary Color)</label>
-                                    <div class="color-picker-wrapper">
-                                        <input type="color" class="color-picker-input" id="primary_color" value="#0047ab" onchange="document.getElementById('primary_hex').value=this.value">
-                                        <input type="text" class="form-control" id="primary_hex" value="#0047ab">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>اللون الفرعي (Secondary Color)</label>
-                                    <div class="color-picker-wrapper">
-                                        <input type="color" class="color-picker-input" id="secondary_color" value="#00e5ff" onchange="document.getElementById('secondary_hex').value=this.value">
-                                        <input type="text" class="form-control" id="secondary_hex" value="#00e5ff">
-                                    </div>
-                                </div>
-                            </div>
-
+                        <!-- الحقول الأساسية للهوية البصرية (مستندة للصورة المرفقة) -->
+                        <div class="form-row">
                             <div class="form-group">
-                                <label>خط البراند المفضل (Font Family)</label>
-                                <input type="text" class="form-control" id="font_family" placeholder="مثال: Cairo, Open Sans, Tajawal">
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>شعار البراند (Logo)</label>
-                                    <div class="file-box" onclick="document.getElementById('logo_file').click()">
-                                        <span class="file-box-label" id="logo_label">📁 اضغط لرفع الشعار</span>
-                                        <input type="file" id="logo_file" accept="image/*" onchange="updateFileName(this, 'logo_label')">
-                                    </div>
+                                <label>اللون الرئيسي (Primary Color)</label>
+                                <div class="color-picker-wrapper">
+                                    <input type="color" class="color-picker-input" id="primary_color" value="#0047ab" onchange="document.getElementById('primary_hex').value=this.value">
+                                    <input type="text" class="form-control" id="primary_hex" value="#0047ab">
                                 </div>
-                                <div class="form-group">
-                                    <label>دليل الهوية (Brand Guidelines)</label>
-                                    <div class="file-box" onclick="document.getElementById('guidelines_file').click()">
-                                        <span class="file-box-label" id="guidelines_label">📄 رفع ملف PDF/ZIP</span>
-                                        <input type="file" id="guidelines_file" accept=".pdf,.zip,.rar" onchange="updateFileName(this, 'guidelines_label')">
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label>اللون الفرعي (Secondary Color)</label>
+                                <div class="color-picker-wrapper">
+                                    <input type="color" class="color-picker-input" id="secondary_color" value="#00e5ff" onchange="document.getElementById('secondary_hex').value=this.value">
+                                    <input type="text" class="form-control" id="secondary_hex" value="#00e5ff">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>خط البراند المفضل (Font Family)</label>
+                            <input type="text" class="form-control" id="font_family" placeholder="مثال: Cairo, Open Sans, Tajawal">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>شعار البراند (Logo)</label>
+                                <div class="file-box" onclick="document.getElementById('logo_file').click()">
+                                    <span class="file-box-label" id="logo_label">📁 اضغط لرفع الشعار</span>
+                                    <input type="file" id="logo_file" accept="image/*" onchange="updateFileName(this, 'logo_label')">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>دليل الهوية (Brand Guidelines)</label>
+                                <div class="file-box" onclick="document.getElementById('guidelines_file').click()">
+                                    <span class="file-box-label" id="guidelines_label">📄 رفع ملف PDF/ZIP</span>
+                                    <input type="file" id="guidelines_file" accept=".pdf,.zip,.rar" onchange="updateFileName(this, 'guidelines_label')">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 4️⃣ الخطوة الرابعة -->
+                    <!-- 4️⃣ الخطوة الرابعة: بيانات الاتصال بالنشاط -->
                     <div class="step" id="step4">
                         <span class="step-title-badge">4. بيانات الاتصال بالنشاط والبديل الشامل</span>
                         
@@ -518,7 +515,7 @@
     <script>
         let currentStep = 1;
         const totalSteps = 4;
-        let hasIdentity = false; // تتبع حالة الهوية البصرية
+        let hasIdentity = true;
 
         function updateFileName(input, labelId) {
             if (input.files && input.files[0]) {
@@ -526,28 +523,18 @@
             }
         }
 
-        // دوال التحكم بالهوية البصرية
+        // توجيه العميل للواتساب مع رسالة جاهزة تتضمن اسم البراند
+        function requestIdentityFromProton() {
+            const brandName = document.getElementById('brand_name').value || "شركتي";
+            const whatsappNumber = "+201066581983";
+            const message = encodeURIComponent(`مرحباً بروتون، أرغب في طلب تصميم هوية بصرية متكاملة للبراند الخاص بي: "${brandName}".`);
+            
+            window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
+        }
+
         function skipIdentityStep() {
             hasIdentity = false;
-            document.getElementById('identityToggleBox').style.display = 'none';
-            document.getElementById('identityFieldsContainer').style.display = 'none';
-            // الانتقال التلقائي للخطوة التالية بمرونة
             changeStep(1);
-        }
-
-        function requestIdentityFromProton() {
-            alert("تم إرسال طلبك لتصميم الهوية البصرية بنجاح! سيتواصل معك فريق بروتون قريباً.");
-            hasIdentity = false;
-            document.getElementById('identityToggleBox').style.display = 'none';
-            document.getElementById('identityFieldsContainer').style.display = 'none';
-            changeStep(1);
-        }
-
-        // إذا أراد المستخدم إظهار الحقول لإدخال هويته يدوياً
-        function showIdentityFields() {
-            hasIdentity = true;
-            document.getElementById('identityToggleBox').style.display = 'none';
-            document.getElementById('identityFieldsContainer').style.display = 'block';
         }
 
         function changeStep(direction) {
@@ -567,8 +554,7 @@
 
         function validateCurrentStep() {
             const currentStepEl = document.getElementById(`step${currentStep}`);
-            // التحقق فقط من الحقول المرئية المطلوبة
-            const inputs = currentStepEl.querySelectorAll('input[required]:not([style*="display: none"]), select[required], textarea[required]');
+            const inputs = currentStepEl.querySelectorAll('input[required], select[required], textarea[required]');
             
             for (let input of inputs) {
                 if (!input.checkValidity()) {
@@ -620,7 +606,6 @@
             formData.append('business_description', document.getElementById('business_description').value);
             formData.append('target_audience', document.getElementById('target_audience').value);
 
-            // إرسال بيانات الهوية فقط في حال تم تعبئتها
             if (hasIdentity) {
                 formData.append('primary_color', document.getElementById('primary_hex').value);
                 formData.append('secondary_color', document.getElementById('secondary_hex').value);
