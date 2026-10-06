@@ -215,7 +215,7 @@
             margin-top: 1rem;
         }
 
-        /* تنسيق أزرار الخطوة الثالثة فوق بعضها بشكل عمودي متناسق */
+        /* تنسيق أزرار الخطوة الثالثة فوق بعضها */
         .identity-options-box {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -258,7 +258,7 @@
             background: linear-gradient(135deg, #ff8c00, #ffea00);
             color: #000;
             border: none;
-            padding: 14px 18px; /* أكبر قليلاً من باقي الأزرار */
+            padding: 14px 18px;
             border-radius: 8px;
             font-size: 0.98rem;
             font-weight: 700;
@@ -416,21 +416,19 @@
                         </div>
                     </div>
 
-                    <!-- 3️⃣ الخطوة الثالثة: الهوية البصرية وخياراتها المرتبة عمودياً -->
+                    <!-- 3️⃣ الخطوة الثالثة: الهوية البصرية وخياراتها -->
                     <div class="step" id="step3">
                         <span class="step-title-badge">3. الهوية البصرية للعلامة التجارية</span>
                         
-                        <!-- صندوق الخيارات (أزرار فوق بعضها حسب طلبك) -->
                         <div class="identity-options-box" id="identityChoiceBox">
                             <p>هل لديك هوية بصرية جاهزة لعلامتك التجارية؟</p>
                             <div class="identity-action-stack">
                                 <button type="button" class="btn-has-identity" onclick="showIdentityFields()">نعم، لدي هوية بصرية</button>
                                 <button type="button" class="btn-pro-request" onclick="requestIdentityFromProton()">طلب تصميم هوية من بروتون</button>
-                                <button type="button" class="btn-skip-identity" onclick="skipIdentityAndProceed()">تخطي مؤقتاً</button>
+                                <button type="button" class="btn-skip-identity" onclick="skipIdentityAndSubmit()">تخطي مؤقتاً</button>
                             </div>
                         </div>
 
-                        <!-- الحقول الفعلية (التي تظهر عند اختيار وجود هووية)[cite: 13, 14] -->
                         <div id="identityFieldsContainer" style="display: none;">
                             <div class="form-row">
                                 <div class="form-group">
@@ -554,15 +552,13 @@
             }
         }
 
-        // إظهار حقول الهوية البصرية وإخفاء صندوق الأسئلة وإظهار زر التالي للانتقال للخطوة الرابعة
         function showIdentityFields() {
             hasIdentity = true;
             document.getElementById('identityChoiceBox').style.display = 'none';
             document.getElementById('identityFieldsContainer').style.display = 'block';
-            document.getElementById('nextBtn').style.display = 'block'; // إظهار زر التالي ليتمكن من الانتقال للخطوة الرابعة
+            document.getElementById('nextBtn').style.display = 'block';
         }
 
-        // طلب الهوية من بروتون (فتح واتساب مع الرقم المطلوب والرسالة الجاهزة)
         function requestIdentityFromProton() {
             const brandName = document.getElementById('brand_name').value || "شركتي";
             const whatsappNumber = "+201066581983";
@@ -571,21 +567,22 @@
             window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
         }
 
-        // تخطي الهوية والانتقال مباشرة للخطوة الرابعة أو الحفظ
-        function skipIdentityAndProceed() {
+        // عند الضغط على زر التخطي: يحفظ البيانات فوراً ويرسلها لقاعدة البيانات ثم يحول للربط
+        async function skipIdentityAndSubmit() {
             hasIdentity = false;
-            changeStep(1);
+            
+            // محاكاة إرسال الفورم برمجياً مع البيانات الحالية
+            const formElement = document.getElementById('onboardingForm');
+            const submitEvent = new Event('submit', { cancelable: true });
+            formElement.dispatchEvent(submitEvent);
         }
 
-        // معالجة زر السابق بدقة في الخطوة الثالثة
         function handlePrevStep() {
             if (currentStep === 3 && document.getElementById('identityFieldsContainer').style.display === 'block') {
-                // إذا كان العميل داخل تفاصيل الهوية (الصورة الأولى)، يعود لشاشة خيارات الهوية (الصورة الثانية)[cite: 13, 14]
                 document.getElementById('identityFieldsContainer').style.display = 'none';
                 document.getElementById('identityChoiceBox').style.display = 'block';
-                document.getElementById('nextBtn').style.display = 'none'; // إخفاء زر التالي لأننا في شاشة الاختيارات
+                document.getElementById('nextBtn').style.display = 'none';
             } else {
-                // الانتقال للخطوة السابقة الطبيعية
                 changeStep(-1);
             }
         }
@@ -630,7 +627,6 @@
             prevBtn.style.display = currentStep === 1 ? 'none' : 'block';
             
             if (currentStep === 3) {
-                // في الخطوة الثالثة: إذا كانت الحقول غير ظاهرة (شاشة الاختيارات)، نخفي زر التالي تماماً
                 const isFieldsVisible = document.getElementById('identityFieldsContainer').style.display === 'block';
                 nextBtn.style.display = isFieldsVisible ? 'block' : 'none';
                 submitBtn.style.display = 'none';
@@ -687,7 +683,7 @@
 
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.textContent = 'جاري الحفظ وإرسال البيانات...';
+            submitBtn.textContent = 'جاري حفظ البيانات وإرسالها...';
 
             try {
                 const response = await fetch('https://api.protonag.com/onboarding/save', {
