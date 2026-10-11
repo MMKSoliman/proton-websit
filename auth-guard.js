@@ -1,59 +1,61 @@
-// auth-guard.js المعدل للتحقق من التوكن والبراند
-document.addEventListener("DOMContentLoaded", function() {
+// auth-guard.js - الحارس الصارم لحماية الصفحات
+(async function() {
     const currentPath = window.location.pathname;
     
-    // استثناء صفحات تسجيل الدخول والرئيسية وملف الـ onboarding نفسه لمنع اللوب
-    if (currentPath.includes("auth.html") || currentPath.includes("index.html") || currentPath.includes("onboarding.html") || currentPath === "/") {
+    // الصفحات المستثناة التي لا تتطلب تسجيل دخول
+    if (currentPath.includes("auth.html") || currentPath.includes("index.html") || currentPath === "/") {
         return;
     }
 
     const token = localStorage.getItem("access_token");
     
+    // 1. إذا لم يكن هناك توكن نهائياً، طرد مباشر وفوري لصفحة الدخول
     if (!token) {
-        if (!sessionStorage.getItem("redirected_to_auth")) {
-            sessionStorage.setItem("redirected_to_auth", "true");
-            window.location.href = "./auth.html";
-        }
+        window.location.href = "./auth.html";
         return;
-    } else {
-        sessionStorage.removeItem("redirected_to_auth");
     }
 
-    // التحقق من بيانات المستخدم والبراند عبر الـ API
-    fetch("https://api.protonag.com/auth/me", {
-        method: "GET",
-        headers: {
-            "Authorization": "Bearer " + token,
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => {
+    try {
+        // 2. التحقق من صحة التوكن والبراند عبر الـ API بشكل متزامن
+        const response = await fetch("https://api.protonag.com/auth/me", {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            }
+        });
+
+        // إذا كان التوكن منتهي أو غير صالح (401)
         if (response.status === 401) {
             localStorage.removeItem("access_token");
             window.location.href = "./auth.html";
             return;
         }
-        if (response.ok) {
-            return response.json();
-        }
-    })
-    .then(data => {
-        if (data) {
-            // تحديث الواجهة بالاسم والصورة
-            if (document.getElementById("full_name")) {
-                document.getElementById("full_name").textContent = data.full_name || "مستخدم";
-            }
-            if (document.getElementById("user-avatar") && data.profile_picture) {
-                document.getElementById("user-avatar").src = data.profile_picture;
-            }
 
-            // التحقق من وجود براند للمستخدم، وإذا لم يكن موجوداً يتم توجيهه لإتمام الـ Onboarding إجبارياً
-            if (data.has_brand === false && !currentPath.includes("onboarding.html")) {
-                window.location.href = "./onboarding.html";
-            }
+        if (!response.ok) {
+            throw new Error("Failed to authenticate");
         }
-    })
-    .catch(error => {
-        console.warn("Auth check warning:", error);
-    });
-});
+
+        const data = await response.json();
+
+        // 3. التحقق الصارم من وجود البراند (الـ Onboarding)
+        if (data.has_brand === false && !currentPath.includes("onboarding.html")) {
+            window.location.href = "./onboarding.html";
+            return;
+        }
+
+        // تحديث بيانات الواجهة إن وجدت
+        if (document.getElementById("full_name")) {
+            document.getElementById("full_name").textContent = data.full_name || "مستخدم";
+        }
+        if (document.getElementById("user-avatar") && data.profile_picture) {
+            document.getElementById("user-avatar").src = data.profile_picture;
+        }
+
+    } catch (error) {
+        console.error("Auth guard error:", error);
+        // في حال حدوث أي خطأ في الاتصال بالسيرفر والتوكن غير مأمون، يُفضل إرساله لتسجيل الدخول حمايةً للنظام
+        localStorage.removeItem("access_token");
+        window.location.href = "./auth.html";
+    }
+})();
