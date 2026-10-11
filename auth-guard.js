@@ -1,3 +1,11 @@
+// التقاط التوكن من الرابط إن وجد وتخزينه محلياً
+const urlParams = new URLSearchParams(window.location.search);
+const tokenFromUrl = urlParams.get("token");
+if (tokenFromUrl) {
+    localStorage.setItem("access_token", tokenFromUrl);
+    // إزالة التوكن من الـ URL لتنظيف الرابط وجعله نظيفاً
+    window.history.replaceState({}, document.title, window.location.pathname);
+}
 // auth-guard.js - الحارس الصارم لحماية الصفحات
 (async function() {
     const currentPath = window.location.pathname;
