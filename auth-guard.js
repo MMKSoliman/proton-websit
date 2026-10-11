@@ -1,13 +1,13 @@
-// التقاط التوكن من الرابط إن وجد وتخزينه محلياً
-const urlParams = new URLSearchParams(window.location.search);
-const tokenFromUrl = urlParams.get("token");
-if (tokenFromUrl) {
-    localStorage.setItem("access_token", tokenFromUrl);
-    // إزالة التوكن من الـ URL لتنظيف الرابط وجعله نظيفاً
-    window.history.replaceState({}, document.title, window.location.pathname);
-}
-// auth-guard.js - الحارس الصارم لحماية الصفحات
+// auth-guard.js - الحارس الصارم لحماية الصفحات بدون أي تعارض
 (async function() {
+    // التقاط التوكن من الرابط إن وجد وتخزينه محلياً بشكل آمن داخل النطاق
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get("token");
+    if (tokenFromUrl) {
+        localStorage.setItem("access_token", tokenFromUrl);
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     const currentPath = window.location.pathname;
     
     // الصفحات المستثناة التي لا تتطلب تسجيل دخول
@@ -62,7 +62,6 @@ if (tokenFromUrl) {
 
     } catch (error) {
         console.error("Auth guard error:", error);
-        // في حال حدوث أي خطأ في الاتصال بالسيرفر والتوكن غير مأمون، يُفضل إرساله لتسجيل الدخول حمايةً للنظام
         localStorage.removeItem("access_token");
         window.location.href = "./auth.html";
     }
