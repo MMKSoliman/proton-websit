@@ -183,13 +183,19 @@
             color: rgba(255, 255, 255, 0.55);
         }
 
+        .platform-actions-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
         .btn-connect {
-            padding: 10px 18px;
+            padding: 10px 16px;
             border-radius: 8px;
             border: 1px solid #00e5ff;
             background: rgba(0, 229, 255, 0.1);
             color: #00e5ff;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -213,6 +219,24 @@
             background: rgba(46, 204, 113, 0.15);
             border-color: #2ecc71;
             color: #2ecc71;
+        }
+
+        .btn-disconnect {
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(231, 76, 60, 0.4);
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: none;
+            white-space: nowrap;
+        }
+
+        .btn-disconnect:hover {
+            background: #e74c3c;
+            color: #fff;
         }
 
         .brand-select-input {
@@ -394,7 +418,7 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .btn-connect, .brand-select-input {
+            .btn-connect, .brand-select-input, .platform-actions-group {
                 width: 100%;
             }
             .actions-group, .modal-actions {
@@ -423,7 +447,7 @@
                 </div>
 
                 <div class="platforms-list">
-                    <!-- اختيار البراند بتصميم متناسق ككارت منفصل -->
+                    <!-- اختيار البراند -->
                     <div class="platform-item" style="border-color: rgba(0, 229, 255, 0.3); background: rgba(0, 229, 255, 0.02);">
                         <div class="platform-info">
                             <img src="./Branding-W.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png';" class="platform-icon" alt="Brand">
@@ -446,9 +470,12 @@
                                 <p>نشر، تفاعل، ريلز وإدارة الرسائل</p>
                             </div>
                         </div>
-                        <button class="btn-connect" id="btn-facebook" disabled onclick="openPlatformModal('facebook', 'Facebook Pages', './FB-W.png')">
-                            اختر براند أولاً
-                        </button>
+                        <div class="platform-actions-group">
+                            <button class="btn-connect" id="btn-facebook" disabled onclick="openPlatformModal('facebook', 'Facebook Pages', './FB-W.png')">
+                                اختر براند أولاً
+                            </button>
+                            <button class="btn-disconnect" id="disconnect-facebook" onclick="disconnectPlatform('facebook')">إلغاء الربط</button>
+                        </div>
                     </div>
 
                     <!-- Instagram -->
@@ -460,9 +487,12 @@
                                 <p>جدولة الريلز والمنشورات والتفاعل</p>
                             </div>
                         </div>
-                        <button class="btn-connect" id="btn-instagram" disabled onclick="openPlatformModal('instagram', 'Instagram Business', './Insta-W.png')">
-                            اختر براند أولاً
-                        </button>
+                        <div class="platform-actions-group">
+                            <button class="btn-connect" id="btn-instagram" disabled onclick="openPlatformModal('instagram', 'Instagram Business', './Insta-W.png')">
+                                اختر براند أولاً
+                            </button>
+                            <button class="btn-disconnect" id="disconnect-instagram" onclick="disconnectPlatform('instagram')">إلغاء الربط</button>
+                        </div>
                     </div>
 
                     <!-- TikTok -->
@@ -474,9 +504,12 @@
                                 <p>نشر مقاطع الفيديو والردود التلقائية</p>
                             </div>
                         </div>
-                        <button class="btn-connect" id="btn-tiktok" disabled onclick="openPlatformModal('tiktok', 'TikTok Business', './TT-W.png')">
-                            اختر براند أولاً
-                        </button>
+                        <div class="platform-actions-group">
+                            <button class="btn-connect" id="btn-tiktok" disabled onclick="openPlatformModal('tiktok', 'TikTok Business', './TT-W.png')">
+                                اختر براند أولاً
+                            </button>
+                            <button class="btn-disconnect" id="disconnect-tiktok" onclick="disconnectPlatform('tiktok')">إلغاء الربط</button>
+                        </div>
                     </div>
 
                     <!-- LinkedIn -->
@@ -488,9 +521,12 @@
                                 <p>نشر المحتوى وتتبع تفاعل الشركات</p>
                             </div>
                         </div>
-                        <button class="btn-connect" id="btn-linkedin" disabled onclick="openPlatformModal('linkedin', 'LinkedIn Page', './L in-W.png')">
-                            اختر براند أولاً
-                        </button>
+                        <div class="platform-actions-group">
+                            <button class="btn-connect" id="btn-linkedin" disabled onclick="openPlatformModal('linkedin', 'LinkedIn Page', './L in-W.png')">
+                                اختر براند أولاً
+                            </button>
+                            <button class="btn-disconnect" id="disconnect-linkedin" onclick="disconnectPlatform('linkedin')">إلغاء الربط</button>
+                        </div>
                     </div>
                 </div>
 
@@ -555,26 +591,11 @@
             const brandSelector = document.getElementById("brand-selector");
             const connectButtons = document.querySelectorAll('.btn-connect');
 
-            // حفظ التوكن محلياً لو كان قادماً عبر الرابط لتفادي فقدانه
             if (token && !localStorage.getItem("access_token")) {
                 localStorage.setItem("access_token", token);
             }
 
-            // دالة لتفعيل أو تعطيل أزرار ربط المنصات بناءً على اختيار البراند
-            function updatePlatformsState(hasBrandSelected) {
-                connectButtons.forEach(btn => {
-                    if (hasBrandSelected) {
-                        btn.disabled = false;
-                        if (!btn.classList.contains('connected')) {
-                            btn.textContent = "ربط المنصة";
-                        }
-                    } else {
-                        btn.disabled = true;
-                        btn.textContent = "اختر براند أولاً";
-                    }
-                });
-            }
-
+            // جلب البراندات الخاصة بالمستخدم
             try {
                 const response = await fetch("https://api.protonag.com/brands/my-brands", {
                     method: "GET",
@@ -586,14 +607,12 @@
                 
                 if (response.ok) {
                     const brandsList = await response.json();
-                    
                     brandSelector.innerHTML = '<option value="">-- اختر البراند --</option>';
                     
                     brandsList.forEach(brand => {
                         const option = document.createElement("option");
                         option.value = brand.brand_id;
                         option.textContent = brand.brand_name;
-                        // حفظ اسم البراند مباشرة في الـ option لسهولة استرجاعه
                         option.dataset.brandName = brand.brand_name;
                         brandSelector.appendChild(option);
                     });
@@ -604,11 +623,10 @@
                     addNewOption.style.color = "#00f2fe";
                     brandSelector.appendChild(addNewOption);
 
-                    // إذا كان هناك براند مخزن مسبقاً، قم بتحديده وتفعيله
                     const savedBrandId = localStorage.getItem("selected_brand_id");
                     if (savedBrandId) {
                         brandSelector.value = savedBrandId;
-                        updatePlatformsState(true);
+                        await loadBrandConnections(savedBrandId);
                     }
                 } else {
                     brandSelector.innerHTML = '<option value="">لا توجد أنشطة مسجلة</option>';
@@ -618,8 +636,7 @@
                 brandSelector.innerHTML = '<option value="">خطأ في الاتصال</option>';
             }
 
-            // مراقبة اختيار المستخدم للقائمة
-            brandSelector.addEventListener("change", function() {
+            brandSelector.addEventListener("change", async function() {
                 if (this.value === "new_brand") {
                     window.location.href = "./onboarding.html?mode=new_brand&step=2";
                 } else if (this.value) {
@@ -628,17 +645,99 @@
                     if (selectedOption && selectedOption.dataset.brandName) {
                         localStorage.setItem("selected_brand_name", selectedOption.dataset.brandName);
                     }
-                    updatePlatformsState(true);
+                    await loadBrandConnections(this.value);
                 } else {
                     localStorage.removeItem("selected_brand_id");
                     localStorage.removeItem("selected_brand_name");
-                    updatePlatformsState(false);
+                    resetPlatformsUI();
                 }
             });
         });
 
+        // دالة لجلب حالة المنصات والخدمات المرتبطة بالبراند المحدد من الباك إند
+        async function loadBrandConnections(brandId) {
+            const platforms = ['facebook', 'instagram', 'tiktok', 'linkedin'];
+            
+            // إعادة ضبط الـ UI أولاً
+            resetPlatformsUI();
+
+            try {
+                const response = await fetch(`https://api.protonag.com/social/connections/${brandId}`, {
+                    method: "GET",
+                    headers: { 
+                        "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
+                    },
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const connections = data.connections || {};
+
+                    activePlatforms = {};
+
+                    platforms.forEach(key => {
+                        const btn = document.getElementById(`btn-${key}`);
+                        const disconnectBtn = document.getElementById(`disconnect-${key}`);
+                        btn.disabled = false;
+
+                        if (connections[key]) {
+                            // المنصة مربوطة ولديها خدمات مسجلة
+                            const conn = connections[key];
+                            
+                            // حساب السعر التقديري بناءً على الخدمات المخزنة
+                            let pTotal = 0;
+                            let details = [];
+                            if (conn.posts) { pTotal += 25; details.push('نشر منشورات وصور'); }
+                            if (conn.reels) { 
+                                const rc = conn.rc || 5; 
+                                const cost = rc * REEL_PRICE_PER_UNIT; 
+                                pTotal += cost; 
+                                details.push(`${rc} ريلز ($${cost})`); 
+                            }
+                            if (conn.comments) { pTotal += (key === 'tiktok' ? 20 : 15); details.push('الرد على التعليقات'); }
+                            if (conn.messages) { pTotal += (key === 'tiktok' ? 25 : 20); details.push('الرد على الرسائل'); }
+
+                            activePlatforms[key] = {
+                                total: pTotal,
+                                details: details,
+                                raw: conn
+                            };
+
+                            btn.textContent = `تم الربط ($${pTotal})`;
+                            btn.classList.add('connected');
+                            if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
+                        } else {
+                            btn.textContent = "ربط المنصة";
+                            btn.classList.remove('connected');
+                            if (disconnectBtn) disconnectBtn.style.display = 'none';
+                        }
+                    });
+
+                    updateMainSummary();
+                }
+            } catch (err) {
+                console.error("Error loading connections:", err);
+            }
+        }
+
+        function resetPlatformsUI() {
+            const platforms = ['facebook', 'instagram', 'tiktok', 'linkedin'];
+            platforms.forEach(key => {
+                const btn = document.getElementById(`btn-${key}`);
+                const disconnectBtn = document.getElementById(`disconnect-${key}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "اختر براند أولاً";
+                    btn.classList.remove('connected');
+                }
+                if (disconnectBtn) disconnectBtn.style.display = 'none';
+            });
+            activePlatforms = {};
+            updateMainSummary();
+        }
+
         function openPlatformModal(key, title, iconUrl) {
-            // التعديل هنا: الفحص السليم للـ selected_brand_id بدلاً من المتغير الوهمي القديم
             const selectedBrandId = localStorage.getItem("selected_brand_id");
             if (!selectedBrandId) {
                 alert("يرجى اختيار النشاط التجاري (البراند) أولاً قبل ربط المنصات.");
@@ -652,28 +751,36 @@
             const container = document.getElementById('servicesContainer');
             container.innerHTML = ''; 
 
+            // استرجاع القيم القديمة لو وجدت لتعبئتها في الـ Modal للتعديل
+            const existing = activePlatforms[key] ? activePlatforms[key].raw : null;
+            const hasPosts = existing ? existing.posts : true;
+            const hasReels = existing ? existing.reels : true;
+            const reelsCountVal = existing ? (existing.rc || 5) : 5;
+            const hasComments = existing ? existing.comments : true;
+            const hasMessages = existing ? existing.messages : true;
+
             if (key === 'tiktok') {
                 container.innerHTML = `
                     <div class="service-row">
                         <label class="service-left">
-                            <input type="checkbox" id="srv_reels" checked onchange="toggleReelsDropdown()">
+                            <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
                             <span>إضافة ريلز شهرياً:</span>
-                            <select id="reels_count" class="reels-select" onchange="calculateModalTotal()">
-                                ${generateReelsOptions()}
+                            <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''} onchange="calculateModalTotal()">
+                                ${generateReelsOptions(reelsCountVal)}
                             </select>
                         </label>
                         <span class="service-price" id="reels_price_text">$25</span>
                     </div>
                     <div class="service-row">
                         <label class="service-left">
-                            <input type="checkbox" id="srv_comments" checked onchange="calculateModalTotal()">
+                            <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''} onchange="calculateModalTotal()">
                             <span>التفاعل والرد على التعليقات</span>
                         </label>
                         <span class="service-price">$20</span>
                     </div>
                     <div class="service-row">
                         <label class="service-left">
-                            <input type="checkbox" id="srv_messages" checked onchange="calculateModalTotal()">
+                            <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''} onchange="calculateModalTotal()">
                             <span>الرد على الرسائل والمحادثات</span>
                         </label>
                         <span class="service-price">$25</span>
@@ -683,31 +790,31 @@
                 container.innerHTML = `
                     <div class="service-row">
                         <label class="service-left">
-                            <input type="checkbox" id="srv_posts" checked onchange="calculateModalTotal()">
+                            <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''} onchange="calculateModalTotal()">
                             <span>النشر التلقائي للمنشورات + صورة</span>
                         </label>
                         <span class="service-price">$25</span>
                     </div>
                     <div class="service-row">
                         <label class="service-left">
-                            <input type="checkbox" id="srv_reels" checked onchange="toggleReelsDropdown()">
+                            <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
                             <span>إضافة ريلز شهرياً:</span>
-                            <select id="reels_count" class="reels-select" onchange="calculateModalTotal()">
-                                ${generateReelsOptions()}
+                            <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''} onchange="calculateModalTotal()">
+                                ${generateReelsOptions(reelsCountVal)}
                             </select>
                         </label>
                         <span class="service-price" id="reels_price_text">$25</span>
                     </div>
                     <div class="service-row">
                         <label class="service-left">
-                            <input type="checkbox" id="srv_comments" checked onchange="calculateModalTotal()">
+                            <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''} onchange="calculateModalTotal()">
                             <span>التفاعل والرد على التعليقات</span>
                         </label>
                         <span class="service-price">$15</span>
                     </div>
                     <div class="service-row">
                         <label class="service-left">
-                            <input type="checkbox" id="srv_messages" checked onchange="calculateModalTotal()">
+                            <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''} onchange="calculateModalTotal()">
                             <span>الرد على الرسائل الخاصة</span>
                         </label>
                         <span class="service-price">$20</span>
@@ -719,10 +826,10 @@
             document.getElementById('authModal').style.display = 'flex';
         }
 
-        function generateReelsOptions() {
+        function generateReelsOptions(currentVal = 5) {
             let options = '';
             for (let i = 1; i <= 30; i++) {
-                const selected = (i === 5) ? 'selected' : '';
+                const selected = (i === currentVal) ? 'selected' : '';
                 options += `<option value="${i}" ${selected}>${i}</option>`;
             }
             return options;
@@ -757,51 +864,73 @@
             currentPlatformKey = null;
         }
 
-        function confirmPlatformSelection() {
-            let platformTotal = 0;
-            let selectedServicesDetails = [];
+        async function confirmPlatformSelection() {
+            const brandId = localStorage.getItem("selected_brand_id");
+            if (!brandId) return;
 
-            const posts = document.getElementById('srv_posts');
-            const reels = document.getElementById('srv_reels');
-            const reelsCount = document.getElementById('reels_count');
-            const comments = document.getElementById('srv_comments');
-            const messages = document.getElementById('srv_messages');
+            const postsEl = document.getElementById('srv_posts');
+            const reelsEl = document.getElementById('srv_reels');
+            const reelsCountEl = document.getElementById('reels_count');
+            const commentsEl = document.getElementById('srv_comments');
+            const messagesEl = document.getElementById('srv_messages');
 
-            if (posts && posts.checked) {
-                platformTotal += 25;
-                selectedServicesDetails.push('نشر منشورات وصور');
-            }
-            if (reels && reels.checked && reelsCount) {
-                const count = parseInt(reelsCount.value);
-                const cost = count * REEL_PRICE_PER_UNIT;
-                platformTotal += cost;
-                selectedServicesDetails.push(`${count} ريلز ($${cost})`);
-            }
-            if (comments && comments.checked) {
-                platformTotal += (currentPlatformKey === 'tiktok') ? 20 : 15;
-                selectedServicesDetails.push('الرد على التعليقات');
-            }
-            if (messages && messages.checked) {
-                platformTotal += (currentPlatformKey === 'tiktok') ? 25 : 20;
-                selectedServicesDetails.push('الرد على الرسائل');
-            }
-
-            if (platformTotal === 0) {
-                alert('يرجى اختيار خدمة واحدة على الأقل لهذه المنصة.');
-                return;
-            }
-
-            activePlatforms[currentPlatformKey] = {
-                total: platformTotal,
-                details: selectedServicesDetails
+            const payload = {
+                brand_id: parseInt(brandId),
+                platform: currentPlatformKey,
+                posts: postsEl ? postsEl.checked : false,
+                reels: reelsEl ? reelsEl.checked : false,
+                reels_count: (reelsEl && reelsEl.checked && reelsCountEl) ? parseInt(reelsCountEl.value) : 0,
+                comments: commentsEl ? commentsEl.checked : false,
+                messages: messagesEl ? messagesEl.checked : false
             };
 
-            const btn = document.getElementById(`btn-${currentPlatformKey}`);
-            btn.textContent = `تم الربط ($${platformTotal})`;
-            btn.classList.add('connected');
+            try {
+                const res = await fetch("https://api.protonag.com/social/connect", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(payload)
+                });
 
-            updateMainSummary();
-            closeAuthModal();
+                if (res.ok) {
+                    await loadBrandConnections(brandId);
+                    closeAuthModal();
+                } else {
+                    alert("تعذر حفظ إعدادات المنصة.");
+                }
+            } catch (err) {
+                console.error("Connection save error:", err);
+                alert("حدث خطأ في الاتصال بالخادم.");
+            }
+        }
+
+        async function disconnectPlatform(platformKey) {
+            const brandId = localStorage.getItem("selected_brand_id");
+            if (!brandId) return;
+
+            if (!confirm("هل أنت متأكد من رغبتك في إلغاء ربط هذه المنصة؟")) return;
+
+            try {
+                const res = await fetch(`https://api.protonag.com/social/disconnect/${brandId}/${platformKey}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
+                    },
+                    credentials: 'include'
+                });
+
+                if (res.ok) {
+                    await loadBrandConnections(brandId);
+                } else {
+                    alert("تعذر إلغاء الربط.");
+                }
+            } catch (err) {
+                console.error("Disconnect error:", err);
+                alert("حدث خطأ في الاتصال بالخادم.");
+            }
         }
 
         function updateMainSummary() {
