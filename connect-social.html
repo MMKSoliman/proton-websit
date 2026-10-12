@@ -595,7 +595,7 @@
                     brandSelector.appendChild(addNewOption);
 
                     // إذا كان هناك براند مخزن مسبقاً، قم بتحديده
-                    const savedBrandId = localStorage.getItem("selected_brand_name");
+                    const savedBrandId = localStorage.getItem("selected_brand_id");
                     if (savedBrandId) {
                         brandSelector.value = savedBrandId;
                         updatePlatformsState(true);
