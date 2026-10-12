@@ -661,7 +661,7 @@
             });
 
             try {
-                const response = await fetch(`https://api.protonag.com/social_connections/${brandId}`, {
+                const response = await fetch(`https://api.protonag.com/social_connections/${brand_Id}`, {
                     method: "GET",
                     headers: { 
                         "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
