@@ -572,7 +572,7 @@
 
             try {
                 // تعديل مسار جلب البراندات ليتوافق مع راوتر الباك إند المتاحة
-                const response = await fetch("https://api.protonag.com/brands", {
+                const response = await fetch("https://api.protonag.com/brands/my-brands", {
                     headers: { "Authorization": "Bearer " + token }
                 });
                 
@@ -583,8 +583,8 @@
                     
                     brandsList.forEach(brand => {
                         const option = document.createElement("option");
-                        option.value = brands.brand_id;
-                        option.textContent = brands.brand_name;
+                        option.value = brand.brand_id;
+                        option.textContent = brand.brand_name;
                         brandSelector.appendChild(option);
                     });
 
