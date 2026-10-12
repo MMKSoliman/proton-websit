@@ -528,6 +528,52 @@
         let currentPlatformKey = null;
         const REEL_PRICE_PER_UNIT = 5; 
 
+        document.addEventListener("DOMContentLoaded", async function() {
+        const token = localStorage.getItem("access_token");
+        const brandSelector = document.getElementById("brand-selector");
+
+        try {
+        const response = await fetch("https://api.protonag.com/brands/my-brands", {
+            headers: { "Authorization": "Bearer " + token }
+        });
+        
+        if (response.ok) {
+            const brandsList = await response.json();
+            
+            // تفريغ القائمة أولاً
+            brandSelector.innerHTML = "";
+            
+            // إضافة البراندات المسجلة مسبقاً
+            brandsList.forEach(brand => {
+                const option = document.createElement("option");
+                option.value = brand.brand_id;
+                option.textContent = brand.brand_name;
+                brandSelector.appendChild(option);
+            });
+
+            // إضافة خيار إنشاء براند جديد في آخر القائمة
+            const addNewOption = document.createElement("option");
+            addNewOption.value = "new_brand";
+            addNewOption.textContent = "+ إضافة براند جديد";
+            addNewOption.style.color = "#00f2fe"; // تمييزه بلون مختلف
+            brandSelector.appendChild(addNewOption);
+            }
+            } catch (error) {
+            console.error("Error fetching brands:", error);
+            }
+
+            // مراقبة اختيار المستخدم للقائمة
+            brandSelector.addEventListener("change", function() {
+            if (this.value === "new_brand") {
+            // توجيه المستخدم لصفحة الـ Onboarding لإضافة براند جديد (مع الاحتفاظ ببياناته الشخصية وعدم مسحها)
+            window.location.href = "./onboarding.html?mode=new_brand";
+            } else {
+            // تخزين الـ brand_id الحالي في الـ localStorage لربطه بأي منصة سيتم ربطها لاحقاً
+            localStorage.setItem("selected_brand_id", this.value);
+                    }
+                });
+            });
+
         function openPlatformModal(key, title, iconUrl) {
             currentPlatformKey = key;
             document.getElementById('modalTitle').textContent = `تحديد خدمات ${title}`;
