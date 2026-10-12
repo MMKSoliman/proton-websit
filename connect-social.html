@@ -647,11 +647,10 @@
             });
         });
 
-        // دالة آمنة ومحصنة لجلب حالة المنصات وتفعيل الأزرار فوراً
+        // تم تصحيح المسار إلى /social/connections/${brandId}
         async function loadBrandConnections(brandId) {
             const platforms = ['facebook', 'instagram', 'tiktok', 'linkedin'];
             
-            // تفعيل الأزرار فوراً عند اختيار البراند لضمان عدم تجميدها أبداً
             platforms.forEach(key => {
                 const btn = document.getElementById(`btn-${key}`);
                 if (btn) {
@@ -661,7 +660,7 @@
             });
 
             try {
-                const response = await fetch(`https://api.protonag.com/social/connect/${brandId}`, {
+                const response = await fetch(`https://api.protonag.com/social/connections/${brandId}`, {
                     method: "GET",
                     headers: { 
                         "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
@@ -882,8 +881,9 @@
                 messages: messagesEl ? messagesEl.checked : false
             };
 
+            // المسار صحيح تماماً إلى /social/connect بدون أي خطأ
             try {
-                const res = await fetch("https://api.protonag.com/social_connect", {
+                const res = await fetch("https://api.protonag.com/social/connect", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
