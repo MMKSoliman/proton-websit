@@ -432,9 +432,7 @@
     <div class="main-container">
 
         <!-- الهيدر العلوي -->
-        <div class="top-header">
-            <!-- سيتم تعبئته ديناميكياً بواسطة header.js -->
-        </div>
+        <div class="top-header"></div>
 
         <!-- محتوى الصفحة في المنتصف -->
         <div class="center-content">
@@ -544,9 +542,7 @@
             </div>
         </div>
 
-        <!-- Footer الموحد -->
         <div id="footer-container"></div>
-
     </div>
 
     <!-- Modal Popup for Services Selection -->
@@ -569,7 +565,6 @@
         </div>
     </div>
 
-    <!-- جلب الفوتر الخارجي -->
     <script>
         fetch('footer.html')
             .then(response => response.text())
@@ -589,13 +584,11 @@
         document.addEventListener("DOMContentLoaded", async function() {
             const token = localStorage.getItem("access_token") || new URLSearchParams(window.location.search).get('token');
             const brandSelector = document.getElementById("brand-selector");
-            const connectButtons = document.querySelectorAll('.btn-connect');
 
             if (token && !localStorage.getItem("access_token")) {
                 localStorage.setItem("access_token", token);
             }
 
-            // جلب البراندات الخاصة بالمستخدم
             try {
                 const response = await fetch("https://api.protonag.com/brands/my-brands", {
                     method: "GET",
@@ -654,12 +647,18 @@
             });
         });
 
-        // دالة لجلب حالة المنصات والخدمات المرتبطة بالبراند المحدد من الباك إند
+        // دالة آمنة ومحصنة لجلب حالة المنصات وتفعيل الأزرار فوراً
         async function loadBrandConnections(brandId) {
             const platforms = ['facebook', 'instagram', 'tiktok', 'linkedin'];
             
-            // إعادة ضبط الـ UI أولاً
-            resetPlatformsUI();
+            // تفعيل الأزرار فوراً عند اختيار البراند لضمان عدم تجميدها أبداً
+            platforms.forEach(key => {
+                const btn = document.getElementById(`btn-${key}`);
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = "ربط المنصة";
+                }
+            });
 
             try {
                 const response = await fetch(`https://api.protonag.com/social/connections/${brandId}`, {
@@ -679,13 +678,9 @@
                     platforms.forEach(key => {
                         const btn = document.getElementById(`btn-${key}`);
                         const disconnectBtn = document.getElementById(`disconnect-${key}`);
-                        btn.disabled = false;
 
                         if (connections[key]) {
-                            // المنصة مربوطة ولديها خدمات مسجلة
                             const conn = connections[key];
-                            
-                            // حساب السعر التقديري بناءً على الخدمات المخزنة
                             let pTotal = 0;
                             let details = [];
                             if (conn.posts) { pTotal += 25; details.push('نشر منشورات وصور'); }
@@ -704,12 +699,16 @@
                                 raw: conn
                             };
 
-                            btn.textContent = `تم الربط ($${pTotal})`;
-                            btn.classList.add('connected');
+                            if (btn) {
+                                btn.textContent = `تم الربط ($${pTotal})`;
+                                btn.classList.add('connected');
+                            }
                             if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
                         } else {
-                            btn.textContent = "ربط المنصة";
-                            btn.classList.remove('connected');
+                            if (btn) {
+                                btn.textContent = "ربط المنصة";
+                                btn.classList.remove('connected');
+                            }
                             if (disconnectBtn) disconnectBtn.style.display = 'none';
                         }
                     });
@@ -751,7 +750,6 @@
             const container = document.getElementById('servicesContainer');
             container.innerHTML = ''; 
 
-            // استرجاع القيم القديمة لو وجدت لتعبئتها في الـ Modal للتعديل
             const existing = activePlatforms[key] ? activePlatforms[key].raw : null;
             const hasPosts = existing ? existing.posts : true;
             const hasReels = existing ? existing.reels : true;
