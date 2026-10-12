@@ -215,7 +215,6 @@
             margin-top: 1rem;
         }
 
-        /* تنسيق أزرار الخطوة الثالثة فوق بعضها */
         .identity-options-box {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -511,7 +510,7 @@
                             </p>
                             <div class="file-box" onclick="document.getElementById('bcard_file').click()">
                                 <span class="file-box-label" id="bcard_label">💳 رفع ملف كارت العمل / البراند الشامل</span>
-                                <input type="file" id="bcard_file" accept="image/*,.pdf,.zip" onchange="updateFileName(this, 'bcard_file_label')">
+                                <input type="file" id="bcard_file" accept="image/*,.pdf,.zip" onchange="updateFileName(this, 'bcard_label')">
                             </div>
                         </div>
                     </div>
@@ -546,6 +545,34 @@
         const totalSteps = 4;
         let hasIdentity = false;
 
+        // جلب بيانات المستخدم الشخصية وتخطي الخطوة الأولى تلقائياً عند إضافة براند جديد
+        document.addEventListener("DOMContentLoaded", async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get("mode") === "new_brand" || urlParams.get("step") === "2") {
+                try {
+                    const token = localStorage.getItem("access_token");
+                    const res = await fetch("https://api.protonag.com/auth/me", {
+                        headers: { "Authorization": "Bearer " + token }
+                    });
+                    if (res.ok) {
+                        const userData = await res.json();
+                        // تعبئة حقول الخطوة الأولى بالبيانات المسجلة مسبقاً في الخلفية
+                        document.getElementById('user_name').value = userData.name || userData.full_name || "مستخدم بروتون";
+                        document.getElementById('user_phone_number').value = userData.phone || userData.phone_number || "+201000000000";
+                        document.getElementById('p_email').value = userData.email || "user@protonag.com";
+                    }
+                } catch (err) {
+                    console.error("Could not fetch user info for new brand:", err);
+                }
+
+                // الانتقال فوراً للخطوة الثانية وتحديث المؤشر
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep = 2;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateUI();
+            }
+        });
+
         function updateFileName(input, labelId) {
             if (input.files && input.files[0]) {
                 document.getElementById(labelId).textContent = "✅ " + input.files[0].name;
@@ -567,21 +594,24 @@
             window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
         }
 
-        // عند الضغط على زر التخطي: يحفظ البيانات فوراً ويرسلها لقاعدة البيانات ثم يحول للربط
         async function skipIdentityAndSubmit() {
             hasIdentity = false;
-            
-            // محاكاة إرسال الفورم برمجياً مع البيانات الحالية
             const formElement = document.getElementById('onboardingForm');
             const submitEvent = new Event('submit', { cancelable: true });
             formElement.dispatchEvent(submitEvent);
         }
 
         function handlePrevStep() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isNewBrandMode = urlParams.get("mode") === "new_brand";
+
             if (currentStep === 3 && document.getElementById('identityFieldsContainer').style.display === 'block') {
                 document.getElementById('identityFieldsContainer').style.display = 'none';
                 document.getElementById('identityChoiceBox').style.display = 'block';
                 document.getElementById('nextBtn').style.display = 'none';
+            } else if (isNewBrandMode && currentStep === 2) {
+                // إذا كان يضيف براند جديد، امنعه من الرجوع للخطوة الأولى الشخصية لأنه متخطيهالاصلاً
+                return;
             } else {
                 changeStep(-1);
             }
@@ -620,11 +650,19 @@
             const progressPercent = (currentStep / totalSteps) * 100;
             document.getElementById('progressBar').style.width = `${progressPercent}%`;
 
+            const urlParams = new URLSearchParams(window.location.search);
+            const isNewBrandMode = urlParams.get("mode") === "new_brand";
+
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const submitBtn = document.getElementById('submitBtn');
 
-            prevBtn.style.display = currentStep === 1 ? 'none' : 'block';
+            // إخفاء زر السابق إذا كان في الخطوة الأولى أو إذا كان يضيف براند جديد في الخطوة الثانية
+            if (currentStep === 1 || (isNewBrandMode && currentStep === 2)) {
+                prevBtn.style.display = 'none';
+            } else {
+                prevBtn.style.display = 'block';
+            }
             
             if (currentStep === 3) {
                 const isFieldsVisible = document.getElementById('identityFieldsContainer').style.display === 'block';
@@ -675,7 +713,6 @@
                 if (bcardFile) formData.append('bcard_file', bcardFile);
             }
 
-            formData.append('user_phone_number', document.getElementById('user_phone_number').value);
             formData.append('brand_wa', document.getElementById('brand_wa').value);
             formData.append('brand_email', document.getElementById('brand_email').value);
             formData.append('brand_ws', document.getElementById('brand_ws').value);
