@@ -611,12 +611,13 @@
             // مراقبة اختيار المستخدم للقائمة
             brandSelector.addEventListener("change", function() {
                 if (this.value === "new_brand") {
-                    window.location.href = "./onboarding.html?mode=new_brand";
+                    // توجيه المستخدم لصفحة الـ Onboarding ليبدأ مباشرة من الخطوة الثانية للبراند الجديد
+                    window.location.href = "./onboarding.html?mode=new_brand&step=2";
                 } else if (this.value) {
-                    localStorage.setItem("selected_brand_name", this.value);
+                    localStorage.setItem("selected_brand_id", this.value);
                     updatePlatformsState(true);
                 } else {
-                    localStorage.removeItem("selected_brand_name");
+                    localStorage.removeItem("selected_brand_id");
                     updatePlatformsState(false);
                 }
             });
