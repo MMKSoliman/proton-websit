@@ -206,7 +206,7 @@
                     localStorage.setItem('user_id', data.user_id);
                 }
                 
-                // التعديل هنا للاعتماد على user_name بدلاً من full_name
+                // استخدام user_name المدخل من المستخدم أولاً، ثم full_name
                 if (data.user_name) {
                     localStorage.setItem('user_name', data.user_name);
                     userAuthText.textContent = data.user_name;
@@ -252,8 +252,6 @@
                     throw new Error("Invalid session");
                 }
             }
-        } else (err) { // ملاحظة: تم ضبط هيكل الـ catch لتكون صحيحة برمجياً
-            console.error("Auth check error:", err);
         } catch (err) {
             console.error("Auth check error:", err);
             localStorage.removeItem('access_token');
