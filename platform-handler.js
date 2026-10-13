@@ -367,9 +367,8 @@ function redirectToWhatsApp() {
     // فتح الواتساب في نافذة جديدة
     window.open(url, '_blank');
 
-    // التوجيه التلقائي إلى لوحة التحكم
+  // التوجيه التلقائي إلى لوحة التحكم
     setTimeout(() => {
         window.location.href = "./dashboard.html";
     }, 1000);
- }
-}
+} // <- هذا هو قوس إغلاق الدالة الوحيد في النهاية
