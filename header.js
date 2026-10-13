@@ -206,13 +206,10 @@
                     localStorage.setItem('user_id', data.user_id);
                 }
                 
-                // استخدام user_name المدخل من المستخدم أولاً، ثم full_name
-                if (data.user_name) {
-                    localStorage.setItem('user_name', data.user_name);
-                    userAuthText.textContent = data.user_name;
-                } else {
-                    userAuthText.textContent = 'حسابي';
-                }
+                // الاعتماد الحصري والأول على user_name المدخل من المستخدم
+                const displayName = data.user_name || data.full_name || 'حسابي';
+                localStorage.setItem('user_name', displayName);
+                userAuthText.textContent = displayName;
                 
                 if (data.profile_picture) {
                     localStorage.setItem('user_picture', data.profile_picture);
