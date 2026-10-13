@@ -205,8 +205,8 @@
                 if (data.user_id) {
                     localStorage.setItem('user_id', data.user_id);
                 }
-                if (data.user_name) {
-                    localStorage.setItem('full_name', data.user_name);
+                if (data.full_name) {
+                    localStorage.setItem('user_name', data.full_name);
                     userAuthText.textContent = data.user_name.split(' ')[0];
                 } else {
                     userAuthText.textContent = 'حسابي';
