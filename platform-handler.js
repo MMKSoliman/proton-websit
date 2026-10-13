@@ -7,6 +7,32 @@ document.addEventListener("DOMContentLoaded", async function() {
     const token = localStorage.getItem("access_token") || new URLSearchParams(window.location.search).get('token');
     const brandSelector = document.getElementById("brand-selector");
 
+    // التعامل مع العودة من المصادقة وفتح الـ Modal الخاص بالمنصة المربوطة تلقائياً
+const urlParams = new URLSearchParams(window.location.search);
+const connectedPlatform = urlParams.get('connected');
+
+if (connectedPlatform) {
+    const activeBrand = localStorage.getItem("selected_brand_id");
+    if (activeBrand) {
+        await loadBrandConnections(activeBrand);
+        
+        // فتح نافذة تحديد الخدمات تلقائياً للمنصة المربوطة
+        const platformMap = {
+            'facebook': { title: 'Facebook Pages', icon: './FB-W.png' },
+            'instagram': { title: 'Instagram Business', icon: './Insta-W.png' },
+            'tiktok': { title: 'TikTok Business', icon: './TT-W.png' },
+            'linkedin': { title: 'LinkedIn Page', icon: './L in-W.png' },
+            'x': { title: 'X Platform', icon: './X-W.png' }
+        };
+
+        if (platformMap[connectedPlatform]) {
+            setTimeout(() => {
+                openPlatformModal(connectedPlatform, platformMap[connectedPlatform].title, platformMap[connectedPlatform].icon);
+            }, 300);
+        }
+    }
+}
+
     if (token && !localStorage.getItem("access_token")) {
         localStorage.setItem("access_token", token);
     }
