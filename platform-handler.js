@@ -353,20 +353,6 @@ function redirectToWhatsApp() {
 
     const url = `https://wa.me/+201066581983?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
-    function redirectToWhatsApp() {
-    const brandName = localStorage.getItem("selected_brand_name") || "النشاط التجاري";
-    const total = document.getElementById('totalPrice').textContent;
-    const count = document.getElementById('selectedCount').textContent;
-
-    let message = `مرحباً، أود إتمام الطلب وتفعيل الخطة للنشاط التجاري: *${brandName}*.\n`;
-    message += `- عدد المنصات المربوطة: ${count}\n`;
-    message += `- الإجمالي الشهري: $${total}\n\nيرجى استكمال إجراءات التفعيل.`;
-
-    const url = `https://wa.me/+201066581983?text=${encodeURIComponent(message)}`;
-    
-    // فتح الواتساب في نافذة جديدة
-    window.open(url, '_blank');
-
   // التوجيه التلقائي إلى لوحة التحكم
     setTimeout(() => {
         window.location.href = "./dashboard.html";
