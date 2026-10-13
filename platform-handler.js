@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     if (!brandSelector) return;
 
+    // جلب قائمة الأنشطة والبراندات
     try {
         const response = await fetch("https://api.protonag.com/brands/my-brands", {
             method: "GET",
@@ -42,6 +43,8 @@ document.addEventListener("DOMContentLoaded", async function() {
                 brandSelector.value = savedBrandId;
                 await loadBrandConnections(savedBrandId);
             }
+        } else {
+            brandSelector.innerHTML = '<option value="">لا توجد أنشطة مسجلة</option>';
         }
     } catch (error) {
         console.error("Error fetching brands:", error);
@@ -64,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     });
 
-    // معالجة العودة من المصادقة الناجحة
+    // معالجة العودة بعد المصادقة الناجحة من ميتا
     const urlParams = new URLSearchParams(window.location.search);
     const connectedPlatform = urlParams.get('connected');
     if (connectedPlatform) {
@@ -80,7 +83,12 @@ async function loadBrandConnections(brandId) {
     
     platforms.forEach(key => {
         const btn = document.getElementById(`btn-${key}`);
-        if (btn) btn.disabled = false;
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = "ربط المنصة";
+            btn.classList.remove('connected');
+            btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
+        }
     });
 
     try {
@@ -116,7 +124,7 @@ async function loadBrandConnections(brandId) {
                     if (btn) {
                         btn.textContent = `تم الربط ($${pTotal})`;
                         btn.classList.add('connected');
-                        // عند الضغط على الزر بعد الربط، يعيد فتح نافذة تعديل الخدمات
+                        // عند الضغط على الزر بعد الربط، يعيد فتح نافذة إعدادات وتعديل الخدمات
                         btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
                     }
                     if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
@@ -124,7 +132,6 @@ async function loadBrandConnections(brandId) {
                     if (btn) {
                         btn.textContent = "ربط المنصة";
                         btn.classList.remove('connected');
-                        // عند الضغط قبل الربط، يفتح نافذة اختيار الخدمات أولاً
                         btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
                     }
                     if (disconnectBtn) disconnectBtn.style.display = 'none';
@@ -164,7 +171,7 @@ function resetPlatformsUI() {
     updateMainSummary();
 }
 
-// فتح نافذة اختيار وتحديد الخدمات أولاً قبل الذهاب للربط
+// فتح نافذة اختيار وتحديد الخدمات أولاً (سواء قبل الربط أو لتعديلها بعد الربط)
 function openPlatformModal(key, title, iconUrl) {
     const selectedBrandId = localStorage.getItem("selected_brand_id");
     if (!selectedBrandId) {
@@ -242,8 +249,7 @@ function closeAuthModal() {
 }
 
 // عند تأكيد اختيار الخدمات في النافذة:
-// 1. حفظ الاختيارات مؤقتاً عبر الـ API
-// 2. الانتقال لربط المنصة (سواء ميتا أو غيرها)
+// حفظ الخيارات ثم التوجيه مباشرة لمصادقة المنصة (ميتا أو غيرها)
 async function confirmPlatformSelection() {
     if (!currentPlatformKey) return;
 
@@ -255,11 +261,9 @@ async function confirmPlatformSelection() {
 
     const existingRecord = activePlatforms[currentPlatformKey] ? activePlatforms[currentPlatformKey].raw : null;
     const accountId = existingRecord ? existingRecord.account_id : 0;
-
     const selectedBrandId = localStorage.getItem("selected_brand_id");
 
     try {
-        // حفظ خيارات الخدمات أولاً إذا كان الحساب مربوطاً مسبقاً
         if (accountId) {
             await fetch("https://api.protonag.com/social/meta/update-services", {
                 method: "POST",
@@ -274,7 +278,7 @@ async function confirmPlatformSelection() {
 
         closeAuthModal();
 
-        // التوجيه للربط الفعلي حسب المنصة
+        // التوجيه للربط الفعلي مع ميتا
         if (currentPlatformKey === 'facebook' || currentPlatformKey === 'instagram') {
             const res = await fetch(`https://api.protonag.com/social/meta/login/${selectedBrandId}`, {
                 method: "GET",
@@ -286,8 +290,7 @@ async function confirmPlatformSelection() {
                 if (data.auth_url) window.location.href = data.auth_url;
             }
         } else {
-            // منصات أخرى مستقبلاً مثل تيكتوك وغيرها
-            alert("سيتم ربط هذه المنصة قريباً.");
+            alert("ربط هذه المنصة سيكون متاحاً قريباً.");
         }
     } catch (err) {
         console.error("Error in confirmation:", err);
