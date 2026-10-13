@@ -1,5 +1,5 @@
 (function() {
-    // 1. حقن تنسيقات الـ CSS الخاصة بالهيدر والقوائم المنسدلة
+    // 1. حقن تنسيقات الـ CSS الخاصة بالهيدر والقوائم المنسدلة مع توحيد أبعاد الأزرار
     const style = document.createElement('style');
     style.innerHTML = `
         .proton-global-header {
@@ -23,10 +23,11 @@
         .proton-header-btn {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             background: rgba(20, 20, 20, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 8px 14px;
+            padding: 8px 16px;
             border-radius: 50px;
             color: #fff;
             text-decoration: none;
@@ -35,6 +36,8 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
             cursor: pointer;
+            box-sizing: border-box;
+            white-space: nowrap;
         }
         .proton-header-btn:hover {
             border-color: rgba(0, 255, 200, 0.5);
@@ -46,6 +49,7 @@
             height: 20px !important;
             border-radius: 50%;
             object-fit: cover;
+            flex-shrink: 0;
         }
         .proton-dropdown-container {
             position: relative;
@@ -156,7 +160,6 @@
         const tokenParam = urlParams.get('token');
         if (tokenParam) {
             localStorage.setItem('access_token', tokenParam);
-            // إزالة التوكن من الـ URL لتنظيفه
             urlParams.delete('token');
             const newRelativePathQuery = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
             window.history.replaceState(null, '', newRelativePathQuery);
@@ -188,7 +191,6 @@
         }
 
         try {
-            // استخدام رابط الـ API الصحيح المتوافق مع الـ Backend (/auth/me)
             const response = await fetch('https://api.protonag.com/auth/me', {
                 method: 'GET',
                 headers: {
@@ -201,11 +203,15 @@
             if (response.ok) {
                 const data = await response.json();
                 
-                // تخزين معرف المستخدم والبيانات محلياً للاعتماد عليها مباشرة
                 if (data.user_id) {
                     localStorage.setItem('user_id', data.user_id);
                 }
-                if (data.full_name) {
+                
+                // التعديل الهام هنا: الاعتماد حصرياً على user_name ثم full_name كاحتياطي وجلب الاسم الأول فقط
+                if (data.user_name) {
+                    localStorage.setItem('user_name', data.user_name);
+                    userAuthText.textContent = data.user_name.split(' ')[0];
+                } else if (data.full_name) {
                     localStorage.setItem('user_name', data.full_name);
                     userAuthText.textContent = data.full_name.split(' ')[0];
                 } else {
@@ -237,7 +243,7 @@
                 });
 
             } else {
-                // إذا انتهت صلاحية التوكن، نحاول الاعتماد على البيانات المخزنة مؤقتاً أو تسجيل الخروج
+                // إذا انتهت صلاحية التوكن، نحاول الاعتماد على البيانات المخزنة مؤقتاً
                 const cachedName = localStorage.getItem('user_name');
                 const cachedPic = localStorage.getItem('user_picture');
                 
