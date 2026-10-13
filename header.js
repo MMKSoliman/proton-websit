@@ -206,10 +206,12 @@
                     localStorage.setItem('user_id', data.user_id);
                 }
                 
-                // الاعتماد الحصري والأول على user_name المدخل من المستخدم
-                const displayName = data.user_name || data.full_name || 'حسابي';
-                localStorage.setItem('user_name', displayName);
-                userAuthText.textContent = displayName;
+                // جلب الاسم الأول فقط حصرياً من user_name أو البديل full_name
+                let rawName = data.user_name || data.full_name || 'حسابي';
+                let firstName = rawName.trim().split(' ')[0];
+
+                localStorage.setItem('user_name', firstName);
+                userAuthText.textContent = firstName;
                 
                 if (data.profile_picture) {
                     localStorage.setItem('user_picture', data.profile_picture);
