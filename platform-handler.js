@@ -42,12 +42,9 @@ document.addEventListener("DOMContentLoaded", async function() {
                 brandSelector.value = savedBrandId;
                 await loadBrandConnections(savedBrandId);
             }
-        } else {
-            brandSelector.innerHTML = '<option value="">لا توجد أنشطة مسجلة</option>';
         }
     } catch (error) {
         console.error("Error fetching brands:", error);
-        brandSelector.innerHTML = '<option value="">خطأ في الاتصال</option>';
     }
 
     brandSelector.addEventListener("change", async function() {
@@ -67,6 +64,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     });
 
+    // معالجة العودة بعد المصادقة وتطبيق الخدمة المحفوظة مسبقاً
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('connected')) {
         const activeBrand = localStorage.getItem("selected_brand_id");
@@ -257,12 +255,14 @@ async function confirmPlatformSelection() {
     const selectedBrandId = localStorage.getItem("selected_brand_id");
     const existingRecord = activePlatforms[currentPlatformKey] ? activePlatforms[currentPlatformKey].raw : null;
 
+    // حفظ الاختيارات مؤقتاً لتطبيقها بعد الرجوع من OAuth
     localStorage.setItem("pending_services", JSON.stringify({
         platform: currentPlatformKey,
         posts, reels, rc, comments, messages
     }));
 
     if (existingRecord && existingRecord.account_id) {
+        // تحديث المربوط حالياً مباشرةً
         await fetch("https://api.protonag.com/social/meta/update-services", {
             method: "POST",
             headers: {
@@ -279,6 +279,7 @@ async function confirmPlatformSelection() {
 
     closeAuthModal();
 
+    // التوجيه لمصادقة ميتا عند الربط لأول مرة
     if (currentPlatformKey === 'facebook' || currentPlatformKey === 'instagram') {
         const res = await fetch(`https://api.protonag.com/social/meta/login/${selectedBrandId}`, {
             method: "GET",
@@ -292,6 +293,7 @@ async function confirmPlatformSelection() {
     }
 }
 
+// تطبيق الخدمة المحفوظة مسبقاً عند العودة فوراً
 async function applyPendingSavedServices() {
     const pendingStr = localStorage.getItem("pending_services");
     if (!pendingStr) return;
@@ -328,15 +330,15 @@ async function applyPendingSavedServices() {
 }
 
 function updateMainSummary() {
-    let codeCount = 0;
+    let count = 0;
     let totalSum = 0;
 
     Object.keys(activePlatforms).forEach(key => {
-        codeCount++;
+        count++;
         totalSum += activePlatforms[key].total;
     });
 
-    document.getElementById('selectedCount').textContent = codeCount;
+    document.getElementById('selectedCount').textContent = count;
     document.getElementById('totalPrice').textContent = totalSum;
 }
 
@@ -351,8 +353,23 @@ function redirectToWhatsApp() {
 
     const url = `https://wa.me/+201066581983?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
+    function redirectToWhatsApp() {
+    const brandName = localStorage.getItem("selected_brand_name") || "النشاط التجاري";
+    const total = document.getElementById('totalPrice').textContent;
+    const count = document.getElementById('selectedCount').textContent;
 
+    let message = `مرحباً، أود إتمام الطلب وتفعيل الخطة للنشاط التجاري: *${brandName}*.\n`;
+    message += `- عدد المنصات المربوطة: ${count}\n`;
+    message += `- الإجمالي الشهري: $${total}\n\nيرجى استكمال إجراءات التفعيل.`;
+
+    const url = `https://wa.me/+201066581983?text=${encodeURIComponent(message)}`;
+    
+    // فتح الواتساب في نافذة جديدة
+    window.open(url, '_blank');
+
+    // التوجيه التلقائي إلى لوحة التحكم
     setTimeout(() => {
         window.location.href = "./dashboard.html";
     }, 1000);
+ }
 }
