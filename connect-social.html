@@ -459,7 +459,7 @@
                         </select>
                     </div>
 
-                    <!-- Facebook -->
+                    <!-- Facebook (ربط حقيقي عبر ميتا) -->
                     <div class="platform-item">
                         <div class="platform-info">
                             <img src="./FB-W.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/5968/5968764.png';" class="platform-icon" alt="Facebook">
@@ -469,14 +469,14 @@
                             </div>
                         </div>
                         <div class="platform-actions-group">
-                            <button class="btn-connect" id="btn-facebook" disabled onclick="openPlatformModal('facebook', 'Facebook Pages', './FB-W.png')">
+                            <button class="btn-connect" id="btn-facebook" disabled onclick="connectMetaPlatform('facebook')">
                                 اختر براند أولاً
                             </button>
                             <button class="btn-disconnect" id="disconnect-facebook" onclick="disconnectPlatform('facebook')">إلغاء الربط</button>
                         </div>
                     </div>
 
-                    <!-- Instagram -->
+                    <!-- Instagram (ربط حقيقي عبر ميتا) -->
                     <div class="platform-item">
                         <div class="platform-info">
                             <img src="./Insta-W.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/2111/2111463.png';" class="platform-icon" alt="Instagram">
@@ -486,7 +486,7 @@
                             </div>
                         </div>
                         <div class="platform-actions-group">
-                            <button class="btn-connect" id="btn-instagram" disabled onclick="openPlatformModal('instagram', 'Instagram Business', './Insta-W.png')">
+                            <button class="btn-connect" id="btn-instagram" disabled onclick="connectMetaPlatform('instagram')">
                                 اختر براند أولاً
                             </button>
                             <button class="btn-disconnect" id="disconnect-instagram" onclick="disconnectPlatform('instagram')">إلغاء الربط</button>
@@ -524,6 +524,23 @@
                                 اختر براند أولاً
                             </button>
                             <button class="btn-disconnect" id="disconnect-linkedin" onclick="disconnectPlatform('linkedin')">إلغاء الربط</button>
+                        </div>
+                    </div>
+
+                    <!-- منصة X (Twitter سابقاً) -->
+                    <div class="platform-item">
+                        <div class="platform-info">
+                            <img src="./X-W.png" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/5968/5968830.png';" class="platform-icon" alt="X">
+                            <div class="platform-text">
+                                <h4>X (Twitter)</h4>
+                                <p>النشر التلقائي والتفاعل مع التغريدات</p>
+                            </div>
+                        </div>
+                        <div class="platform-actions-group">
+                            <button class="btn-connect" id="btn-x" disabled onclick="openPlatformModal('x', 'X Platform', './X-W.png')">
+                                اختر براند أولاً
+                            </button>
+                            <button class="btn-disconnect" id="disconnect-x" onclick="disconnectPlatform('x')">إلغاء الربط</button>
                         </div>
                     </div>
                 </div>
@@ -647,9 +664,8 @@
             });
         });
 
-        // تم تصحيح المسار إلى /social/connections/${brandId}
         async function loadBrandConnections(brandId) {
-            const platforms = ['facebook', 'instagram', 'tiktok', 'linkedin'];
+            const platforms = ['facebook', 'instagram', 'tiktok', 'linkedin', 'x'];
             
             platforms.forEach(key => {
                 const btn = document.getElementById(`btn-${key}`);
@@ -720,7 +736,7 @@
         }
 
         function resetPlatformsUI() {
-            const platforms = ['facebook', 'instagram', 'tiktok', 'linkedin'];
+            const platforms = ['facebook', 'instagram', 'tiktok', 'linkedin', 'x'];
             platforms.forEach(key => {
                 const btn = document.getElementById(`btn-${key}`);
                 const disconnectBtn = document.getElementById(`disconnect-${key}`);
@@ -733,6 +749,37 @@
             });
             activePlatforms = {};
             updateMainSummary();
+        }
+
+        // دالة خاصة لفتح رابط مصادقة ميتا الحقيقي
+        async function connectMetaPlatform(platformKey) {
+            const selectedBrandId = localStorage.getItem("selected_brand_id");
+            if (!selectedBrandId) {
+                alert("يرجى اختيار النشاط التجاري (البراند) أولاً قبل ربط المنصات.");
+                return;
+            }
+
+            try {
+                const res = await fetch(`https://api.protonag.com/social/meta/login/${selectedBrandId}`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
+                    },
+                    credentials: 'include'
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.auth_url) {
+                        window.location.href = data.auth_url; // الانتقال لنافذة تسجيل الدخول في ميتا
+                    }
+                } else {
+                    alert("تعذر بدء عملية المصادقة مع ميتا.");
+                }
+            } catch (err) {
+                console.error("Meta login error:", err);
+                alert("حدث خطأ في الاتصال بالخادم.");
+            }
         }
 
         function openPlatformModal(key, title, iconUrl) {
@@ -756,68 +803,39 @@
             const hasComments = existing ? existing.comments : true;
             const hasMessages = existing ? existing.messages : true;
 
-            if (key === 'tiktok') {
-                container.innerHTML = `
-                    <div class="service-row">
-                        <label class="service-left">
-                            <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
-                            <span>إضافة ريلز شهرياً:</span>
-                            <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''} onchange="calculateModalTotal()">
-                                ${generateReelsOptions(reelsCountVal)}
-                            </select>
-                        </label>
-                        <span class="service-price" id="reels_price_text">$25</span>
-                    </div>
-                    <div class="service-row">
-                        <label class="service-left">
-                            <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''} onchange="calculateModalTotal()">
-                            <span>التفاعل والرد على التعليقات</span>
-                        </label>
-                        <span class="service-price">$20</span>
-                    </div>
-                    <div class="service-row">
-                        <label class="service-left">
-                            <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''} onchange="calculateModalTotal()">
-                            <span>الرد على الرسائل والمحادثات</span>
-                        </label>
-                        <span class="service-price">$25</span>
-                    </div>
-                `;
-            } else {
-                container.innerHTML = `
-                    <div class="service-row">
-                        <label class="service-left">
-                            <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''} onchange="calculateModalTotal()">
-                            <span>النشر التلقائي للمنشورات + صورة</span>
-                        </label>
-                        <span class="service-price">$25</span>
-                    </div>
-                    <div class="service-row">
-                        <label class="service-left">
-                            <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
-                            <span>إضافة ريلز شهرياً:</span>
-                            <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''} onchange="calculateModalTotal()">
-                                ${generateReelsOptions(reelsCountVal)}
-                            </select>
-                        </label>
-                        <span class="service-price" id="reels_price_text">$25</span>
-                    </div>
-                    <div class="service-row">
-                        <label class="service-left">
-                            <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''} onchange="calculateModalTotal()">
-                            <span>التفاعل والرد على التعليقات</span>
-                        </label>
-                        <span class="service-price">$15</span>
-                    </div>
-                    <div class="service-row">
-                        <label class="service-left">
-                            <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''} onchange="calculateModalTotal()">
-                            <span>الرد على الرسائل الخاصة</span>
-                        </label>
-                        <span class="service-price">$20</span>
-                    </div>
-                `;
-            }
+            container.innerHTML = `
+                <div class="service-row">
+                    <label class="service-left">
+                        <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''} onchange="calculateModalTotal()">
+                        <span>النشر التلقائي للمنشورات + صورة</span>
+                    </label>
+                    <span class="service-price">$25</span>
+                </div>
+                <div class="service-row">
+                    <label class="service-left">
+                        <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
+                        <span>إضافة ريلز شهرياً:</span>
+                        <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''} onchange="calculateModalTotal()">
+                            ${generateReelsOptions(reelsCountVal)}
+                        </select>
+                    </label>
+                    <span class="service-price" id="reels_price_text">$25</span>
+                </div>
+                <div class="service-row">
+                    <label class="service-left">
+                        <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''} onchange="calculateModalTotal()">
+                        <span>التفاعل والرد على التعليقات</span>
+                    </label>
+                    <span class="service-price">$15</span>
+                </div>
+                <div class="service-row">
+                    <label class="service-left">
+                        <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''} onchange="calculateModalTotal()">
+                        <span>الرد على الرسائل الخاصة</span>
+                    </label>
+                    <span class="service-price">$20</span>
+                </div>
+            `;
 
             calculateModalTotal();
             document.getElementById('authModal').style.display = 'flex';
@@ -881,7 +899,6 @@
                 messages: messagesEl ? messagesEl.checked : false
             };
 
-            // المسار صحيح تماماً إلى /social/connect بدون أي خطأ
             try {
                 const res = await fetch("https://api.protonag.com/social/connect", {
                     method: "POST",
