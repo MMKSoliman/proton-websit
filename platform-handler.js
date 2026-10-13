@@ -1,4 +1,3 @@
-// platform-handler.js - إدارة المنصات، الخدمات الأربع (posts, reels, comments, messages)، واحتساب الأسعار
 const REEL_PRICE_PER_UNIT = 5; 
 let activePlatforms = {}; 
 let currentPlatformKey = null;
@@ -7,45 +6,16 @@ document.addEventListener("DOMContentLoaded", async function() {
     const token = localStorage.getItem("access_token") || new URLSearchParams(window.location.search).get('token');
     const brandSelector = document.getElementById("brand-selector");
 
-    // التعامل مع العودة من المصادقة وفتح الـ Modal الخاص بالمنصة المربوطة تلقائياً
-const urlParams = new URLSearchParams(window.location.search);
-const connectedPlatform = urlParams.get('connected');
-
-if (connectedPlatform) {
-    const activeBrand = localStorage.getItem("selected_brand_id");
-    if (activeBrand) {
-        await loadBrandConnections(activeBrand);
-        
-        // فتح نافذة تحديد الخدمات تلقائياً للمنصة المربوطة
-        const platformMap = {
-            'facebook': { title: 'Facebook Pages', icon: './FB-W.png' },
-            'instagram': { title: 'Instagram Business', icon: './Insta-W.png' },
-            'tiktok': { title: 'TikTok Business', icon: './TT-W.png' },
-            'linkedin': { title: 'LinkedIn Page', icon: './L in-W.png' },
-            'x': { title: 'X Platform', icon: './X-W.png' }
-        };
-
-        if (platformMap[connectedPlatform]) {
-            setTimeout(() => {
-                openPlatformModal(connectedPlatform, platformMap[connectedPlatform].title, platformMap[connectedPlatform].icon);
-            }, 300);
-        }
-    }
-}
-
     if (token && !localStorage.getItem("access_token")) {
         localStorage.setItem("access_token", token);
     }
 
     if (!brandSelector) return;
 
-    // جلب قائمة البراندات والأنشطة التجارية
     try {
         const response = await fetch("https://api.protonag.com/brands/my-brands", {
             method: "GET",
-            headers: { 
-                "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
-            },
+            headers: { "Authorization": "Bearer " + (localStorage.getItem("access_token") || "") },
             credentials: 'include'
         });
         
@@ -72,12 +42,9 @@ if (connectedPlatform) {
                 brandSelector.value = savedBrandId;
                 await loadBrandConnections(savedBrandId);
             }
-        } else {
-            brandSelector.innerHTML = '<option value="">لا توجد أنشطة مسجلة</option>';
         }
     } catch (error) {
         console.error("Error fetching brands:", error);
-        brandSelector.innerHTML = '<option value="">خطأ في الاتصال</option>';
     }
 
     brandSelector.addEventListener("change", async function() {
@@ -97,9 +64,10 @@ if (connectedPlatform) {
         }
     });
 
-    // التعامل مع بارامتر النجاح بعد العودة من ربط ميتا
+    // معالجة العودة من المصادقة الناجحة
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('connected') === 'success') {
+    const connectedPlatform = urlParams.get('connected');
+    if (connectedPlatform) {
         const activeBrand = localStorage.getItem("selected_brand_id");
         if (activeBrand) {
             await loadBrandConnections(activeBrand);
@@ -112,18 +80,13 @@ async function loadBrandConnections(brandId) {
     
     platforms.forEach(key => {
         const btn = document.getElementById(`btn-${key}`);
-        if (btn) {
-            btn.disabled = false;
-            btn.textContent = "ربط المنصة";
-        }
+        if (btn) btn.disabled = false;
     });
 
     try {
         const response = await fetch(`https://api.protonag.com/social/connections/${brandId}`, {
             method: "GET",
-            headers: { 
-                "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
-            },
+            headers: { "Authorization": "Bearer " + (localStorage.getItem("access_token") || "") },
             credentials: 'include'
         });
 
@@ -140,33 +103,29 @@ async function loadBrandConnections(brandId) {
                 if (connections[key]) {
                     const conn = connections[key];
                     let pTotal = 0;
-                    let details = [];
-                    
-                    if (conn.posts) { pTotal += 25; details.push('نشر منشورات وصور'); }
-                    if (conn.reels) { 
-                        const rc = conn.rc || 5; 
-                        const cost = rc * REEL_PRICE_PER_UNIT; 
-                        pTotal += cost; 
-                        details.push(`${rc} ريلز ($${cost})`); 
-                    }
-                    if (conn.comments) { pTotal += (key === 'tiktok' ? 20 : 15); details.push('الرد على التعليقات'); }
-                    if (conn.messages) { pTotal += (key === 'tiktok' ? 25 : 20); details.push('الرد على الرسائل'); }
+                    if (conn.posts) pTotal += 25;
+                    if (conn.reels) pTotal += (conn.rc || 5) * REEL_PRICE_PER_UNIT;
+                    if (conn.comments) pTotal += (key === 'tiktok' ? 20 : 15);
+                    if (conn.messages) pTotal += (key === 'tiktok' ? 25 : 20);
 
                     activePlatforms[key] = {
                         total: pTotal,
-                        details: details,
                         raw: conn
                     };
 
                     if (btn) {
                         btn.textContent = `تم الربط ($${pTotal})`;
                         btn.classList.add('connected');
+                        // عند الضغط على الزر بعد الربط، يعيد فتح نافذة تعديل الخدمات
+                        btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
                     }
                     if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
                 } else {
                     if (btn) {
                         btn.textContent = "ربط المنصة";
                         btn.classList.remove('connected');
+                        // عند الضغط قبل الربط، يفتح نافذة اختيار الخدمات أولاً
+                        btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
                     }
                     if (disconnectBtn) disconnectBtn.style.display = 'none';
                 }
@@ -177,6 +136,16 @@ async function loadBrandConnections(brandId) {
     } catch (err) {
         console.error("Error loading connections:", err);
     }
+}
+
+function getPlatformTitle(key) {
+    const map = { 'facebook': 'Facebook Pages', 'instagram': 'Instagram Business', 'tiktok': 'TikTok Business', 'linkedin': 'LinkedIn Page', 'x': 'X Platform' };
+    return map[key] || key;
+}
+
+function getPlatformIcon(key) {
+    const map = { 'facebook': './FB-W.png', 'instagram': './Insta-W.png', 'tiktok': './TT-W.png', 'linkedin': './L in-W.png', 'x': './X-W.png' };
+    return map[key] || './favicon.png';
 }
 
 function resetPlatformsUI() {
@@ -195,42 +164,11 @@ function resetPlatformsUI() {
     updateMainSummary();
 }
 
-// دالة بدء ربط ميتا الحقيقي
-async function connectMetaPlatform(platformKey) {
-    const selectedBrandId = localStorage.getItem("selected_brand_id");
-    if (!selectedBrandId) {
-        alert("يرجى اختيار النشاط التجاري (البراند) أولاً قبل ربط المنصات.");
-        return;
-    }
-
-    try {
-        const res = await fetch(`https://api.protonag.com/social/meta/login/${selectedBrandId}`, {
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
-            },
-            credentials: 'include'
-        });
-
-        if (res.ok) {
-            const data = await res.json();
-            if (data.auth_url) {
-                window.location.href = data.auth_url;
-            }
-        } else {
-            alert("تعذر بدء عملية المصادقة مع ميتا.");
-        }
-    } catch (err) {
-        console.error("Meta login error:", err);
-        alert("حدث خطأ في الاتصال بالخادم.");
-    }
-}
-
-// فتح نافذة تخصيص الخدمات الأربع
+// فتح نافذة اختيار وتحديد الخدمات أولاً قبل الذهاب للربط
 function openPlatformModal(key, title, iconUrl) {
     const selectedBrandId = localStorage.getItem("selected_brand_id");
     if (!selectedBrandId) {
-        alert("يرجى اختيار النشاط التجاري (البراند) أولاً قبل ربط المنصات.");
+        alert("يرجى اختيار النشاط التجاري (البراند) أولاً.");
         return;
     }
 
@@ -251,7 +189,7 @@ function openPlatformModal(key, title, iconUrl) {
     container.innerHTML = `
         <div class="service-row">
             <label class="service-left">
-                <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''} onchange="calculateModalTotal()">
+                <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
                 <span>النشر التلقائي للمنشورات + صورة</span>
             </label>
             <span class="service-price">$25</span>
@@ -260,22 +198,22 @@ function openPlatformModal(key, title, iconUrl) {
             <label class="service-left">
                 <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
                 <span>إضافة ريلز شهرياً:</span>
-                <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''} onchange="calculateModalTotal()">
+                <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''}>
                     ${generateReelsOptions(reelsCountVal)}
                 </select>
             </label>
-            <span class="service-price" id="reels_price_text">$${reelsCountVal * REEL_PRICE_PER_UNIT}</span>
+            <span class="service-price">$5 / ريل</span>
         </div>
         <div class="service-row">
             <label class="service-left">
-                <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''} onchange="calculateModalTotal()">
+                <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
                 <span>التفاعل والرد على التعليقات</span>
             </label>
             <span class="service-price">$15</span>
         </div>
         <div class="service-row">
             <label class="service-left">
-                <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''} onchange="calculateModalTotal()">
+                <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''}>
                 <span>الرد على الرسائل الخاصة</span>
             </label>
             <span class="service-price">$20</span>
@@ -297,34 +235,15 @@ function toggleReelsDropdown() {
     const isChecked = document.getElementById('srv_reels').checked;
     const select = document.getElementById('reels_count');
     select.disabled = !isChecked;
-    calculateModalTotal();
-}
-
-function calculateModalTotal() {
-    const postsChecked = document.getElementById('srv_posts').checked;
-    const reelsChecked = document.getElementById('srv_reels').checked;
-    const reelsCount = parseInt(document.getElementById('reels_count').value) || 5;
-    const commentsChecked = document.getElementById('srv_comments').checked;
-    const messagesChecked = document.getElementById('srv_messages').checked;
-
-    let subTotal = 0;
-    if (postsChecked) subTotal += 25;
-    if (reelsChecked) {
-        const rCost = reelsCount * REEL_PRICE_PER_UNIT;
-        subTotal += rCost;
-        document.getElementById('reels_price_text').textContent = `$${rCost}`;
-    } else {
-        document.getElementById('reels_price_text').textContent = `$0`;
-    }
-    if (commentsChecked) subTotal += 15;
-    if (messagesChecked) subTotal += 20;
 }
 
 function closeAuthModal() {
     document.getElementById('authModal').style.display = 'none';
 }
 
-// تأكيد الحفظ للخدمات الأربع عبر الـ API
+// عند تأكيد اختيار الخدمات في النافذة:
+// 1. حفظ الاختيارات مؤقتاً عبر الـ API
+// 2. الانتقال لربط المنصة (سواء ميتا أو غيرها)
 async function confirmPlatformSelection() {
     if (!currentPlatformKey) return;
 
@@ -335,41 +254,44 @@ async function confirmPlatformSelection() {
     const messages = document.getElementById('srv_messages').checked;
 
     const existingRecord = activePlatforms[currentPlatformKey] ? activePlatforms[currentPlatformKey].raw : null;
-    
-    if (!existingRecord || !existingRecord.account_id) {
-        alert("يرجى ربط المنصة أساساً (تسجيل الدخول عبر الحساب) قبل تعديل الخدمات.");
-        closeAuthModal();
-        return;
-    }
+    const accountId = existingRecord ? existingRecord.account_id : 0;
+
+    const selectedBrandId = localStorage.getItem("selected_brand_id");
 
     try {
-        const res = await fetch("https://api.protonag.com/social/meta/update-services", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
-            },
-            body: JSON.stringify({
-                account_id: existingRecord.account_id,
-                posts: posts,
-                reels: reels,
-                rc: rc,
-                comments: comments,
-                messages: messages
-            }),
-            credentials: 'include'
-        });
+        // حفظ خيارات الخدمات أولاً إذا كان الحساب مربوطاً مسبقاً
+        if (accountId) {
+            await fetch("https://api.protonag.com/social/meta/update-services", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
+                },
+                body: JSON.stringify({ account_id: accountId, posts, reels, rc, comments, messages }),
+                credentials: 'include'
+            });
+        }
 
-        if (res.ok) {
-            closeAuthModal();
-            const activeBrand = localStorage.getItem("selected_brand_id");
-            if (activeBrand) await loadBrandConnections(activeBrand);
+        closeAuthModal();
+
+        // التوجيه للربط الفعلي حسب المنصة
+        if (currentPlatformKey === 'facebook' || currentPlatformKey === 'instagram') {
+            const res = await fetch(`https://api.protonag.com/social/meta/login/${selectedBrandId}`, {
+                method: "GET",
+                headers: { "Authorization": "Bearer " + (localStorage.getItem("access_token") || "") },
+                credentials: 'include'
+            });
+            if (res.ok) {
+                const data = await res.json();
+                if (data.auth_url) window.location.href = data.auth_url;
+            }
         } else {
-            alert("حدث خطأ أثناء حفظ تفاصيل الخدمات.");
+            // منصات أخرى مستقبلاً مثل تيكتوك وغيرها
+            alert("سيتم ربط هذه المنصة قريباً.");
         }
     } catch (err) {
-        console.error("Error saving services:", err);
-        alert("تعذر الاتصال بالخادم.");
+        console.error("Error in confirmation:", err);
+        alert("حدث خطأ، يرجى المحاولة مرة أخرى.");
     }
 }
 
@@ -395,6 +317,6 @@ function redirectToWhatsApp() {
     message += `- عدد المنصات المربوطة: ${count}\n`;
     message += `- الإجمالي الشهري: $${total}\n\nيرجى استكمال إجراءات التفعيل.`;
 
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    const url = `https://wa.me/+201066581983?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
 }
