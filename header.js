@@ -1,5 +1,5 @@
 (function() {
-    // 1. حقن تنسيقات الـ CSS الخاصة بالهيدر والقوائم المنسدلة مع توحيد أبعاد الأزرار
+    // 1. حقن تنسيقات الـ CSS الخاصة بالهيدر والقوائم المنسدلة
     const style = document.createElement('style');
     style.innerHTML = `
         .proton-global-header {
@@ -23,11 +23,10 @@
         .proton-header-btn {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
             background: rgba(20, 20, 20, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 50px;
             color: #fff;
             text-decoration: none;
@@ -36,8 +35,6 @@
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
             cursor: pointer;
-            box-sizing: border-box;
-            white-space: nowrap;
         }
         .proton-header-btn:hover {
             border-color: rgba(0, 255, 200, 0.5);
@@ -49,7 +46,6 @@
             height: 20px !important;
             border-radius: 50%;
             object-fit: cover;
-            flex-shrink: 0;
         }
         .proton-dropdown-container {
             position: relative;
@@ -154,11 +150,13 @@
         checkUserAuthState();
     });
 
+    // دالة لاستخراج التوكن وحفظه بالمتصفح
     function getAuthToken() {
         const urlParams = new URLSearchParams(window.location.search);
         const tokenParam = urlParams.get('token');
         if (tokenParam) {
             localStorage.setItem('access_token', tokenParam);
+            // إزالة التوكن من الـ URL لتنظيفه
             urlParams.delete('token');
             const newRelativePathQuery = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
             window.history.replaceState(null, '', newRelativePathQuery);
@@ -190,6 +188,7 @@
         }
 
         try {
+            // استخدام رابط الـ API الصحيح المتوافق مع الـ Backend (/auth/me)
             const response = await fetch('https://api.protonag.com/auth/me', {
                 method: 'GET',
                 headers: {
@@ -202,16 +201,16 @@
             if (response.ok) {
                 const data = await response.json();
                 
+                // تخزين معرف المستخدم والبيانات محلياً للاعتماد عليها مباشرة
                 if (data.user_id) {
                     localStorage.setItem('user_id', data.user_id);
                 }
-                
-                // جلب الاسم الأول فقط حصرياً من user_name أو البديل full_name
-                let rawName = data.user_name || data.full_name || 'حسابي';
-                let firstName = rawName.trim().split(' ')[0];
-
-                localStorage.setItem('user_name', firstName);
-                userAuthText.textContent = firstName;
+                if (data.full_name) {
+                    localStorage.setItem('user_name', data.full_name);
+                    userAuthText.textContent = data.full_name.split(' ')[0];
+                } else {
+                    userAuthText.textContent = 'حسابي';
+                }
                 
                 if (data.profile_picture) {
                     localStorage.setItem('user_picture', data.profile_picture);
@@ -238,11 +237,12 @@
                 });
 
             } else {
+                // إذا انتهت صلاحية التوكن، نحاول الاعتماد على البيانات المخزنة مؤقتاً أو تسجيل الخروج
                 const cachedName = localStorage.getItem('user_name');
                 const cachedPic = localStorage.getItem('user_picture');
                 
                 if (cachedName && cachedPic) {
-                    userAuthText.textContent = cachedName;
+                    userAuthText.textContent = cachedName.split(' ')[0];
                     userAvatarIcon.src = cachedPic;
                 } else {
                     throw new Error("Invalid session");
