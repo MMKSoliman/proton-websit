@@ -205,9 +205,9 @@
                 if (data.user_id) {
                     localStorage.setItem('user_id', data.user_id);
                 }
-                if (data.user_name) {
-                    localStorage.setItem('client_name', data.user_name);
-                    userAuthText.textContent = data.user_name.split(' ')[0];
+                if (data.full_name) {
+                    localStorage.setItem('user_name', data.full_name);
+                    userAuthText.textContent = data.full_name.split(' ')[0];
                 } else {
                     userAuthText.textContent = 'حسابي';
                 }
@@ -230,7 +230,7 @@
                     e.preventDefault();
                     localStorage.removeItem('access_token');
                     localStorage.removeItem('user_id');
-                    localStorage.removeItem('client_name');
+                    localStorage.removeItem('user_name');
                     localStorage.removeItem('user_picture');
                     document.cookie = 'access_token=; Max-Age=0; path=/;';
                     window.location.href = './auth.html';
@@ -238,7 +238,7 @@
 
             } else {
                 // إذا انتهت صلاحية التوكن، نحاول الاعتماد على البيانات المخزنة مؤقتاً أو تسجيل الخروج
-                const cachedName = localStorage.getItem('client_name');
+                const cachedName = localStorage.getItem('user_name');
                 const cachedPic = localStorage.getItem('user_picture');
                 
                 if (cachedName && cachedPic) {
@@ -252,7 +252,7 @@
             console.error("Auth check error:", err);
             localStorage.removeItem('access_token');
             localStorage.removeItem('user_id');
-            localStorage.removeItem('client_name');
+            localStorage.removeItem('user_name');
             localStorage.removeItem('user_picture');
             setUserLoggedOut(userAuthText, userAvatarIcon, userMenu, settingsLink, privacyLink, termsLink);
         }
