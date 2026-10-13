@@ -1,47 +1,33 @@
-<!-- Sidebar Container (Floating & Dark Glassmorphism) -->
-<aside id="app-sidebar" class="fixed right-4 top-4 bottom-4 w-72 bg-[#121214]/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col z-50 p-4 transition-all duration-300">
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // إزالة أي سايدبار قديم تقليدي لتجنب التداخل
+    document.querySelectorAll('aside:not(#floating-sidebar), .sidebar').forEach(el => el.remove());
+
+    const sleekSidebar = `
+    <aside id="floating-sidebar" style="position: fixed; right: 16px; top: 16px; bottom: 16px; width: 280px; background: rgba(18, 18, 20, 0.75); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; z-index: 9999; padding: 20px; font-family: inherit; direction: rtl;">
+        <div style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: space-between;">
+            <span style="color: #ffffff; font-weight: bold; font-size: 16px;">لوحة التحكم</span>
+            <span style="width: 8px; height: 8px; background: #22d3ee; border-radius: 50%; box-shadow: 0 0 10px rgba(34,211,238,0.8);"></span>
+        </div>
+        <nav style="flex: 1; display: flex; flex-direction: column; gap: 12px; overflow-y: auto;">
+            <a href="connect-social.html" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; color: #ffffff; text-decoration: none; font-size: 14px; transition: all 0.3s;">
+                <span>إدارة المنصات</span>
+                <span style="width: 6px; height: 6px; background: #22d3ee; border-radius: 50%;"></span>
+            </a>
+        </nav>
+        <div style="margin-top: auto; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; gap: 10px;">
+            <div style="padding: 10px; background: rgba(34, 211, 238, 0.05); border: 1px solid rgba(34, 211, 238, 0.15); border-radius: 10px; text-align: center;">
+                <span style="font-size: 11px; color: #22d3ee; display: block; font-weight: 600;">الباقة الحالية</span>
+                <span style="font-size: 13px; color: #ffffff; font-weight: bold;">شهرياً</span>
+            </div>
+            <button style="width: 100%; padding: 10px; border: none; border-radius: 10px; background: linear-gradient(135deg, #06b6d4, #3b82f6); color: #ffffff; font-weight: 600; font-size: 13px; cursor: pointer; box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);">ترقية الآن</button>
+        </div>
+    </aside>`;
+    document.body.insertAdjacentHTML('beforeend', sleekSidebar);
     
-    <!-- Header / Brand Selector Area -->
-    <div class="mb-6 pb-4 border-b border-white/10">
-        <div id="brand-selector-container" class="w-full">
-            <!-- يتم حقن قائمة العلامات التجارية أو القائمة المنسدلة هنا -->
-        </div>
-    </div>
-
-    <!-- Navigation / Platform Links Area -->
-    <nav class="flex-1 space-y-3 overflow-y-auto pr-1 custom-scrollbar">
-        <a href="connect-social.html" class="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-cyan-500/30 text-white transition-all group">
-            <span class="text-sm font-medium">إدارة المنصات</span>
-            <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.6)]"></span>
-        </a>
-        <!-- بقية روابط القائمة بنفس التصميم العصري -->
-    </nav>
-
-    <!-- Footer / Subscription or Action Area -->
-    <div class="mt-auto pt-4 border-t border-white/10 space-y-2">
-        <div class="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-center">
-            <span class="text-xs text-cyan-400 font-semibold block">الباقة الحالية</span>
-            <span class="text-sm text-white font-bold">شهرياً</span>
-        </div>
-        <button class="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium text-sm shadow-lg shadow-cyan-500/20 hover:opacity-95 transition-all">
-            ترقية الآن
-        </button>
-    </div>
-</aside>
-
-<style>
-    /* تخصيص السكرول بار ليكون ناعماً ومتوافقاً مع التصميم الداكن */
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 4px;
+    // إضافة مسافة يسار/يمين للمحتوى الرئيسي لكي لا يختفي تحته
+    if(document.body.firstElementChild) {
+        document.body.style.paddingRight = "310px";
     }
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 4px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.2);
-    }
-</style>
+});
+</script>
