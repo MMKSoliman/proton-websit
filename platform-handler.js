@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     if (!brandSelector) return;
 
-    // جلب قائمة الأنشطة والبراندات
     try {
         const response = await fetch("https://api.protonag.com/brands/my-brands", {
             method: "GET",
@@ -43,8 +42,6 @@ document.addEventListener("DOMContentLoaded", async function() {
                 brandSelector.value = savedBrandId;
                 await loadBrandConnections(savedBrandId);
             }
-        } else {
-            brandSelector.innerHTML = '<option value="">لا توجد أنشطة مسجلة</option>';
         }
     } catch (error) {
         console.error("Error fetching brands:", error);
@@ -67,13 +64,13 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     });
 
-    // معالجة العودة بعد المصادقة الناجحة من ميتا
+    // معالجة العودة بعد المصادقة وتطبيق الخدمة المحفوظة مسبقاً
     const urlParams = new URLSearchParams(window.location.search);
-    const connectedPlatform = urlParams.get('connected');
-    if (connectedPlatform) {
+    if (urlParams.get('connected')) {
         const activeBrand = localStorage.getItem("selected_brand_id");
         if (activeBrand) {
             await loadBrandConnections(activeBrand);
+            await applyPendingSavedServices();
         }
     }
 });
@@ -124,7 +121,6 @@ async function loadBrandConnections(brandId) {
                     if (btn) {
                         btn.textContent = `تم الربط ($${pTotal})`;
                         btn.classList.add('connected');
-                        // عند الضغط على الزر بعد الربط، يعيد فتح نافذة إعدادات وتعديل الخدمات
                         btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
                     }
                     if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
@@ -171,7 +167,6 @@ function resetPlatformsUI() {
     updateMainSummary();
 }
 
-// فتح نافذة اختيار وتحديد الخدمات أولاً (سواء قبل الربط أو لتعديلها بعد الربط)
 function openPlatformModal(key, title, iconUrl) {
     const selectedBrandId = localStorage.getItem("selected_brand_id");
     if (!selectedBrandId) {
@@ -248,8 +243,6 @@ function closeAuthModal() {
     document.getElementById('authModal').style.display = 'none';
 }
 
-// عند تأكيد اختيار الخدمات في النافذة:
-// حفظ الخيارات ثم التوجيه مباشرة لمصادقة المنصة (ميتا أو غيرها)
 async function confirmPlatformSelection() {
     if (!currentPlatformKey) return;
 
@@ -259,42 +252,80 @@ async function confirmPlatformSelection() {
     const comments = document.getElementById('srv_comments').checked;
     const messages = document.getElementById('srv_messages').checked;
 
-    const existingRecord = activePlatforms[currentPlatformKey] ? activePlatforms[currentPlatformKey].raw : null;
-    const accountId = existingRecord ? existingRecord.account_id : 0;
     const selectedBrandId = localStorage.getItem("selected_brand_id");
+    const existingRecord = activePlatforms[currentPlatformKey] ? activePlatforms[currentPlatformKey].raw : null;
+
+    // حفظ الاختيارات مؤقتاً لتطبيقها بعد الرجوع من OAuth
+    localStorage.setItem("pending_services", JSON.stringify({
+        platform: currentPlatformKey,
+        posts, reels, rc, comments, messages
+    }));
+
+    if (existingRecord && existingRecord.account_id) {
+        // تحديث المربوط حالياً مباشرةً
+        await fetch("https://api.protonag.com/social/meta/update-services", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
+            },
+            body: JSON.stringify({ account_id: existingRecord.account_id, posts, reels, rc, comments, messages }),
+            credentials: 'include'
+        });
+        closeAuthModal();
+        await loadBrandConnections(selectedBrandId);
+        return;
+    }
+
+    closeAuthModal();
+
+    // التوجيه لمصادقة ميتا عند الربط لأول مرة
+    if (currentPlatformKey === 'facebook' || currentPlatformKey === 'instagram') {
+        const res = await fetch(`https://api.protonag.com/social/meta/login/${selectedBrandId}`, {
+            method: "GET",
+            headers: { "Authorization": "Bearer " + (localStorage.getItem("access_token") || "") },
+            credentials: 'include'
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (data.auth_url) window.location.href = data.auth_url;
+        }
+    }
+}
+
+// تطبيق الخدمة المحفوظة مسبقاً عند العودة فوراً
+async function applyPendingSavedServices() {
+    const pendingStr = localStorage.getItem("pending_services");
+    if (!pendingStr) return;
 
     try {
-        if (accountId) {
+        const pending = JSON.parse(pendingStr);
+        const record = activePlatforms[pending.platform] ? activePlatforms[pending.platform].raw : null;
+
+        if (record && record.account_id) {
             await fetch("https://api.protonag.com/social/meta/update-services", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
                 },
-                body: JSON.stringify({ account_id: accountId, posts, reels, rc, comments, messages }),
+                body: JSON.stringify({
+                    account_id: record.account_id,
+                    posts: pending.posts,
+                    reels: pending.reels,
+                    rc: pending.rc,
+                    comments: pending.comments,
+                    messages: pending.messages
+                }),
                 credentials: 'include'
             });
-        }
 
-        closeAuthModal();
-
-        // التوجيه للربط الفعلي مع ميتا
-        if (currentPlatformKey === 'facebook' || currentPlatformKey === 'instagram') {
-            const res = await fetch(`https://api.protonag.com/social/meta/login/${selectedBrandId}`, {
-                method: "GET",
-                headers: { "Authorization": "Bearer " + (localStorage.getItem("access_token") || "") },
-                credentials: 'include'
-            });
-            if (res.ok) {
-                const data = await res.json();
-                if (data.auth_url) window.location.href = data.auth_url;
-            }
-        } else {
-            alert("ربط هذه المنصة سيكون متاحاً قريباً.");
+            localStorage.removeItem("pending_services");
+            const activeBrand = localStorage.getItem("selected_brand_id");
+            if (activeBrand) await loadBrandConnections(activeBrand);
         }
-    } catch (err) {
-        console.error("Error in confirmation:", err);
-        alert("حدث خطأ، يرجى المحاولة مرة أخرى.");
+    } catch (e) {
+        console.error("Error applying pending services:", e);
     }
 }
 
