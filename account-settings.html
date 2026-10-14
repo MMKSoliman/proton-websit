@@ -86,7 +86,7 @@
                 const data = await response.json();
                 
                 // تعبئة الحقول بالبيانات القادمة من قاعدة البيانات (مع إخفاء أي معرف تنظيمي تماماً)
-                document.getElementById("fullNameInput").value = data.full_name || "";
+                document.getElementById("fullNameInput").value = data.user_name || "";
                 document.getElementById("emailInput").value = data.email || "";
 
             } catch (error) {
