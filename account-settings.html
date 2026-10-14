@@ -25,17 +25,17 @@
                 <!-- نموذج تعديل البيانات الشخصية المطلوبة -->
                 <form id="profileForm" onsubmit="handleProfileUpdate(event)">
                     <div class="form-group">
-                        <label for="userNameInput">الاسم الشخصي (User Name)</label>
+                        <label for="userNameInput">الاسم الشخصي</label>
                         <input type="text" id="userNameInput" class="form-control" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="pEmailInput">البريد الإلكتروني للتواصل (P-Email)</label>
+                        <label for="pEmailInput">البريد الإلكتروني</label>
                         <input type="email" id="pEmailInput" class="form-control" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="userPhoneInput">رقم هاتف التواصل (Phone Number)</label>
+                        <label for="userPhoneInput">رقم الهاتف</label>
                         <input type="text" id="userPhoneInput" class="form-control" required placeholder="+201000000000">
                     </div>
 
@@ -104,9 +104,9 @@
                 const data = await response.json();
                 
                 // تعبئة الحقول بالمتغيرات المطلوبة بما فيها رقم الهاتف
-                document.getElementById("userNameInput").value = data.user_name || data.full_name || "";
-                document.getElementById("pEmailInput").value = data.p_email || data.email || "";
-                document.getElementById("userPhoneInput").value = data.user_phone_number || data.phone || data.phone_number || "";
+                document.getElementById("userNameInput").value = data.user_name || "";
+                document.getElementById("pEmailInput").value = data.p_email || "";
+                document.getElementById("userPhoneInput").value = data.user_phone_number || "";
 
             } catch (error) {
                 console.error(error);
