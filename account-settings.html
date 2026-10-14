@@ -86,29 +86,15 @@
         // دالة لجلب بيانات المستخدم الحالية وعرضها في الحقول بدقة
         async function fetchUserData() {
             const token = localStorage.getItem("access_token");
-            if (!token) {
-                window.location.href = "./auth.html";
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/auth/me`, {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
-
-                if (!response.ok) throw new Error("فشل في جلب بيانات الحساب");
-
-                const data = await response.json();
+            const data = await response.json();
                 
                 // جلب القيم من كافة الاحتمالات المتاحة في قاعدة البيانات لضمان ظهورها
                 document.getElementById("userNameInput").value = data.user_name || "";
                 document.getElementById("pEmailInput").value = data.p_email || "";
                 document.getElementById("userPhoneInput").value = data.user_phone_number || "";
 
-            } catch (error) {
+            }
+            catch (error) {
                 console.error(error);
                 alert("انتهت صلاحية الجلسة أو حدث خطأ، يرجى تسجيل الدخول مرة أخرى.");
                 localStorage.removeItem("access_token");
@@ -117,13 +103,21 @@
         }
 
         // دالة تحديث الملف الشخصي وإرسال جميع مسميات الحقول لضمان تحديثها في قاعدة البيانات
-        async function handleProfileUpdate(e) {
+        async function handleOnboardingSubmit(e) {
             e.preventDefault();
-            const token = localStorage.getItem("access_token");
-            
-            const newUserName = document.getElementById("userNameInput").value;
-            const newEmail = document.getElementById("pEmailInput").value;
-            const newPhone = document.getElementById("userPhoneInput").value;
+
+            const formData = new FormData();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const tokenParam = urlParams.get('token');
+            if (tokenParam) {
+                document.cookie = `access_token=${tokenParam}; path=/; secure; samesite=strict`;
+            }
+
+            formData.append('user_name', document.getElementById('user_name').value);
+            formData.append('user_phone_number', document.getElementById('user_phone_number').value);
+            formData.append('p_email', document.getElementById('p_email').value);
+
 
             const formData = new FormData();
             // إرسال كافة المسميات المرتبطة بالجدول لتغطية أي شرط في الفحص بالباك إند
