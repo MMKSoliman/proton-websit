@@ -30,8 +30,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="emailInput">البريد الإلكتروني</label>
-                        <input type="email" id="emailInput" class="form-control" required>
+                        <label for="p_emailInput">البريد الإلكتروني</label>
+                        <input type="p_email" id="p_emailInput" class="form-control" required>
                     </div>
 
                     <button type="submit" class="btn-submit" style="margin-top: 1rem;">حفظ التعديلات الشخصية</button>
@@ -88,7 +88,7 @@
                 
                 // تعبئة الحقول بالبيانات القادمة من قاعدة البيانات (مع إخفاء أي معرف تنظيمي تماماً)
                 document.getElementById("fullNameInput").value = data.user_name || "";
-                document.getElementById("emailInput").value = data.p_email || "";
+                document.getElementById("p_emailInput").value = data.p_p_email || "";
 
             } catch (error) {
                 console.error(error);
@@ -103,7 +103,7 @@
             e.preventDefault();
             const token = localStorage.getItem("access_token");
             const fullName = document.getElementById("fullNameInput").value;
-            const email = document.getElementById("emailInput").value;
+            const p_email = document.getElementById("p_emailInput").value;
 
             try {
                 const response = await fetch(`${API_BASE_URL}/auth/profile`, {
@@ -112,7 +112,7 @@
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`
                     },
-                    body: JSON.stringify({ user_name: fullName, p_email: email })
+                    body: JSON.stringify({ user_name: fullName, p_p_email: p_email })
                 });
 
                 const data = await response.json();
