@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إعدادات الحساب - Proton</title>
-    <link rel="icon" type="image/png" href="./favicon.png">
     <!-- ملف الـ CSS الموحد للموقع -->
     <link rel="stylesheet" href="./style.css">
 </head>
@@ -22,16 +21,21 @@
                     <p class="card-subtitle" style="margin: 0 auto 1.5rem auto;">قم بتحديث بياناتك الشخصية، معلومات التواصل، أو كلمة المرور الخاصة بك بكل سهولة.</p>
                 </div>
 
-                <!-- نموذج تعديل البيانات الشخصية -->
+                <!-- نموذج تعديل البيانات الشخصية المطلوبة -->
                 <form id="profileForm" onsubmit="handleProfileUpdate(event)">
                     <div class="form-group">
-                        <label for="fullNameInput">الاسم بالكامل</label>
-                        <input type="text" id="fullNameInput" class="form-control" required>
+                        <label for="userNameInput">الاسم الشخصي (User Name)</label>
+                        <input type="text" id="userNameInput" class="form-control" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="emailInput">البريد الإلكتروني</label>
-                        <input type="email" id="emailInput" class="form-control" required>
+                        <label for="pEmailInput">البريد الإلكتروني للتواصل (P-Email)</label>
+                        <input type="email" id="pEmailInput" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userPhoneInput">رقم هاتف التواصل (Phone Number)</label>
+                        <input type="text" id="userPhoneInput" class="form-control" required placeholder="+201000000000">
                     </div>
 
                     <button type="submit" class="btn-submit" style="margin-top: 1rem;">حفظ التعديلات الشخصية</button>
@@ -61,12 +65,19 @@
     </div>
 
     <!-- السكريبتات الأساسية وحماية الصفحة -->
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-container').innerHTML = data;
+            });
+    </script>
     <script src="./header.js" defer></script>
     <script src="./auth-guard.js"></script>
     <script>
         const API_BASE_URL = "https://api.protonag.com";
 
-        // دالة لجلب بيانات المستخدم الحالية ووضعها في الحقول عند فتح الصفحة
+        // دالة لجلب بيانات المستخدم الحالية ووضعها في الحقول بدقة
         async function fetchUserData() {
             const token = localStorage.getItem("access_token");
             if (!token) {
@@ -86,9 +97,10 @@
 
                 const data = await response.json();
                 
-                // تعبئة الحقول بالبيانات القادمة من قاعدة البيانات (مع إخفاء أي معرف تنظيمي تماماً)
-                document.getElementById("fullNameInput").value = data.full_name || "";
-                document.getElementById("emailInput").value = data.email || "";
+                // تعبئة الحقول بالمتغيرات المطلوبة (user_name, p_email, user_phone_number) مع الاعتماد على بدائل احتياطية
+                document.getElementById("userNameInput").value = data.user_name || data.full_name || "";
+                document.getElementById("pEmailInput").value = data.p_email || data.email || "";
+                document.getElementById("userPhoneInput").value = data.user_phone_number || data.phone || data.phone_number || "";
 
             } catch (error) {
                 console.error(error);
@@ -98,12 +110,16 @@
             }
         }
 
-        // دالة تحديث الملف الشخصي (الاسم والإيميل)
+        // دالة تحديث الملف الشخصي وإرسال البيانات الجديدة للباك اند
         async function handleProfileUpdate(e) {
             e.preventDefault();
             const token = localStorage.getItem("access_token");
-            const fullName = document.getElementById("fullNameInput").value;
-            const email = document.getElementById("emailInput").value;
+            
+            const payload = {
+                user_name: document.getElementById("userNameInput").value,
+                p_email: document.getElementById("pEmailInput").value,
+                user_phone_number: document.getElementById("userPhoneInput").value
+            };
 
             try {
                 const response = await fetch(`${API_BASE_URL}/auth/profile`, {
@@ -112,7 +128,7 @@
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`
                     },
-                    body: JSON.stringify({ full_name: fullName, email: email })
+                    body: JSON.stringify(payload)
                 });
 
                 const data = await response.json();
@@ -124,7 +140,7 @@
             }
         }
 
-        // دالة تغيير كلمة المرور أو ربط حساب جوجل/فيس بوك بكلمة مرور عادية
+        // دالة تغيير كلمة المرور
         async function handlePasswordChange(e) {
             e.preventDefault();
             const token = localStorage.getItem("access_token");
