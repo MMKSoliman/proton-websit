@@ -83,7 +83,7 @@
     <script>
         const API_BASE_URL = "https://api.protonag.com";
 
-        // دالة لجلب بيانات المستخدم الحالية وعرضها في الحقول بدقة (مع دعم كافة البدائل المحتملة للاستجابة)
+        // دالة لجلب بيانات المستخدم الحالية وعرضها في الحقول بدقة
         async function fetchUserData() {
             const token = localStorage.getItem("access_token");
             if (!token) {
@@ -103,7 +103,7 @@
 
                 const data = await response.json();
                 
-                // تعبئة الحقول بالقيم الصحيحة مع جلب البدائل تلقائياً لتجنب ظهور حقول فارغة
+                // جلب القيم من كافة الاحتمالات المتاحة في قاعدة البيانات لضمان ظهورها
                 document.getElementById("userNameInput").value = data.user_name || data.full_name || "";
                 document.getElementById("pEmailInput").value = data.p_email || data.email || "";
                 document.getElementById("userPhoneInput").value = data.user_phone_number || data.phone || data.phone_number || "";
@@ -116,19 +116,24 @@
             }
         }
 
-        // دالة تحديث الملف الشخصي وإرسال البيانات المتوافقة تماماً مع الـ Onboarding Endpoint
+        // دالة تحديث الملف الشخصي وإرسال جميع مسميات الحقول لضمان تحديثها في قاعدة البيانات
         async function handleProfileUpdate(e) {
             e.preventDefault();
             const token = localStorage.getItem("access_token");
             
-            const formData = new FormData();
-            formData.append('user_name', document.getElementById("userNameInput").value);
-            formData.append('full_name', document.getElementById("userNameInput").value);
-            formData.append('p_email', document.getElementById("pEmailInput").value);
-            formData.append('email', document.getElementById("pEmailInput").value);
-            formData.append('user_phone_number', document.getElementById("userPhoneInput").value);
+            const newUserName = document.getElementById("userNameInput").value;
+            const newEmail = document.getElementById("pEmailInput").value;
+            const newPhone = document.getElementById("userPhoneInput").value;
 
-            // إرسال قيم وهمية لحقول البراند الإجبارية لكي يتخطى الباك إند التحقق بدون إنشاء براند جديد أو التأثير على البراندات الحالية
+            const formData = new FormData();
+            // إرسال كافة المسميات المرتبطة بالجدول لتغطية أي شرط في الفحص بالباك إند
+            formData.append('user_name', newUserName);
+            formData.append('full_name', newUserName);
+            formData.append('p_email', newEmail);
+            formData.append('email', newEmail);
+            formData.append('user_phone_number', newPhone);
+
+            // حقول البراند الوهمية لتجاوز فحص الـ onboarding دون التأثير على البراندات الحالية
             formData.append('brand_name', 'Update_Profile_Temp');
             formData.append('brand_type', 'N/A');
             formData.append('niche', 'N/A');
