@@ -25,17 +25,17 @@
                 <!-- نموذج تعديل البيانات الشخصية المطلوبة -->
                 <form id="profileForm" onsubmit="handleProfileUpdate(event)">
                     <div class="form-group">
-                        <label for="userNameInput">الاسم الشخصي (User Name)</label>
+                        <label for="userNameInput">الاسم الشخصي</label>
                         <input type="text" id="userNameInput" class="form-control" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="pEmailInput">البريد الإلكتروني للتواصل (P-Email)</label>
+                        <label for="pEmailInput">البريد الإلكتروني للتواصل</label>
                         <input type="email" id="pEmailInput" class="form-control" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="userPhoneInput">رقم هاتف التواصل (Phone Number)</label>
+                        <label for="userPhoneInput">رقم هاتف التواصل</label>
                         <input type="text" id="userPhoneInput" class="form-control" required placeholder="+201000000000">
                     </div>
 
@@ -82,12 +82,12 @@
         async function fetchUserData() {
             const token = localStorage.getItem("access_token");
             if (!token) {
-                window.location.href = "./auth.html";
+                window.location.href = "./onboarding.html";
                 return;
             }
 
             try {
-                const response = await fetch(`${API_BASE_URL}/auth/me`, {
+                const response = await fetch('https://api.protonag.com/onboarding/save', {
                     method: "GET",
                     headers: {
                         "Authorization": `Bearer ${token}`
@@ -127,7 +127,7 @@
 
             try {
                 // إرسال البيانات إلى مسار الـ onboarding الذي يتولى تخزين هذه المتغيرات في قاعدة البيانات
-                const response = await fetch(`${API_BASE_URL}/onboarding/save`, {
+                const response = await fetch('https://api.protonag.com/onboarding/save', {
                     method: "POST",
                     headers: {
                         "Authorization": `Bearer ${token}`
@@ -161,7 +161,7 @@
             const newPassword = document.getElementById("newPasswordInput").value;
 
             try {
-                const response = await fetch(`${API_BASE_URL}/auth/change-password`, {
+                const response = await fetch('https://api.protonag.com/auth/change-password', {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
