@@ -8,38 +8,38 @@
     <!-- ملف الـ CSS الموحد للموقع -->
     <link rel="stylesheet" href="./style.css">
     <style>
-        .policy-container {
-            max-width: 900px !important;
+        .policy-card {
+            max-width: 800px !important;
+            width: 100%;
             text-align: right;
-            line-height: 1.8;
             padding: 2.5rem 2rem;
+            margin-bottom: 2rem;
         }
-        .policy-container h2 {
+        .policy-card h2 {
             color: var(--accent-cyan);
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             margin-top: 1.8rem;
             margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
-        .policy-container p, .policy-container li {
-            font-size: 0.92rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 0.8rem;
+        .policy-card p, .policy-card li {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.82);
+            line-height: 1.7;
+            margin-bottom: 0.7rem;
         }
-        .policy-container ul {
+        .policy-card ul {
             padding-right: 1.5rem;
             margin-bottom: 1rem;
         }
         .policy-intro {
-            font-size: 0.98rem;
+            font-size: 0.95rem;
             color: rgba(255, 255, 255, 0.9);
             background: rgba(0, 229, 255, 0.04);
             border-right: 3px solid var(--accent-cyan);
             padding: 1rem;
             border-radius: 6px;
             margin-bottom: 1.5rem;
+            line-height: 1.7;
         }
     </style>
 </head>
@@ -50,11 +50,11 @@
         <div id="header-container" class="top-header"></div>
 
         <!-- محتوى صفحة سياسة الخصوصية -->
-        <div class="center-content">
-            <div class="dashboard-card auth-card policy-container">
+        <div class="center-content" style="max-width: 800px;">
+            <div class="dashboard-card policy-card">
                 <div class="card-header">
-                    <h2 class="card-title" style="font-size: 1.8rem;">سياسة الخصوصية وحماية البيانات</h2>
-                    <p class="card-subtitle" style="margin: 0.5rem auto 0 auto;">نلتزم في Proton بحماية خصوصية بياناتك وأمان معلوماتك بأعلى معايير الحماية الرقمية.</p>
+                    <h2 class="card-title" style="font-size: 1.6rem;">سياسة الخصوصية وحماية البيانات</h2>
+                    <p class="card-subtitle">نلتزم في Proton بحماية خصوصية بياناتك وأمان معلوماتك بأعلى معايير الحماية الرقمية.</p>
                 </div>
 
                 <div class="policy-intro">
@@ -74,7 +74,7 @@
                 </ul>
 
                 <h2>3. حماية وأمن الحسابات الشخصية والبنكية</h2>
-                <p>نطبق أحدث تقنيات التشفير وبروتوكولات الأمان (مثل HTTPS وتشفير قواعد البيانات) لضمان عدم الوصول غيرAuthorized، أو التعديل، أو الإفصاح عن بياناتك الشخصية أو البنكية. كما نحتفظ بمعرفات العملاء في بيئة تنظيمية داخلية معزولة تماماً عن العرض الخارجي.</p>
+                <p>نطبق أحدث تقنيات التشفير وبروتوكولات الأمان لضمان عدم الوصول غير المصرح به، أو التعديل، أو الإفصاح عن بياناتك الشخصية أو البنكية. كما نحتفظ بمعرفات العملاء في بيئة تنظيمية داخلية معزولة تماماً عن العرض الخارجي.</p>
 
                 <h2>4. خصوصية صفحات ومنصات التواصل الاجتماعي</h2>
                 <p>عند ربط صفحاتك المختلفة بمنصات التواصل الاجتماعي عبر نظامنا:</p>
@@ -93,7 +93,7 @@
                 <h2>7. التحديثات على سياسة الخصوصية</h2>
                 <p>قد نقوم بتحديث سياسة الخصوصية من وقت لآخر مواكبةً للتطورات التقنية أو التنظيمية. سيتم إشعارك بأي تعديلات جوهرية عبر البريد الإلكتروني أو من خلال إشعار بارز داخل المنصة.</p>
 
-                <p style="margin-top: 2rem; font-size: 0.85rem; color: rgba(255, 255, 255, 0.5); text-align: center;">
+                <p style="margin-top: 2rem; font-size: 0.8rem; color: rgba(255, 255, 255, 0.45); text-align: center;">
                     آخر تحديث: أكتوبر 2026 • جميع الحقوق محفوظة لـ Proton
                 </p>
             </div>
