@@ -131,6 +131,7 @@ body, html {
 .form-group, .input-group {
     margin-bottom: 1.2rem;
     text-align: right;
+    width: 100%;
 }
 
 .form-group label, .input-group label {
@@ -149,6 +150,7 @@ body, html {
     color: #fff;
     font-size: 0.95rem;
     outline: none;
+    text-align: right;
     transition: border-color 0.2s ease;
 }
 
@@ -185,6 +187,7 @@ select.form-control option {
 .form-row {
     display: flex;
     gap: 1rem;
+    width: 100%;
 }
 
 .form-row .form-group {
@@ -265,39 +268,6 @@ select.form-control option {
     margin: 0 auto;
 }
 
-.btn-has-identity {
-    background: var(--primary-gradient);
-    color: #fff;
-    border: none;
-    padding: 11px 16px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.btn-pro-request {
-    background: linear-gradient(135deg, #ff8c00, #ffea00);
-    color: #000;
-    border: none;
-    padding: 14px 18px;
-    border-radius: 8px;
-    font-size: 0.98rem;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
-}
-
-.btn-skip-identity {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 11px 16px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    cursor: pointer;
-}
-
 .progress-container {
     width: 100%;
     height: 6px;
@@ -315,7 +285,7 @@ select.form-control option {
 }
 
 /* Buttons */
-.btn-submit, .btn-checkout, .btn-login {
+.btn-submit, .btn-checkout, .btn-login, .action-link, .btn-has-identity {
     width: 100%;
     padding: 12px;
     border-radius: 8px;
@@ -327,14 +297,19 @@ select.form-control option {
     cursor: pointer;
     transition: opacity 0.2s ease, transform 0.2s ease;
     text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
-.btn-submit:hover, .btn-checkout:hover, .btn-login:hover {
+.btn-submit:hover, .btn-checkout:hover, .btn-login:hover, .action-link:hover, .btn-has-identity:hover {
     opacity: 0.9;
     transform: translateY(-1px);
 }
 
-.btn-skip, .btn-secondary {
+.btn-skip, .btn-secondary, .btn-skip-identity {
     padding: 12px 20px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -343,6 +318,20 @@ select.form-control option {
     font-size: 0.88rem;
     cursor: pointer;
     text-decoration: none;
+    text-align: center;
+}
+
+.btn-pro-request {
+    background: linear-gradient(135deg, #ff8c00, #ffea00);
+    color: #000;
+    border: none;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 0.98rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+    width: 100%;
     text-align: center;
 }
 
@@ -798,36 +787,54 @@ footer, #footer-container {
     color: rgba(255, 255, 255, 0.5);
 }
 
-/* Responsive Media Queries */
+/* Responsive Media Queries - Optimized for Mobile & Desktop */
 @media (max-width: 768px) {
     .main-container {
         padding: 1rem 0.5rem;
     }
+    
     .connect-card, .dashboard-card, .auth-card, .onboarding-card, .login-box {
-        padding: 1.2rem 0.8rem;
+        padding: 1.2rem 1rem;
     }
+    
+    .form-row {
+        flex-direction: column !important;
+        gap: 0 !important;
+    }
+
     .platform-item {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.8rem;
     }
+    
     .platform-info, .platform-actions-group {
         width: 100%;
     }
+    
     .platform-actions-group {
         justify-content: space-between;
         flex-wrap: wrap;
     }
+    
     .brand-select-input {
         max-width: 100%;
         width: 100%;
     }
+    
     .total-summary-box {
         flex-direction: column;
         text-align: center;
         gap: 0.5rem;
     }
+    
     .actions-group, .btn-group, .modal-actions {
         flex-direction: column;
+    }
+    
+    .top-header {
+        padding: 10px 10px;
+        flex-direction: column;
+        gap: 10px;
     }
 }
