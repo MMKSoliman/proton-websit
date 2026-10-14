@@ -39,7 +39,7 @@
                         <input type="text" id="userPhoneInput" class="form-control" required placeholder="+201000000000">
                     </div>
 
-                    <button type="submit" class="btn-submit" style="margin-top: 1rem;">حفظ التعديلات الشخصية</button>
+                    <button type="submit" id="profileSubmitBtn" class="btn-submit" style="margin-top: 1rem;">حفظ التعديلات الشخصية</button>
                 </form>
 
                 <div class="divider">تغيير كلمة المرور</div>
@@ -98,7 +98,7 @@
 
                 const data = await response.json();
                 
-                // تعبئة الحقول بالمتغيرات المطلوبة (user_name, p_email, user_phone_number) مع الاعتماد على بدائل احتياطية
+                // تعبئة الحقول بالمتغيرات المطلوبة (user_name, p_email, user_phone_number)
                 document.getElementById("userNameInput").value = data.user_name || data.full_name || "";
                 document.getElementById("pEmailInput").value = data.p_email || data.email || "";
                 document.getElementById("userPhoneInput").value = data.user_phone_number || data.phone || data.phone_number || "";
@@ -111,33 +111,45 @@
             }
         }
 
-        // دالة تحديث الملف الشخصي وإرسال البيانات الجديدة للباك اند
+        // دالة تحديث الملف الشخصي وإرسال المتغيرات عبر FormData لتتطابق تماماً مع استقبال onboarding.py
         async function handleProfileUpdate(e) {
             e.preventDefault();
             const token = localStorage.getItem("access_token");
             
-            const payload = {
-                user_name: document.getElementById("userNameInput").value,
-                p_email: document.getElementById("pEmailInput").value,
-                user_phone_number: document.getElementById("userPhoneInput").value
-            };
+            const formData = new FormData();
+            formData.append('user_name', document.getElementById("userNameInput").value);
+            formData.append('p_email', document.getElementById("pEmailInput").value);
+            formData.append('user_phone_number', document.getElementById("userPhoneInput").value);
+
+            const submitBtn = document.getElementById("profileSubmitBtn");
+            submitBtn.disabled = true;
+            submitBtn.textContent = "جاري الحفظ...";
 
             try {
-                const response = await fetch(`${API_BASE_URL}/auth/profile`, {
-                    method: "PUT",
+                // إرسال البيانات إلى مسار الـ onboarding الذي يتولى تخزين هذه المتغيرات في قاعدة البيانات
+                const response = await fetch(`${API_BASE_URL}/onboarding/save`, {
+                    method: "POST",
                     headers: {
-                        "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`
                     },
-                    body: JSON.stringify(payload)
+                    body: formData
                 });
 
-                const data = await response.json();
-                if (!response.ok) throw new Error(data.detail || "فشل تحديث البيانات الشخصية");
+                let result;
+                try {
+                    result = await response.json();
+                } catch (err) {
+                    result = {};
+                }
 
-                alert("تم تحديث البيانات الشخصية بنجاح!");
+                if (!response.ok) throw new Error(result.message || "فشل تحديث البيانات الشخصية");
+
+                alert("تم تحديث وحفظ البيانات الشخصية في قاعدة البيانات بنجاح!");
             } catch (error) {
                 alert(error.message || "حدث خطأ أثناء الاتصال بالخادم.");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "حفظ التعديلات الشخصية";
             }
         }
 
