@@ -74,8 +74,9 @@ body, html {
     -webkit-backdrop-filter: blur(14px);
     border: 1px solid var(--card-border);
     border-radius: 16px;
-    padding: 2rem 1.5rem;
+    padding: 2.5rem 2rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    text-align: center;
 }
 
 .card-header {
@@ -84,15 +85,17 @@ body, html {
 }
 
 .card-title {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.8rem;
 }
 
 .card-subtitle {
-    font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.65);
-    line-height: 1.5;
+    font-size: 0.92rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto 2rem auto;
 }
 
 /* Login Overlay */
@@ -160,6 +163,97 @@ body, html {
 
 select.form-control option {
     background-color: #1a1a1a;
+    color: #fff;
+}
+
+/* Social Login Buttons */
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn-social {
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.25s ease;
+}
+
+.btn-social:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Fix social icons size in auth page */
+.btn-social img {
+    width: 20px !important;
+    height: 20px !important;
+    object-fit: contain;
+}
+
+/* Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.85rem;
+}
+
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.divider:not(:empty)::before {
+    margin-left: .5em;
+}
+
+.divider:not(:empty)::after {
+    margin-right: .5em;
+}
+
+/* Admin Specific Buttons & Header */
+.page-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.page-title span {
+    color: var(--accent-cyan);
+}
+
+.btn-logout {
+    padding: 8px 16px;
+    background: rgba(255, 77, 77, 0.15);
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    transition: all 0.2s;
+}
+
+.btn-logout:hover {
+    background: #ff4d4d;
     color: #fff;
 }
 
