@@ -11,7 +11,7 @@
     const currentPath = window.location.pathname;
     
     // الصفحات المستثناة التي لا تتطلب تسجيل دخول
-    if (currentPath.includes("auth.html") || currentPath.includes("index.html") || currentPath === "/") {
+    if (currentPath.includes("auth.html") || currentPath.includes("index.html") || currentPath.includes("privacy.html") || currentPath === "/") {
         return;
     }
 
