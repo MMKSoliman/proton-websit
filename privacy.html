@@ -8,9 +8,15 @@
     <!-- ملف الـ CSS الموحد للموقع -->
     <link rel="stylesheet" href="./style.css">
     <style>
-        /* إصلاح تثبيت الخلفية ومنع التمدد مع الحفاظ على خطوط الـ CSS الموحدة تماماً */
+        /* فرض توحيد الخط ومنع تكبيره التلقائي على الهواتف المحمولة */
         html, body {
             height: 100%;
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+        body {
+            font-family: inherit; /* وراثة الخط الموحد من style.css */
         }
         .main-container {
             min-height: 100vh;
