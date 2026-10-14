@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إعدادات الحساب - Proton</title>
-    <link rel="icon" type="image/png" href="./favicon.png">
     <!-- ملف الـ CSS الموحد للموقع -->
     <link rel="stylesheet" href="./style.css">
 </head>
@@ -30,8 +29,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="p_emailInput">البريد الإلكتروني</label>
-                        <input type="p_email" id="p_emailInput" class="form-control" required>
+                        <label for="emailInput">البريد الإلكتروني</label>
+                        <input type="email" id="emailInput" class="form-control" required>
                     </div>
 
                     <button type="submit" class="btn-submit" style="margin-top: 1rem;">حفظ التعديلات الشخصية</button>
@@ -87,8 +86,8 @@
                 const data = await response.json();
                 
                 // تعبئة الحقول بالبيانات القادمة من قاعدة البيانات (مع إخفاء أي معرف تنظيمي تماماً)
-                document.getElementById("fullNameInput").value = data.user_name || "";
-                document.getElementById("p_emailInput").value = data.p_p_email || "";
+                document.getElementById("fullNameInput").value = data.full_name || "";
+                document.getElementById("emailInput").value = data.email || "";
 
             } catch (error) {
                 console.error(error);
@@ -103,7 +102,7 @@
             e.preventDefault();
             const token = localStorage.getItem("access_token");
             const fullName = document.getElementById("fullNameInput").value;
-            const p_email = document.getElementById("p_emailInput").value;
+            const email = document.getElementById("emailInput").value;
 
             try {
                 const response = await fetch(`${API_BASE_URL}/auth/profile`, {
@@ -112,7 +111,7 @@
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`
                     },
-                    body: JSON.stringify({ user_name: fullName, p_p_email: p_email })
+                    body: JSON.stringify({ full_name: fullName, email: email })
                 });
 
                 const data = await response.json();
