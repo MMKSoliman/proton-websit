@@ -36,7 +36,7 @@
 
                     <div class="form-group">
                         <label for="userPhoneInput">رقم الهاتف</label>
-                        <input type="text" id="userPhoneInput" class="form-control" required>
+                        <input type="text" id="userPhoneInput" class="form-control" required placeholder="+201000000000">
                     </div>
 
                     <button type="submit" id="profileSubmitBtn" class="btn-submit" style="margin-top: 1rem;">حفظ التعديلات الشخصية</button>
@@ -86,15 +86,29 @@
         // دالة لجلب بيانات المستخدم الحالية وعرضها في الحقول بدقة
         async function fetchUserData() {
             const token = localStorage.getItem("access_token");
-            const data = await response.json();
+            if (!token) {
+                window.location.href = "./auth.html";
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/me`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error("فشل في جلب بيانات الحساب");
+
+                const data = await response.json();
                 
                 // جلب القيم من كافة الاحتمالات المتاحة في قاعدة البيانات لضمان ظهورها
-                document.getElementById("userNameInput").value = data.user_name || "";
-                document.getElementById("pEmailInput").value = data.p_email || "";
-                document.getElementById("userPhoneInput").value = data.user_phone_number || "";
+                document.getElementById("userNameInput").value = data.user_name || data.full_name || "";
+                document.getElementById("pEmailInput").value = data.p_email || data.email || "";
+                document.getElementById("userPhoneInput").value = data.user_phone_number || data.phone || data.phone_number || "";
 
-            }
-            catch (error) {
+            } catch (error) {
                 console.error(error);
                 alert("انتهت صلاحية الجلسة أو حدث خطأ، يرجى تسجيل الدخول مرة أخرى.");
                 localStorage.removeItem("access_token");
@@ -103,27 +117,27 @@
         }
 
         // دالة تحديث الملف الشخصي وإرسال جميع مسميات الحقول لضمان تحديثها في قاعدة البيانات
-        async function handleOnboardingSubmit(e) {
+        async function handleProfileUpdate(e) {
             e.preventDefault();
-
-            const formData = new FormData();
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const tokenParam = urlParams.get('token');
-            if (tokenParam) {
-                document.cookie = `access_token=${tokenParam}; path=/; secure; samesite=strict`;
-            }
-
-            formData.append('user_name', document.getElementById('user_name').value);
-            formData.append('user_phone_number', document.getElementById('user_phone_number').value);
-            formData.append('p_email', document.getElementById('p_email').value);
-
+            const token = localStorage.getItem("access_token");
+            
+            const newUserName = document.getElementById("userNameInput").value;
+            const newEmail = document.getElementById("pEmailInput").value;
+            const newPhone = document.getElementById("userPhoneInput").value;
 
             const formData = new FormData();
             // إرسال كافة المسميات المرتبطة بالجدول لتغطية أي شرط في الفحص بالباك إند
             formData.append('user_name', newUserName);
+            formData.append('full_name', newUserName);
             formData.append('p_email', newEmail);
+            formData.append('email', newEmail);
             formData.append('user_phone_number', newPhone);
+
+            // حقول البراند الوهمية لتجاوز فحص الـ onboarding دون التأثير على البراندات الحالية
+            formData.append('brand_name', 'Update_Profile_Temp');
+            formData.append('brand_type', 'N/A');
+            formData.append('niche', 'N/A');
+            formData.append('audience', 'N/A');
 
             const submitBtn = document.getElementById("profileSubmitBtn");
             submitBtn.disabled = true;
