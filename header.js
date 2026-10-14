@@ -183,7 +183,7 @@
 
         const privacyLink = `<a href="./privacy.html" class="proton-dropdown-item">سياسة الخصوصية</a>`;
         const termsLink = `<a href="./terms.html" class="proton-dropdown-item">شروط الإستخدام</a>`;
-        const settingsLink = `<a href="./onboarding.html" class="proton-dropdown-item">إعدادات الحساب</a>`;
+        const settingsLink = `<a href="./account-settings.html" class="proton-dropdown-item">إعدادات الحساب</a>`;
 
         if (!token) {
             setUserLoggedOut(userAuthText, userAvatarIcon, userMenu, settingsLink, privacyLink, termsLink);
