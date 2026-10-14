@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إعدادات الحساب - Proton</title>
+    <!-- ملف الـ CSS الموحد للموقع -->
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- الهيدر يتم استدعاؤه ديناميكياً -->
+        <div id="header-container" class="top-header"></div>
+
+        <!-- محتوى صفحة إعدادات الحساب -->
+        <div class="center-content">
+            <div class="dashboard-card auth-card" style="max-width: 600px; text-align: right;">
+                <div class="card-header">
+                    <h2 class="card-title">إعدادات الحساب الشخصي</h2>
+                    <p class="card-subtitle" style="margin: 0 auto 1.5rem auto;">قم بتحديث بياناتك الشخصية، معلومات التواصل، أو كلمة المرور الخاصة بك بكل سهولة.</p>
+                </div>
+
+                <!-- نموذج تعديل البيانات الشخصية -->
+                <form id="profileForm" onsubmit="handleProfileUpdate(event)">
+                    <div class="form-group">
+                        <label for="fullNameInput">الاسم بالكامل</label>
+                        <input type="text" id="fullNameInput" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emailInput">البريد الإلكتروني</label>
+                        <input type="email" id="emailInput" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit" style="margin-top: 1rem;">حفظ التعديلات الشخصية</button>
+                </form>
+
+                <div class="divider">تغيير كلمة المرور</div>
+
+                <!-- نموذج تغيير كلمة المرور أو تعيينها -->
+                <form id="passwordForm" onsubmit="handlePasswordChange(event)">
+                    <div class="form-group" id="currentPassGroup">
+                        <label for="currentPasswordInput">كلمة المرور الحالية</label>
+                        <input type="password" id="currentPasswordInput" class="form-control" placeholder="اتركها فارغة إذا سجلت عبر جوجل/فيس بوك ولم تحدد كلمة مرور مسبقاً">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newPasswordInput">كلمة المرور الجديدة</label>
+                        <input type="password" id="newPasswordInput" class="form-control" required placeholder="أدخل كلمة المرور الجديدة">
+                    </div>
+
+                    <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #2ecc71, #27ae60); margin-top: 1rem;">تحديث كلمة المرور</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- الفوتر يتم استدعاؤه ديناميكياً -->
+        <div id="footer-container"></div>
+    </div>
+
+    <!-- السكريبتات الأساسية وحماية الصفحة -->
+    <script src="./header.js" defer></script>
+    <script src="./auth-guard.js"></script>
+    <script>
+        const API_BASE_URL = "https://api.protonag.com";
+
+        // دالة لجلب بيانات المستخدم الحالية ووضعها في الحقول عند فتح الصفحة
+        async function fetchUserData() {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                window.location.href = "./auth.html";
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/me`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error("فشل في جلب بيانات الحساب");
+
+                const data = await response.json();
+                
+                // تعبئة الحقول بالبيانات القادمة من قاعدة البيانات (مع إخفاء أي معرف تنظيمي تماماً)
+                document.getElementById("fullNameInput").value = data.full_name || "";
+                document.getElementById("emailInput").value = data.email || "";
+
+            } catch (error) {
+                console.error(error);
+                alert("انتهت صلاحية الجلسة أو حدث خطأ، يرجى تسجيل الدخول مرة أخرى.");
+                localStorage.removeItem("access_token");
+                window.location.href = "./auth.html";
+            }
+        }
+
+        // دالة تحديث الملف الشخصي (الاسم والإيميل)
+        async function handleProfileUpdate(e) {
+            e.preventDefault();
+            const token = localStorage.getItem("access_token");
+            const fullName = document.getElementById("fullNameInput").value;
+            const email = document.getElementById("emailInput").value;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/profile`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ full_name: fullName, email: email })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || "فشل تحديث البيانات الشخصية");
+
+                alert("تم تحديث البيانات الشخصية بنجاح!");
+            } catch (error) {
+                alert(error.message || "حدث خطأ أثناء الاتصال بالخادم.");
+            }
+        }
+
+        // دالة تغيير كلمة المرور أو ربط حساب جوجل/فيس بوك بكلمة مرور عادية
+        async function handlePasswordChange(e) {
+            e.preventDefault();
+            const token = localStorage.getItem("access_token");
+            const currentPassword = document.getElementById("currentPasswordInput").value;
+            const newPassword = document.getElementById("newPasswordInput").value;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/change-password`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ 
+                        current_password: currentPassword || "", 
+                        new_password: newPassword 
+                    })
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.detail || "فشل تحديث كلمة المرور");
+
+                alert("تم تحديث كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول بها مستقبلاً.");
+                document.getElementById("passwordForm").reset();
+            } catch (error) {
+                alert(error.message || "حدث خطأ أثناء تحديث كلمة المرور. تأكد من صحة كلمة المرور الحالية.");
+            }
+        }
+
+        // استدعاء البيانات فور تحميل الصفحة
+        document.addEventListener("DOMContentLoaded", fetchUserData);
+    </script>
+</body>
+</html>
