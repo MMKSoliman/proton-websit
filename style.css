@@ -31,10 +31,15 @@ body, html {
 
 /* Main Container Layout */
 .main-container {
+    position: relative;
     min-height: 100vh;
     height: auto !important;
     background-attachment: fixed !important;
     background-size: cover !important;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
     padding: 2rem 1.5rem 1rem 1.5rem;
     background: var(--bg-color) url('./bg1.png') center/cover no-repeat;
