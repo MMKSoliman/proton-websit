@@ -8,9 +8,59 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
     <!-- ملف الـ CSS الموحد للموقع -->
     <link rel="stylesheet" href="./style.css">
+    <style>
+        /* فرض توحيد الخط ومنع تكبيره التلقائي على الهواتف المحمولة */
+        html, body {
+            height: 100%;
+            -webkit-text-size-adjust: 100%;
+            -moz-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+        body {
+            font-family: inherit;
+        }
+        .main-container {
+            min-height: 100vh;
+            height: auto !important;
+            background-attachment: fixed !important;
+            background-size: cover !important;
+        }
+        .danger-zone {
+            border: 1px solid rgba(231, 76, 60, 0.4);
+            background: rgba(231, 76, 60, 0.03);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: right;
+        }
+        .danger-zone h3 {
+            color: #e74c3c;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .danger-zone p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.3s;
+        }
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+    </style>
 </head>
 <body>
 
@@ -67,6 +117,13 @@
 
                     <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, #2ecc71, #27ae60); margin-top: 1rem;">تحديث كلمة المرور</button>
                 </form>
+
+                <!-- قسم منطقة الخطر: إيقاف الحساب وحذفه -->
+                <div class="danger-zone">
+                    <h3>منطقة الخطر - إيقاف وحذف الحساب</h3>
+                    <p>سيؤدي هذا الإجراء إلى إيقاف كافة الأنشطة، فك جميع الروابط والمنصات المرتبطة، وتعطيل الحساب نهائياً.</p>
+                    <button type="button" class="btn-danger" onclick="handleAccountDeletion()">حذف وإيقاف الحساب بالكامل</button>
+                </div>
             </div>
         </div>
 
@@ -107,7 +164,6 @@
 
                 const data = await response.json();
                 
-                // جلب القيم من كافة الاحتمالات المتاحة في قاعدة البيانات لضمان ظهورها
                 document.getElementById("userNameInput").value = data.user_name || data.full_name || "";
                 document.getElementById("pEmailInput").value = data.p_email || data.email || "";
                 document.getElementById("userPhoneInput").value = data.user_phone_number || data.phone || data.phone_number || "";
@@ -120,7 +176,7 @@
             }
         }
 
-        // دالة تحديث الملف الشخصي وإرسال جميع مسميات الحقول لضمان تحديثها في قاعدة البيانات
+        // دالة تحديث الملف الشخصي
         async function handleProfileUpdate(e) {
             e.preventDefault();
             const token = localStorage.getItem("access_token");
@@ -130,14 +186,12 @@
             const newPhone = document.getElementById("userPhoneInput").value;
 
             const formData = new FormData();
-            // إرسال كافة المسميات المرتبطة بالجدول لتغطية أي شرط في الفحص بالباك إند
             formData.append('user_name', newUserName);
             formData.append('full_name', newUserName);
             formData.append('p_email', newEmail);
             formData.append('email', newEmail);
             formData.append('user_phone_number', newPhone);
 
-            // حقول البراند الوهمية لتجاوز فحص الـ onboarding دون التأثير على البراندات الحالية
             formData.append('brand_name', 'Update_Profile_Temp');
             formData.append('brand_type', 'N/A');
             formData.append('niche', 'N/A');
@@ -174,7 +228,7 @@
             }
         }
 
-        // دالة تغيير كلمة المرور مع التحقق من التطابق
+        // دالة تغيير كلمة المرور
         async function handlePasswordChange(e) {
             e.preventDefault();
             const token = localStorage.getItem("access_token");
@@ -207,6 +261,32 @@
                 document.getElementById("passwordForm").reset();
             } catch (error) {
                 alert(error.message || "حدث خطأ أثناء تحديث كلمة المرور. تأكد من صحة كلمة المرور الحالية.");
+            }
+        }
+
+        // دالة حذف وإيقاف الحساب
+        async function handleAccountDeletion() {
+            const confirmed = confirm("هل أنت متكد من رغبتك في حذف وإيقاف الحساب بالكامل؟ سيتم فك جميع الروابط وإلغاء تفعيل الحساب نهائياً.");
+            if (!confirmed) return;
+
+            const token = localStorage.getItem("access_token");
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/delete-account`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.detail || "فشل عملية حذف الحساب");
+
+                alert("تم إيقاف وحذف الحساب بنجاح.");
+                localStorage.removeItem("access_token");
+                window.location.href = "./auth.html";
+            } catch (error) {
+                alert(error.message || "حدث خطأ أثناء محاولة حذف الحساب. يرجى المحاولة لاحقاً.");
             }
         }
 
