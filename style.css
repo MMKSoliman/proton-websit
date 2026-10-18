@@ -31,10 +31,8 @@ body, html {
 
 /* Main Container Layout */
 .main-container {
-    position: fixed; /* تثبيت الحاوية بالكامل لتغطي الشاشة ولا يتحرك حجمها */
-    top: 0;
-    left: 0;
-    height: 100vh;
+    position: relative;
+    min-height: 100vh;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -42,8 +40,6 @@ body, html {
     align-items: center;
     padding: 2rem 1.5rem 1rem 1.5rem;
     background: var(--bg-color) url('./bg1.png') center/cover no-repeat;
-    background-attachment: fixed; /* ضمان بقاء الخلفية ثابتة في مكانها دائماً */
-    overflow-y: auto; /* السماح للمحتوى الداخلي فقط بالتمرير طوليًا عند زيادته دون سحب الخلفية */
 }
 
 /* Top Header */
