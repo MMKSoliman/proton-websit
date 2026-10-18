@@ -189,219 +189,219 @@
     <script src="./header.js" defer></script>
     <script src="./auth-guard.js"></script>
     <script>
-        const API_BASE_URL = "https://api.protonag.com";
-        let isAccountDeactivated = false;
+    const API_BASE_URL = "https://api.protonag.com";
+    let isAccountDeactivated = false;
 
-        // دالة لجلب بيانات المستخدم الحالية وعرضها في الحقول بدقة
-        async function fetchUserData() {
-            const token = localStorage.getItem("access_token");
-            if (!token) {
-                window.location.href = "./auth.html";
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/auth/me`, {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
-
-                if (!response.ok) throw new Error("فشل في جلب بيانات الحساب");
-
-                const data = await response.json();
-                
-                document.getElementById("userNameInput").value = data.user_name || data.full_name || "";
-                document.getElementById("pEmailInput").value = data.p_email || data.email || "";
-                document.getElementById("userPhoneInput").value = data.user_phone_number || data.phone || data.phone_number || "";
-
-                // التحقق من حالة الحساب الحالية (إذا كان معطلاً مؤقتاً)
-                if (data.status === "deactivated") {
-                    setDeactivatedState(true);
-                }
-
-            } catch (error) {
-                console.error(error);
-                alert("انتهت صلاحية الجلسة أو حدث خطأ، يرجى تسجيل الدخول مرة أخرى.");
-                localStorage.removeItem("access_token");
-                window.location.href = "./auth.html";
-            }
+    // دالة لجلب بيانات المستخدم الحالية وعرضها في الحقول بدقة
+    async function fetchUserData() {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+            window.location.href = "./auth.html";
+            return;
         }
 
-        // دالة تحديث الملف الشخصي
-        async function handleProfileUpdate(e) {
-            e.preventDefault();
-            const token = localStorage.getItem("access_token");
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/me`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) throw new Error("فشل في جلب بيانات الحساب");
+
+            const data = await response.json();
             
-            const newUserName = document.getElementById("userNameInput").value;
-            const newEmail = document.getElementById("pEmailInput").value;
-            const newPhone = document.getElementById("userPhoneInput").value;
+            document.getElementById("userNameInput").value = data.user_name || data.full_name || "";
+            document.getElementById("pEmailInput").value = data.p_email || data.email || "";
+            document.getElementById("userPhoneInput").value = data.user_phone_number || data.phone || data.phone_number || "";
 
-            const formData = new FormData();
-            formData.append('user_name', newUserName);
-            formData.append('full_name', newUserName);
-            formData.append('p_email', newEmail);
-            formData.append('email', newEmail);
-            formData.append('user_phone_number', newPhone);
-
-            formData.append('brand_name', 'Update_Profile_Temp');
-            formData.append('brand_type', 'N/A');
-            formData.append('niche', 'N/A');
-            formData.append('audience', 'N/A');
-
-            const submitBtn = document.getElementById("profileSubmitBtn");
-            submitBtn.disabled = true;
-            submitBtn.textContent = "جاري الحفظ...";
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/onboarding/save`, {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: formData
-                });
-
-                let result;
-                try {
-                    result = await response.json();
-                } catch (err) {
-                    result = {};
-                }
-
-                if (!response.ok) throw new Error(result.message || "فشل تحديث البيانات الشخصية");
-
-                alert("تم تحديث وحفظ بيانات الحساب في قاعدة البيانات بنجاح!");
-            } catch (error) {
-                alert(error.message || "حدث خطأ أثناء الاتصال بالخادم.");
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = "حفظ التعديلات الشخصية";
-            }
-        }
-
-        // دالة تغيير كلمة المرور
-        async function handlePasswordChange(e) {
-            e.preventDefault();
-            const token = localStorage.getItem("access_token");
-            const currentPassword = document.getElementById("currentPasswordInput").value;
-            const newPassword = document.getElementById("newPasswordInput").value;
-            const confirmPassword = document.getElementById("confirmPasswordInput").value;
-
-            if (newPassword !== confirmPassword) {
-                alert("كلمات المرور الجديدة غير متطابقة، يرجى التأكد.");
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/auth/change-password`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ 
-                        current_password: currentPassword || "", 
-                        new_password: newPassword 
-                    })
-                });
-
-                const data = await response.json();
-                if (!response.ok) throw new Error(data.detail || "فشل تحديث كلمة المرور");
-
-                alert("تم تحديث كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول بها مستقبلاً.");
-                document.getElementById("passwordForm").reset();
-            } catch (error) {
-                alert(error.message || "حدث خطأ أثناء تحديث كلمة المرور. تأكد من صحة كلمة المرور الحالية.");
-            }
-        }
-
-        // إظهار وإخفاء تحذير الحذف الكامل
-        let isAccountDeactivated = false;
-
-        function showDeleteConfirmation() {
-            document.getElementById("deleteWarningBanner").style.display = "block";
-        }
-        function hideDeleteConfirmation() {
-            document.getElementById("deleteWarningBanner").style.display = "none";
-        }
-
-        // تبديل شكل زر إلغاء / إعادة التنشيط
-        function setDeactivatedState(deactivated) {
-            isAccountDeactivated = deactivated;
-            const deactivateBtn = document.getElementById("deactivateBtn");
-
-            if (deactivated) {
-                deactivateBtn.textContent = "إعادة تنشيط الحساب";
-                deactivateBtn.classList.add("active-state");
+            // التحقق من حالة الحساب الحالية (إذا كان معطلاً مؤقتاً)
+            if (data.status === "deactivated") {
+                setDeactivatedState(true);
             } else {
-                deactivateBtn.textContent = "إلغاء تنشيط الحساب";
-                deactivateBtn.classList.remove("active-state");
+                setDeactivatedState(false);
             }
+
+        } catch (error) {
+            console.error(error);
+            alert("انتهت صلاحية الجلسة أو حدث خطأ، يرجى تسجيل الدخول مرة أخرى.");
+            localStorage.removeItem("access_token");
+            window.location.href = "./auth.html";
         }
+    }
 
-        // دالة إلغاء أو إعادة تنشيط الحساب
-        async function toggleDeactivateAccount() {
-            const token = localStorage.getItem("access_token");
-            const newStatus = isAccountDeactivated ? "active" : "deactivated";
-            const confirmMsg = isAccountDeactivated 
-                ? "هل ترغب في إعادة تنشيط حسابك والأنشطة المرتبطة به؟" 
-                : "هل أنت متأكد من إلغاء تنشيط الحساب مؤقتاً؟ يمكنك إعادة تنشيطه في أي وقت.";
+    // دالة تحديث الملف الشخصي
+    async function handleProfileUpdate(e) {
+        e.preventDefault();
+        const token = localStorage.getItem("access_token");
+        
+        const newUserName = document.getElementById("userNameInput").value;
+        const newEmail = document.getElementById("pEmailInput").value;
+        const newPhone = document.getElementById("userPhoneInput").value;
 
-            if (!confirm(confirmMsg)) return;
+        const formData = new FormData();
+        formData.append('user_name', newUserName);
+        formData.append('full_name', newUserName);
+        formData.append('p_email', newEmail);
+        formData.append('email', newEmail);
+        formData.append('user_phone_number', newPhone);
 
+        formData.append('brand_name', 'Update_Profile_Temp');
+        formData.append('brand_type', 'N/A');
+        formData.append('niche', 'N/A');
+        formData.append('audience', 'N/A');
+
+        const submitBtn = document.getElementById("profileSubmitBtn");
+        submitBtn.disabled = true;
+        submitBtn.textContent = "جاري الحفظ...";
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/onboarding/save`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                },
+                body: formData
+            });
+
+            let result;
             try {
-                const response = await fetch(`${API_BASE_URL}/auth/toggle-status`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ status: newStatus })
-                });
-
-                const result = await response.json();
-                if (!response.ok) throw new Error(result.detail || "فشل تغيير حالة الحساب");
-
-                // عكس الحالة في الواجهة بناءً على القيمة الجديدة المرسلة
-                const nowDeactivated = (newStatus === "deactivated");
-                setDeactivatedState(nowDeactivated);
-                
-                alert(nowDeactivated ? "تم إلغاء تنشيط الحساب مؤقتاً." : "تم إعادة تنشيط الحساب بنجاح!");
-
-            } catch (error) {
-                alert(error.message || "حدث خطأ أثناء تعديل حالة التنشيط.");
+                result = await response.json();
+            } catch (err) {
+                result = {};
             }
+
+            if (!response.ok) throw new Error(result.message || "فشل تحديث البيانات الشخصية");
+
+            alert("تم تحديث وحفظ بيانات الحساب في قاعدة البيانات بنجاح!");
+        } catch (error) {
+            alert(error.message || "حدث خطأ أثناء الاتصال بالخادم.");
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "حفظ التعديلات الشخصية";
+        }
+    }
+
+    // دالة تغيير كلمة المرور
+    async function handlePasswordChange(e) {
+        e.preventDefault();
+        const token = localStorage.getItem("access_token");
+        const currentPassword = document.getElementById("currentPasswordInput").value;
+        const newPassword = document.getElementById("newPasswordInput").value;
+        const confirmPassword = document.getElementById("confirmPasswordInput").value;
+
+        if (newPassword !== confirmPassword) {
+            alert("كلمات المرور الجديدة غير متطابقة، يرجى التأكد.");
+            return;
         }
 
-        // دالة الحذف الناعم وإيقاف النشاط بالكامل (Soft Delete)
-        async function handleFullAccountDeletion() {
-            const token = localStorage.getItem("access_token");
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/change-password`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ 
+                    current_password: currentPassword || "", 
+                    new_password: newPassword 
+                })
+            });
 
-            try {
-                const response = await fetch(`${API_BASE_URL}/auth/delete-account`, {
-                    method: "DELETE",
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.detail || "فشل تحديث كلمة المرور");
 
-                const result = await response.json();
-                if (!response.ok) throw new Error(result.detail || "فشل عملية حذف الحساب");
-
-                alert("تم إيقاف النشاط وحذف الحساب نهائياً من النظام.");
-                localStorage.removeItem("access_token");
-                window.location.href = "./auth.html";
-            } catch (error) {
-                alert(error.message || "حدث خطأ أثناء محاولة حذف الحساب. يرجى المحاولة لاحقاً.");
-            }
+            alert("تم تحديث كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول بها مستقبلاً.");
+            document.getElementById("passwordForm").reset();
+        } catch (error) {
+            alert(error.message || "حدث خطأ أثناء تحديث كلمة المرور. تأكد من صحة كلمة المرور الحالية.");
         }
+    }
 
-        // استدعاء البيانات فور تحميل الصفحة وضبط حالة الزر
-        document.addEventListener("DOMContentLoaded", async () => {
-            await fetchUserData(); // يفترض أن هذه الدالة تجلب بيانات المستخدم وتحدد الحالة
-        });
-    </script>
+    // إظهار وإخفاء تحذير الحذف الكامل
+    function showDeleteConfirmation() {
+        document.getElementById("deleteWarningBanner").style.display = "block";
+    }
+
+    function hideDeleteConfirmation() {
+        document.getElementById("deleteWarningBanner").style.display = "none";
+    }
+
+    // تبديل شكل زر إلغاء / إعادة التنشيط
+    function setDeactivatedState(deactivated) {
+        isAccountDeactivated = deactivated;
+        const deactivateBtn = document.getElementById("deactivateBtn");
+
+        if (deactivated) {
+            deactivateBtn.textContent = "إعادة تنشيط الحساب";
+            deactivateBtn.classList.add("active-state");
+        } else {
+            deactivateBtn.textContent = "إلغاء تنشيط الحساب";
+            deactivateBtn.classList.remove("active-state");
+        }
+    }
+
+    // دالة إلغاء أو إعادة تنشيط الحساب
+    async function toggleDeactivateAccount() {
+        const token = localStorage.getItem("access_token");
+        const newStatus = isAccountDeactivated ? "active" : "deactivated";
+        const confirmMsg = isAccountDeactivated 
+            ? "هل ترغب في إعادة تنشيط حسابك والأنشطة المرتبطة به؟" 
+            : "هل أنت متأكد من إلغاء تنشيط الحساب مؤقتاً؟ يمكنك إعادة تنشيطه في أي وقت.";
+
+        if (!confirm(confirmMsg)) return;
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/toggle-status`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.detail || "فشل تغيير حالة الحساب");
+
+            const nowDeactivated = (newStatus === "deactivated");
+            setDeactivatedState(nowDeactivated);
+            
+            alert(nowDeactivated ? "تم إلغاء تنشيط الحساب مؤقتاً." : "تم إعادة تنشيط الحساب بنجاح!");
+
+        } catch (error) {
+            alert(error.message || "حدث خطأ أثناء تعديل حالة التنشيط.");
+        }
+    }
+
+    // دالة الحذف الناعم وإيقاف النشاط بالكامل (Soft Delete)
+    async function handleFullAccountDeletion() {
+        const token = localStorage.getItem("access_token");
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/delete-account`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.detail || "فشل عملية حذف الحساب");
+
+            alert("تم إيقاف النشاط وحذف الحساب نهائياً من النظام.");
+            localStorage.removeItem("access_token");
+            window.location.href = "./auth.html";
+        } catch (error) {
+            alert(error.message || "حدث خطأ أثناء محاولة حذف الحساب. يرجى المحاولة لاحقاً.");
+        }
+    }
+
+    // استدعاء البيانات فور تحميل الصفحة وضبط حالة الزر
+    document.addEventListener("DOMContentLoaded", async () => {
+        await fetchUserData();
+    });
+</script>
 </body>
 </html>
