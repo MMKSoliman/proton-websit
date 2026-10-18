@@ -39,8 +39,6 @@ body, html {
     justify-content: space-between;
     align-items: center;
     padding: 2rem 1.5rem 1rem 1.5rem;
-    background-attachment: fixed !important;
-    background-size: cover !important;
     background: var(--bg-color) url('./bg1.png') center/cover no-repeat;
 }
 
