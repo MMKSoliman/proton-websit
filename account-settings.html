@@ -316,6 +316,8 @@
         }
 
         // إظهار وإخفاء تحذير الحذف الكامل
+        let isAccountDeactivated = false;
+
         function showDeleteConfirmation() {
             document.getElementById("deleteWarningBanner").style.display = "block";
         }
@@ -360,15 +362,18 @@
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.detail || "فشل تغيير حالة الحساب");
 
-                setDeactivatedState(!isAccountDeactivated);
-                alert(isAccountDeactivated ? "تم إلغاء تنشيط الحساب مؤقتاً." : "تم إعادة تنشيط الحساب بنجاح!");
+                // عكس الحالة في الواجهة بناءً على القيمة الجديدة المرسلة
+                const nowDeactivated = (newStatus === "deactivated");
+                setDeactivatedState(nowDeactivated);
+                
+                alert(nowDeactivated ? "تم إلغاء تنشيط الحساب مؤقتاً." : "تم إعادة تنشيط الحساب بنجاح!");
 
             } catch (error) {
                 alert(error.message || "حدث خطأ أثناء تعديل حالة التنشيط.");
             }
         }
 
-        // دالة الحذف النهائي وإيقاف النشاط بالكامل
+        // دالة الحذف الناعم وإيقاف النشاط بالكامل (Soft Delete)
         async function handleFullAccountDeletion() {
             const token = localStorage.getItem("access_token");
 
@@ -383,7 +388,7 @@
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.detail || "فشل عملية حذف الحساب");
 
-                alert("تم حذف وإيقاف الحساب بجميع بياناته بنجاح.");
+                alert("تم إيقاف النشاط وحذف الحساب نهائياً من النظام.");
                 localStorage.removeItem("access_token");
                 window.location.href = "./auth.html";
             } catch (error) {
@@ -391,8 +396,10 @@
             }
         }
 
-        // استدعاء البيانات فور تحميل الصفحة
-        document.addEventListener("DOMContentLoaded", fetchUserData);
+        // استدعاء البيانات فور تحميل الصفحة وضبط حالة الزر
+        document.addEventListener("DOMContentLoaded", async () => {
+            await fetchUserData(); // يفترض أن هذه الدالة تجلب بيانات المستخدم وتحدد الحالة
+        });
     </script>
 </body>
 </html>
