@@ -112,7 +112,6 @@
                     <a href="./index.html" class="proton-dropdown-item">الرئيسية</a>
                     <a href="./dashboard.html" class="proton-dropdown-item">لوحة التحليلات</a>
                     <a href="./connect-social.html" class="proton-dropdown-item">ربط المنصات</a>
-                    <a href="./onboarding.html" class="proton-dropdown-item">إعداد الحساب</a>
                 </div>
             </div>
 
