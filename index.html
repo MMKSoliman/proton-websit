@@ -99,55 +99,34 @@
         }
         .cta-container {
             display: flex;
-            gap: 1rem;
             justify-content: center;
             width: 100%;
-            max-width: 450px;
+            max-width: 380px;
+            margin: 0 auto;
         }
         .btn-primary-custom {
-            flex: 1;
-            padding: 14px 24px;
-            border-radius: 10px;
+            width: 100%;
+            padding: 15px 24px;
+            border-radius: 12px;
             background: var(--primary-gradient);
             color: #fff;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 1rem;
             text-decoration: none;
-            box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+            box-shadow: 0 6px 25px rgba(0, 229, 255, 0.35);
             transition: opacity 0.2s, transform 0.2s;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
         }
         .btn-primary-custom:hover {
             opacity: 0.9;
             transform: translateY(-2px);
         }
-        .btn-secondary-custom {
-            flex: 1;
-            padding: 14px 24px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #fff;
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: background 0.2s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .btn-secondary-custom:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 1.7rem;
-            }
-            .cta-container {
-                flex-direction: column;
             }
         }
     </style>
@@ -201,10 +180,9 @@
                     </div>
                 </div>
 
-                <!-- أزرار الإجراء السريع (Call to Action) -->
+                <!-- زر الإجراء الرئيسي في المنتصف بعد التعديل -->
                 <div class="cta-container">
-                    <a href="./auth.html" class="btn-primary-custom">ابدأ الآن والانضمام للنخبة</a>
-                    <a href="./dashboard.html" class="btn-secondary-custom">استعراض لوحة التحليلات</a>
+                    <a href="./auth.html" class="btn-primary-custom">ابدأ الآن والانضمام للنخبة 🚀</a>
                 </div>
 
             </div>
