@@ -96,7 +96,7 @@
     `;
     document.head.appendChild(style);
 
-    // 2. إنشاء هيكل الهيدر HTML
+    // 2. إنشاء هيكل الهيدر HTML مع إضافة الخصوصية وشروط الاستخدام وإلغاء إعداد الحساب
     const headerWrapper = document.createElement('div');
     headerWrapper.className = 'proton-global-header';
     
@@ -112,6 +112,8 @@
                     <a href="./index.html" class="proton-dropdown-item">الرئيسية</a>
                     <a href="./dashboard.html" class="proton-dropdown-item">لوحة التحليلات</a>
                     <a href="./connect-social.html" class="proton-dropdown-item">ربط المنصات</a>
+                    <a href="./privacy.html" class="proton-dropdown-item">سياسة الخصوصية</a>
+                    <a href="./terms.html" class="proton-dropdown-item">شروط الإستخدام</a>
                 </div>
             </div>
 
@@ -180,12 +182,10 @@
         const userAvatarIcon = document.getElementById('userAvatarIcon');
         const userMenu = document.getElementById('userDropdownMenu');
 
-        const privacyLink = `<a href="./privacy.html" class="proton-dropdown-item">سياسة الخصوصية</a>`;
-        const termsLink = `<a href="./terms.html" class="proton-dropdown-item">شروط الإستخدام</a>`;
         const settingsLink = `<a href="./account-settings.html" class="proton-dropdown-item">إعدادات الحساب</a>`;
 
         if (!token) {
-            setUserLoggedOut(userAuthText, userAvatarIcon, userMenu, settingsLink, privacyLink, termsLink);
+            setUserLoggedOut(userAuthText, userAvatarIcon, userMenu, settingsLink);
             return;
         }
 
@@ -206,7 +206,6 @@
                     localStorage.setItem('user_id', data.user_id);
                 }
                 
-                // التعديل الهام هنا: الاعتماد حصرياً على user_name ثم full_name كاحتياطي وجلب الاسم الأول فقط
                 if (data.user_name) {
                     localStorage.setItem('user_name', data.user_name);
                     userAuthText.textContent = data.user_name.split(' ')[0];
@@ -226,8 +225,6 @@
 
                 userMenu.innerHTML = `
                     ${settingsLink}
-                    ${privacyLink}
-                    ${termsLink}
                     <a href="#" class="proton-dropdown-item logout" id="logoutBtn">تسجيل الخروج</a>
                 `;
 
@@ -242,7 +239,6 @@
                 });
 
             } else {
-                // إذا انتهت صلاحية التوكن، نحاول الاعتماد على البيانات المخزنة مؤقتاً
                 const cachedName = localStorage.getItem('user_name');
                 const cachedPic = localStorage.getItem('user_picture');
                 
@@ -259,18 +255,16 @@
             localStorage.removeItem('user_id');
             localStorage.removeItem('user_name');
             localStorage.removeItem('user_picture');
-            setUserLoggedOut(userAuthText, userAvatarIcon, userMenu, settingsLink, privacyLink, termsLink);
+            setUserLoggedOut(userAuthText, userAvatarIcon, userMenu, settingsLink);
         }
     }
 
-    function setUserLoggedOut(textEl, iconEl, menuEl, sLink, pLink, tLink) {
+    function setUserLoggedOut(textEl, iconEl, menuEl, sLink) {
         textEl.textContent = 'تسجيل الدخول';
         iconEl.src = './login.png';
         menuEl.innerHTML = `
             <a href="./auth.html" class="proton-dropdown-item">تسجيل الدخول</a>
             ${sLink}
-            ${pLink}
-            ${tLink}
         `;
     }
 })();
