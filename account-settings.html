@@ -353,7 +353,7 @@
         if (!confirm(confirmMsg)) return;
 
         try {
-            const response = await fetch(`${API_BASE_URL}/auth/toggle-status`, {
+                const response = await fetch(`${API_BASE_URL}/auth/toggle-status`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
