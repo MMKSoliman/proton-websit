@@ -3,29 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proton</title>
+    <title>Proton - شريكك الرقمي للنمو</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="./favicon.png">
+    <link rel="icon" type="image/favicon.png" href="./favicon.png">
 
     <!-- Google Fonts: Cairo & Open Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
+    
+    <style>
+        /* تنسيقات إضافية مخصصة لصفحة الهبوط الفاخرة */
+        .hero-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 850px;
+            margin: auto;
+            padding: 1rem 0;
+        }
+        .hero-logo {
+            max-width: 280px;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 4px 20px rgba(0, 229, 255, 0.25));
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(0, 229, 255, 0.08);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(0, 229, 255, 0.25);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            letter-spacing: 0.5px;
+        }
+        .hero-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        .hero-title span {
+            color: var(--accent-cyan);
+        }
+        .hero-subtitle {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.8;
+            max-width: 680px;
+            margin: 0 auto 2.5rem auto;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.2rem;
+            width: 100%;
+            margin-bottom: 2.5rem;
+            text-align: right;
+        }
+        .feature-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 1.5rem;
+            backdrop-filter: blur(14px);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .feature-box:hover {
+            transform: translateY(-3px);
+            border-color: rgba(0, 229, 255, 0.4);
+        }
+        .feature-icon {
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+        }
+        .feature-box h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        .feature-box p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.6;
+        }
+        .cta-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            width: 100%;
+            max-width: 450px;
+        }
+        .btn-primary-custom {
+            flex: 1;
+            padding: 14px 24px;
+            border-radius: 10px;
+            background: var(--primary-gradient);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+            transition: opacity 0.2s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-primary-custom:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        .btn-secondary-custom {
+            flex: 1;
+            padding: 14px 24px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-secondary-custom:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 1.7rem;
+            }
+            .cta-container {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
 
     <div class="main-container">
         
-        <!-- مساحة الهيدر العلوية (إن وجدت) -->
-        <div class="top-header">
-            <!-- عناصر الهيدر -->
-        </div>
+        <!-- مساحة الهيدر العلوية (تتم جدولتها وحقنها ديناميكياً عبر header.js) -->
+        <div class="top-header"></div>
 
-        <!-- محتوى الصفحة في المنتصف (الكروت / الشعار) -->
+        <!-- محتوى الصفحة الرئيسي في المنتصف -->
         <div class="center-content">
-            <!-- ضع محتوى الصفحة هنا، وسيكون متمركزاً تماماً في الديسك توب والموبايل -->
+            <div class="hero-wrapper">
+                
+                <!-- الشعار الرسمي للنشاط بجودة عالية -->
+                <img src="./logo_06.png" alt="Proton - Your Digital Growth Partner" class="hero-logo">
+
+                <div class="hero-badge">⚡ حصرياً للبراندات النخبوية والشركات الرائدة</div>
+                
+                <h1 class="hero-title">هندسة الحضور الرقمي وتحقيق <span>النمو المتسارع</span> لعملك</h1>
+                
+                <p class="hero-subtitle">
+                    منظومة متكاملة تجمع أتمتة النشر، الخطط التسويقية الاستراتيجية، وإدارة التفاعل والصفقات بكفاءة مطلقة. نوفر عليك تعقيدات التشغيل لنقود براندك نحو القمة بثبات.
+                </p>
+
+                <!-- مميزات المنصة المعروضة للعميل (خاطفة ومبهرة) -->
+                <div class="features-grid">
+                    <div class="feature-box">
+                        <div class="feature-icon">🚀</div>
+                        <h3>أتمتة ذكية متكاملة</h3>
+                        <p>جدولة ونشر تلقائي للمنشورات، الصور، الستوريز، والريلز بدقة متناهية عبر جميع منصات التواصل.</p>
+                    </div>
+
+                    <div class="feature-box">
+                        <div class="feature-icon">📈</div>
+                        <h3>خطط تسويقية مخصصة</h3>
+                        <p>استراتيجيات تسويقية مصممة خصيصاً لتناسب هوية براندك، وضعك الحالي، وتعظيم عائيدك الاستثماري.</p>
+                    </div>
+
+                    <div class="feature-box">
+                        <div class="feature-icon">💬</div>
+                        <h3>تفاعل وإدارة صفقات</h3>
+                        <p>متابعة مستمرة للتعليقات والرسائل الخاصة لضمان تحويل المهتمين إلى عملاء دائمين وولاء مستدام.</p>
+                    </div>
+
+                    <div class="feature-box">
+                        <div class="feature-icon">📊</div>
+                        <h3>تقارير أداء دورية</h3>
+                        <p>متابعة لحظية للمبيعات ومعدلات النمو من خلال لوحة تحكم ذكية وتقارير دقيقة وموجزة.</p>
+                    </div>
+                </div>
+
+                <!-- أزرار الإجراء السريع (Call to Action) -->
+                <div class="cta-container">
+                    <a href="./auth.html" class="btn-primary-custom">ابدأ الآن والانضمام للنخبة</a>
+                    <a href="./dashboard.html" class="btn-secondary-custom">استعراض لوحة التحليلات</a>
+                </div>
+
+            </div>
         </div>
 
         <!-- Social Media Icons Footer (يتم تحميله تلقائياً) -->
