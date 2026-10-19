@@ -21,25 +21,35 @@
     font-family: var(--font-stack) !important;
 }
 
-body, html {
+html, body {
     min-height: 100vh;
+    height: 100%;
     width: 100%;
     background-color: var(--bg-color);
     color: var(--text-color);
     overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* تثبيت الخلفية على مستوى الـ body لكي تظل ثابتة تماماً ولا تتحرك مع المحتوى ولا يظهر سواد بالأسفل */
+body {
+    background: var(--bg-color) url('./bg1.png') center/cover no-repeat fixed !important;
 }
 
 /* Main Container Layout */
 .main-container {
-    position: relative;
     min-height: 100vh;
+    height: auto !important;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     padding: 2rem 1.5rem 1rem 1.5rem;
-    background: var(--bg-color) url('./bg1.png') center/cover no-repeat;
+    /* يتم إزالة الخلفية من هنا لكي لا تتكرر أو تتحرك، وتعتمد على الـ body الثابت */
+    background: transparent !important; 
 }
 
 /* Top Header */
