@@ -188,7 +188,7 @@
     headerWrapper.innerHTML = `
         <!-- اللوجو في اليسار -->
         <a href="./index.html" class="proton-header-brand" title="الرئيسية - Proton">
-            <img src="./logo_06.png" alt="Proton Logo" class="proton-logo-img">
+            <img src="./logo_06.webp" alt="Proton Logo" class="proton-logo-img">
         </a>
 
         <!-- أزرار الإجراءات في اليمين -->
