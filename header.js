@@ -3,161 +3,168 @@
     const style = document.createElement('style');
     style.innerHTML = `
         .proton-global-header {
-            position: fixed;
-            top: 15px;
-            right: 20px;
-            left: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 9999;
-            pointer-events: none;
-            gap: 12px;
-            /* تثبيت الاتجاه ليكون اللوجو يسار والأزرار يمين بغض النظر عن dir=rtl */
+            position: fixed !important;
+            top: 15px !important;
+            right: 20px !important;
+            left: 20px !important;
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            z-index: 999999 !important;
+            pointer-events: none !important;
+            gap: 12px !important;
+            /* تثبيت الاتجاه ليكون اللوجو أقصى اليسار والأزرار أقصى اليمين */
             direction: ltr !important;
+            box-sizing: border-box !important;
         }
 
-        /* حاوية اللوجو في جهة اليسار */
+        /* حاوية اللوجو - جهة اليسار */
         .proton-header-brand {
-            pointer-events: auto;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            flex-shrink: 0;
+            pointer-events: auto !important;
+            display: flex !important;
+            align-items: center !important;
+            text-decoration: none !important;
+            flex-shrink: 0 !important;
+            order: 1 !important; /* يضمن وجود اللوجو جهة اليسار */
         }
 
         .proton-logo-img {
-            height: 38px;
-            max-width: 170px;
-            width: auto;
-            object-fit: contain;
-            display: block;
-            filter: drop-shadow(0 2px 8px rgba(0, 229, 255, 0.3));
-            transition: transform 0.3s ease, filter 0.3s ease;
+            height: 38px !important;
+            max-width: 170px !important;
+            width: auto !important;
+            object-fit: contain !important;
+            display: block !important;
+            filter: drop-shadow(0 2px 8px rgba(0, 229, 255, 0.3)) !important;
+            transition: transform 0.3s ease, filter 0.3s ease !important;
         }
 
         .proton-header-brand:hover .proton-logo-img {
-            transform: scale(1.03);
-            filter: drop-shadow(0 4px 14px rgba(0, 229, 255, 0.5));
+            transform: scale(1.03) !important;
+            filter: drop-shadow(0 4px 14px rgba(0, 229, 255, 0.5)) !important;
         }
 
-        /* الأزرار والقوائم في جهة اليمين */
+        /* الأزرار والقوائم - جهة اليمين */
         .proton-header-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            pointer-events: auto;
-            direction: rtl !important; /* إبقاء النصوص والأيقونات داخل الأزرار بالاتجاه العربي */
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            pointer-events: auto !important;
+            direction: rtl !important; /* اتجاه النصوص داخل الأزرار من اليمين لليسار */
+            order: 2 !important; /* يضمن وجود الأزرار جهة اليمين */
         }
 
         .proton-header-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: rgba(20, 20, 20, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 8px 14px;
-            border-radius: 50px;
-            color: #fff;
-            text-decoration: none;
-            font-family: inherit;
-            font-size: 13.5px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            box-sizing: border-box;
-            white-space: nowrap;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            background: rgba(20, 20, 20, 0.85) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            padding: 8px 14px !important;
+            border-radius: 50px !important;
+            color: #fff !important;
+            text-decoration: none !important;
+            font-family: inherit !important;
+            font-size: 13.5px !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            transition: all 0.3s ease !important;
+            cursor: pointer !important;
+            box-sizing: border-box !important;
+            white-space: nowrap !important;
+            outline: none !important;
         }
 
         .proton-header-btn:hover {
-            border-color: rgba(0, 229, 255, 0.5);
-            background: rgba(30, 30, 30, 0.95);
-            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.15);
+            border-color: rgba(0, 229, 255, 0.5) !important;
+            background: rgba(30, 30, 30, 0.95) !important;
+            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.15) !important;
         }
 
         .proton-header-btn img,
         .proton-header-btn svg {
             width: 18px !important;
             height: 18px !important;
-            border-radius: 50%;
-            object-fit: cover;
-            flex-shrink: 0;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+            flex-shrink: 0 !important;
         }
 
         .proton-dropdown-container {
-            position: relative;
-            pointer-events: auto;
+            position: relative !important;
+            pointer-events: auto !important;
         }
 
         .proton-dropdown-menu {
-            position: absolute;
-            top: 45px;
-            right: 0;
-            background: rgba(20, 20, 25, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            width: 200px;
+            position: absolute !important;
+            top: 48px !important;
+            right: 0 !important;
+            background: rgba(20, 20, 25, 0.95) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+            width: 200px !important;
             display: none;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 10000;
-            backdrop-filter: blur(15px);
+            flex-direction: column !important;
+            overflow: hidden !important;
+            z-index: 1000000 !important;
+            backdrop-filter: blur(15px) !important;
+            -webkit-backdrop-filter: blur(15px) !important;
             direction: rtl !important;
         }
 
         .proton-dropdown-menu.active {
-            display: flex;
+            display: flex !important;
         }
 
         .proton-dropdown-item {
-            padding: 10px 14px;
-            color: #ccc;
-            text-decoration: none;
-            font-size: 13px;
-            transition: background 0.2s, color 0.2s;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            padding: 10px 14px !important;
+            color: #ccc !important;
+            text-decoration: none !important;
+            font-size: 13px !important;
+            transition: background 0.2s, color 0.2s !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
         }
 
         .proton-dropdown-item:hover {
-            background: rgba(0, 229, 255, 0.1);
-            color: #fff;
+            background: rgba(0, 229, 255, 0.1) !important;
+            color: #fff !important;
         }
 
         .proton-dropdown-item.logout {
-            color: #ff4d4d;
+            color: #ff4d4d !important;
         }
 
         .proton-dropdown-item.logout:hover {
-            background: rgba(255, 77, 77, 0.12);
+            background: rgba(255, 77, 77, 0.12) !important;
         }
 
-        /* تجاوب ممتاز لشاشات الموبايل */
+        /* تجاوب الشاشات الصغيرة (الموبايل) */
         @media (max-width: 650px) {
             .proton-global-header {
-                top: 10px;
-                right: 10px;
-                left: 10px;
-                gap: 6px;
+                top: 10px !important;
+                right: 10px !important;
+                left: 10px !important;
+                gap: 6px !important;
             }
 
             .proton-logo-img {
-                height: 28px;
-                max-width: 110px;
+                height: 28px !important;
+                max-width: 110px !important;
             }
 
             .proton-header-actions {
-                gap: 6px;
+                gap: 6px !important;
             }
 
             .proton-header-btn {
-                padding: 6px 10px;
-                font-size: 12px;
-                gap: 5px;
+                padding: 6px 10px !important;
+                font-size: 12px !important;
+                gap: 5px !important;
             }
 
             .proton-header-btn img,
@@ -167,18 +174,23 @@
             }
 
             .proton-dropdown-menu {
-                width: 160px;
-                top: 40px;
+                width: 160px !important;
+                top: 40px !important;
             }
         }
     `;
     document.head.appendChild(style);
 
-    // 2. إنشاء هيكل الهيدر HTML
+    // 2. إنشاء هيكل الهيدر HTML مع الترتيب الصحيح
     const headerWrapper = document.createElement('div');
     headerWrapper.className = 'proton-global-header';
     
     headerWrapper.innerHTML = `
+        <!-- اللوجو في اليسار -->
+        <a href="./index.html" class="proton-header-brand" title="الرئيسية - Proton">
+            <img src="./logo_06.png" alt="Proton Logo" class="proton-logo-img">
+        </a>
+
         <!-- أزرار الإجراءات في اليمين -->
         <div class="proton-header-actions">
             <div class="proton-dropdown-container">
@@ -203,40 +215,47 @@
                 <div class="proton-dropdown-menu" id="userDropdownMenu"></div>
             </div>
         </div>
-
-        <!-- اللوجو في اليسار مربوط بالصفحة الرئيسية -->
-        <a href="./index.html" class="proton-header-brand" title="الرئيسية - Proton">
-            <img src="./logo_06.png" alt="Proton Logo" class="proton-logo-img">
-        </a>
     `;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        document.body.prepend(headerWrapper);
+    function initHeader() {
+        if (!document.body.contains(headerWrapper)) {
+            document.body.prepend(headerWrapper);
+        }
 
         const homeBtn = document.getElementById('homeDropdownBtn');
         const pagesMenu = document.getElementById('pagesDropdownMenu');
         const userBtn = document.getElementById('userDropdownBtn');
         const userMenu = document.getElementById('userDropdownMenu');
 
-        homeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            pagesMenu.classList.toggle('active');
-            userMenu.classList.remove('active');
-        });
+        if (homeBtn && pagesMenu) {
+            homeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                pagesMenu.classList.toggle('active');
+                if (userMenu) userMenu.classList.remove('active');
+            });
+        }
 
-        userBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            userMenu.classList.toggle('active');
-            pagesMenu.classList.remove('active');
-        });
+        if (userBtn && userMenu) {
+            userBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                userMenu.classList.toggle('active');
+                if (pagesMenu) pagesMenu.classList.remove('active');
+            });
+        }
 
         window.addEventListener('click', () => {
-            pagesMenu.classList.remove('active');
-            userMenu.classList.remove('active');
+            if (pagesMenu) pagesMenu.classList.remove('active');
+            if (userMenu) userMenu.classList.remove('active');
         });
 
         checkUserAuthState();
-    });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHeader);
+    } else {
+        initHeader();
+    }
 
     // دالة لاستخراج التوكن وحفظه بالمتصفح
     function getAuthToken() {
@@ -264,6 +283,8 @@
         const userAuthText = document.getElementById('userAuthText');
         const userAvatarIcon = document.getElementById('userAvatarIcon');
         const userMenu = document.getElementById('userDropdownMenu');
+
+        if (!userAuthText || !userAvatarIcon || !userMenu) return;
 
         const settingsLink = `<a href="./account-settings.html" class="proton-dropdown-item">إعدادات الحساب</a>`;
 
@@ -311,15 +332,18 @@
                     <a href="#" class="proton-dropdown-item logout" id="logoutBtn">تسجيل الخروج</a>
                 `;
 
-                document.getElementById('logoutBtn').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    localStorage.removeItem('access_token');
-                    localStorage.removeItem('user_id');
-                    localStorage.removeItem('user_name');
-                    localStorage.removeItem('user_picture');
-                    document.cookie = 'access_token=; Max-Age=0; path=/;';
-                    window.location.href = './auth.html';
-                });
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.removeItem('access_token');
+                        localStorage.removeItem('user_id');
+                        localStorage.removeItem('user_name');
+                        localStorage.removeItem('user_picture');
+                        document.cookie = 'access_token=; Max-Age=0; path=/;';
+                        window.location.href = './auth.html';
+                    });
+                }
 
             } else {
                 const cachedName = localStorage.getItem('user_name');
