@@ -195,7 +195,7 @@
         <div class="proton-header-actions">
             <div class="proton-dropdown-container">
                 <button class="proton-header-btn" id="homeDropdownBtn" title="الرئيسية والصفحات">
-                    <img src="./home.png" alt="Proton Home" style="border-radius: 0; object-fit: contain;">
+                    <img src="./home.webp" alt="Proton Home" style="border-radius: 0; object-fit: contain;">
                     <span>الرئيسية</span>
                 </button>
                 <div class="proton-dropdown-menu" id="pagesDropdownMenu">
@@ -209,7 +209,7 @@
 
             <div class="proton-dropdown-container" id="userAuthContainer">
                 <button class="proton-header-btn" id="userDropdownBtn">
-                    <img src="./login.png" alt="User" id="userAvatarIcon">
+                    <img src="./User-W.webp" alt="User" id="userAvatarIcon">
                     <span id="userAuthText">جاري التحقق...</span>
                 </button>
                 <div class="proton-dropdown-menu" id="userDropdownMenu"></div>
@@ -324,7 +324,7 @@
                     localStorage.setItem('user_picture', data.profile_picture);
                     userAvatarIcon.src = data.profile_picture;
                 } else {
-                    userAvatarIcon.src = "./login.png";
+                    userAvatarIcon.src = "./User-W.webp";
                 }
 
                 userMenu.innerHTML = `
@@ -368,7 +368,7 @@
 
     function setUserLoggedOut(textEl, iconEl, menuEl, sLink) {
         textEl.textContent = 'تسجيل الدخول';
-        iconEl.src = './login.png';
+        iconEl.src = './User-W.webp';
         menuEl.innerHTML = `
             <a href="./auth.html" class="proton-dropdown-item">تسجيل الدخول</a>
             ${sLink}
