@@ -16,6 +16,14 @@
     <link rel="stylesheet" href="./style.css">
     
     <style>
+        /* منع ظهور أي أشرطة تمرير أفقية بشكل جذري */
+        html, body {
+            overflow-x: hidden !important;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
         /* تنسيقات الهيكلية بأسلوب n8n الهادئ والأنيق */
         .hero-wrapper {
             display: flex;
@@ -68,7 +76,6 @@
             width: 100%;
             max-width: 1100px;
             margin: 2rem auto 5rem auto;
-            overflow-x: hidden; /* لمنع ظهور شريط تمرير أفقي أثناء الحركة */
         }
 
         .workflow-row {
@@ -76,28 +83,16 @@
             align-items: center;
             gap: 3.5rem;
             width: 100%;
-            /* إعدادات الحركة الأولية أثناء السكرول */
+            /* حركة أبطأ، أنعم، وبدون خروج عن حدود الصفحة لمنع الشريط الجانبي */
             opacity: 0;
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+            transform: translateY(40px);
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
         }
 
-        /* اتجاهات الدخول الأولية قبل تفعيل الكلاس المتحرك */
-        .workflow-row:nth-child(odd) {
-            transform: translateX(100px); /* يأتي من أقصى اليمين */
-        }
-
-        .workflow-row:nth-child(even) {
-            transform: translateX(-100px); /* يأتي من أقصى الشمال */
-        }
-
-        .workflow-row:nth-child(3n) {
-            transform: translateY(80px); /* يأتي من الأسفل لمنتصف المكان */
-        }
-
-        /* الحالة عند ظهور العنصر في الشاشة أثناء السكرول (صعوداً أو نزولاً) */
+        /* الحالة عند ظهور العنصر في الشاشة أثناء السكرول */
         .workflow-row.animate-in {
             opacity: 1;
-            transform: translateX(0) translateY(0);
+            transform: translateY(0);
         }
 
         .workflow-row.reverse {
@@ -553,24 +548,22 @@
 
     </div>
 
-    <!-- سكربت تفاعل السكرول (Animation on Scroll Up & Down) -->
+    <!-- سكربت تفاعل السكرول (حركة ناعمة وبطيئة) -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const rows = document.querySelectorAll('.workflow-row');
 
             const observerOptions = {
                 root: null,
-                rootMargin: '0px 0px -10% 0px',
-                threshold: 0.15
+                rootMargin: '0px 0px -5% 0px',
+                threshold: 0.1
             };
 
-            const observer = new IntersectionObserver((entries, observer) => {
+            const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('animate-in');
                     } else {
-                        // لإعادة تشغيل الحركة بسلاسة عند الصعود والنزول المتكرر
-                        // يمكنك إزالة هذا السطر إذا كنت تريد حدوث الحركة مرة واحدة فقط عند النزول الأول
                         entry.target.classList.remove('animate-in');
                     }
                 });
