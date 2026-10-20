@@ -68,6 +68,7 @@
             width: 100%;
             max-width: 1100px;
             margin: 2rem auto 5rem auto;
+            overflow-x: hidden; /* لمنع ظهور شريط تمرير أفقي أثناء الحركة */
         }
 
         .workflow-row {
@@ -75,6 +76,28 @@
             align-items: center;
             gap: 3.5rem;
             width: 100%;
+            /* إعدادات الحركة الأولية أثناء السكرول */
+            opacity: 0;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+        }
+
+        /* اتجاهات الدخول الأولية قبل تفعيل الكلاس المتحرك */
+        .workflow-row:nth-child(odd) {
+            transform: translateX(100px); /* يأتي من أقصى اليمين */
+        }
+
+        .workflow-row:nth-child(even) {
+            transform: translateX(-100px); /* يأتي من أقصى الشمال */
+        }
+
+        .workflow-row:nth-child(3n) {
+            transform: translateY(80px); /* يأتي من الأسفل لمنتصف المكان */
+        }
+
+        /* الحالة عند ظهور العنصر في الشاشة أثناء السكرول (صعوداً أو نزولاً) */
+        .workflow-row.animate-in {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
         }
 
         .workflow-row.reverse {
@@ -529,6 +552,35 @@
         </footer>
 
     </div>
+
+    <!-- سكربت تفاعل السكرول (Animation on Scroll Up & Down) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const rows = document.querySelectorAll('.workflow-row');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -10% 0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    } else {
+                        // لإعادة تشغيل الحركة بسلاسة عند الصعود والنزول المتكرر
+                        // يمكنك إزالة هذا السطر إذا كنت تريد حدوث الحركة مرة واحدة فقط عند النزول الأول
+                        entry.target.classList.remove('animate-in');
+                    }
+                });
+            }, observerOptions);
+
+            rows.forEach(row => {
+                observer.observe(row);
+            });
+        });
+    </script>
 
     <!-- سكربت جلب الفوتر الموحد تلقائياً -->
     <script>
