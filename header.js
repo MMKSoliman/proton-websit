@@ -153,8 +153,8 @@
             }
 
             .proton-logo-img {
-                height: 28px !important;
-                max-width: 110px !important;
+                height: 42px !important;
+                max-width: 165px !important;
             }
 
             .proton-header-actions {
