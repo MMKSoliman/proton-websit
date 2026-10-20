@@ -3,131 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proton - شريكك الرقمي للنمو</title>
+    <title>Proton - شريكك الرقمي للنمو والأتمتة</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/favicon.png" href="./favicon.png">
 
-    <!-- Google Fonts: Cairo & Open Sans -->
+    <!-- Google Fonts & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="./style.css">
     
     <style>
-        /* تنسيقات إضافية مخصصة لصفحة الهبوط الفاخرة */
+        /* تنسيقات الهيكلية الجديدة بأسلوب n8n الهادئ والأنيق */
         .hero-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            max-width: 850px;
+            max-width: 900px;
             margin: auto;
-            padding: 1rem 0;
+            padding: 3rem 0 4rem 0;
         }
-        .hero-logo {
-            max-width: 280px;
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            margin-bottom: 1.5rem;
-            filter: drop-shadow(0 4px 20px rgba(0, 229, 255, 0.25));
-        }
+
         .hero-badge {
             display: inline-block;
             background: rgba(0, 229, 255, 0.08);
-            color: var(--accent-cyan);
+            color: var(--accent-cyan, #00e5ff);
             border: 1px solid rgba(0, 229, 255, 0.25);
-            padding: 6px 16px;
+            padding: 8px 20px;
             border-radius: 30px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 700;
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
             letter-spacing: 0.5px;
         }
+
         .hero-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            line-height: 1.3;
-            margin-bottom: 1rem;
+            font-size: 2.8rem;
+            font-weight: 900;
+            line-height: 1.25;
+            margin-bottom: 1.2rem;
             color: #fff;
         }
+
         .hero-title span {
-            color: var(--accent-cyan);
+            color: var(--accent-cyan, #00e5ff);
         }
+
         .hero-subtitle {
-            font-size: 1.05rem;
+            font-size: 1.15rem;
             color: rgba(255, 255, 255, 0.75);
             line-height: 1.8;
-            max-width: 680px;
+            max-width: 720px;
             margin: 0 auto 2.5rem auto;
         }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.2rem;
+
+        /* مسار الخدمات والرحلة (Workflow Sections) */
+        .workflow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4.5rem;
             width: 100%;
-            margin-bottom: 2.5rem;
+            max-width: 1100px;
+            margin: 2rem auto 5rem auto;
+        }
+
+        .workflow-row {
+            display: flex;
+            align-items: center;
+            gap: 3.5rem;
+            width: 100%;
+        }
+
+        .workflow-row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .workflow-text {
+            flex: 1;
             text-align: right;
         }
-        .feature-box {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            padding: 1.5rem;
-            backdrop-filter: blur(14px);
-            transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-        .feature-box:hover {
-            transform: translateY(-3px);
-            border-color: rgba(0, 229, 255, 0.4);
-        }
-        .feature-icon {
-            font-size: 1.6rem;
-            margin-bottom: 0.8rem;
-        }
-        .feature-box h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 0.5rem;
-        }
-        .feature-box p {
+
+        .step-number {
+            display: inline-block;
+            color: var(--accent-cyan, #00e5ff);
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.65);
-            line-height: 1.6;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
         }
+
+        .workflow-text h3 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .workflow-text p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Widgets البصرية التفاعلية المصغرة */
+        .workflow-widget {
+            flex: 1;
+            background: var(--card-bg, #161b22);
+            border: 1px solid var(--card-border, #30363d);
+            border-radius: 18px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            backdrop-filter: blur(14px);
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .workflow-widget:hover {
+            border-color: rgba(0, 229, 255, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.2rem;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .widget-body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .btn-link-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-cyan, #00e5ff);
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: gap 0.2s ease;
+        }
+
+        .btn-link-action:hover {
+            gap: 12px;
+        }
+
+        /* زر الإجراء الرئيسي الختامي */
         .cta-container {
             display: flex;
-            justify-content: center;
-            width: 100%;
-            max-width: 380px;
-            margin: 0 auto;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 1rem;
+            background: rgba(22, 27, 34, 0.5);
+            border: 1px solid var(--card-border, #30363d);
+            border-radius: 24px;
+            margin-bottom: 4rem;
         }
+
         .btn-primary-custom {
-            width: 100%;
-            padding: 15px 24px;
+            padding: 16px 36px;
             border-radius: 12px;
-            background: var(--primary-gradient);
+            background: var(--primary-gradient, linear-gradient(135deg, #00e5ff 0%, #0088ff 100%));
             color: #fff;
-            font-weight: 700;
-            font-size: 1rem;
+            font-weight: 800;
+            font-size: 1.1rem;
             text-decoration: none;
             box-shadow: 0 6px 25px rgba(0, 229, 255, 0.35);
             transition: opacity 0.2s, transform 0.2s;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 10px;
         }
+
         .btn-primary-custom:hover {
-            opacity: 0.9;
+            opacity: 0.95;
             transform: translateY(-2px);
         }
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 1.7rem;
+
+        /* الاستجابة للهواتف المحمولة */
+        @media (max-width: 868px) {
+            .hero-title { font-size: 1.8rem; }
+            .workflow-row, .workflow-row.reverse {
+                flex-direction: column;
+                gap: 2rem;
             }
+            .workflow-text { text-align: right; }
+            .workflow-container { gap: 3rem; }
         }
     </style>
 </head>
@@ -142,50 +218,233 @@
         <div class="center-content">
             <div class="hero-wrapper">
                 
-                <!-- الشعار الرسمي للنشاط بجودة عالية -->
-                <img src="./logo_06.webp" alt="Proton - Your Digital Growth Partner" class="hero-logo">
-
-                <div class="hero-badge">⚡ حصرياً للبراندات النخبوية والشركات الرائدة</div>
+                <div class="hero-badge">⚡ منظومة النمو والأتمتة الشاملة للبراندات النخبوية</div>
                 
                 <h1 class="hero-title">هندسة الحضور الرقمي وتحقيق <span>النمو المتسارع</span> لعملك</h1>
                 
                 <p class="hero-subtitle">
-                    منظومة متكاملة تجمع أتمتة النشر، الخطط التسويقية الاستراتيجية، وإدارة التفاعل والصفقات بكفاءة مطلقة. نوفر عليك تعقيدات التشغيل لنقود براندك نحو القمة بثبات.
+                    نحول براندك إلى منظومة عمل أوتوماتيكية متكاملة: من بناء الهوية الرقمية والمحتوى الاستراتيجي، مروراً بجدولة النشر وأتمتة الرسائل والصفقات، وحتى تطوير موقع إلكتروني مخصص يلبي تطلعات عملائك.
                 </p>
 
-                <!-- مميزات المنصة المعروضة للعميل (خاطفة ومبهرة) -->
-                <div class="features-grid">
-                    <div class="feature-box">
-                        <div class="feature-icon">🚀</div>
-                        <h3>أتمتة ذكية متكاملة</h3>
-                        <p>جدولة ونشر تلقائي للمنشورات، الصور، الستوريز، والريلز بدقة متناهية عبر جميع منصات التواصل.</p>
-                    </div>
+            </div>
 
-                    <div class="feature-box">
-                        <div class="feature-icon">📈</div>
-                        <h3>خطط تسويقية مخصصة</h3>
-                        <p>استراتيجيات تسويقية مصممة خصيصاً لتناسب هوية براندك، وضعك الحالي، وتعظيم عائيدك الاستثماري.</p>
-                    </div>
+            <!-- رحلة المنظومة الـ 10 خطوات (Workflow & Automation Steps) -->
+            <div class="workflow-container">
 
-                    <div class="feature-box">
-                        <div class="feature-icon">💬</div>
-                        <h3>تفاعل وإدارة صفقات</h3>
-                        <p>متابعة مستمرة للتعليقات والرسائل الخاصة لضمان تحويل المهتمين إلى عملاء دائمين وولاء مستدام.</p>
+                <!-- Step 1: الهوية والبراند -->
+                <div class="workflow-row">
+                    <div class="workflow-text">
+                        <span class="step-number">الخطوة 01 — التأسيس البصري</span>
+                        <h3>دراسة وتنسيق هوية البراند</h3>
+                        <p>نبدأ بتحليل دقيق لحالة براندك الحالية، وتحديد الألوان والخطوط واللوجو وبناء دليل الهوية البصرية الموحد الذي يعكس قوة نشاطك التجاري ويترك انطباعاً نخبوي لدى العميل.</p>
+                        <a href="./brand-identity.html" class="btn-link-action">استكشف خدمات الهوية <i class="fa-solid fa-arrow-left"></i></a>
                     </div>
-
-                    <div class="feature-box">
-                        <div class="feature-icon">📊</div>
-                        <h3>تقارير أداء دورية</h3>
-                        <p>متابعة لحظية للمبيعات ومعدلات النمو من خلال لوحة تحكم ذكية وتقارير دقيقة وموجزة.</p>
+                    <div class="workflow-widget">
+                        <div class="widget-header">
+                            <span><i class="fa-solid fa-palette" style="color: var(--accent-cyan,#00e5ff);"></i> Brand Style Guide</span>
+                            <span style="color: #7ee787;">جاهز للاستخدام</span>
+                        </div>
+                        <div class="widget-body">
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <div style="width: 24px; height: 24px; border-radius: 50%; background: #00e5ff;"></div>
+                                <div style="width: 24px; height: 24px; border-radius: 50%; background: #0088ff;"></div>
+                                <div style="width: 24px; height: 24px; border-radius: 50%; background: #0d1117; border: 1px solid #30363d;"></div>
+                                <span style="font-size: 0.8rem; color: #8b949e; margin-right: auto;">لوحة الألوان المعتمدة</span>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; font-size: 0.85rem; color: #c9d1d9;">
+                                <strong>الخط الرئيسي:</strong> Cairo (Extra Bold)
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- زر الإجراء الرئيسي في المنتصف بعد التعديل -->
-                <div class="cta-container">
-                    <a href="./auth.html" class="btn-primary-custom">ابدأ الآن وانضم للنخبة 🚀</a>
+                <!-- Step 2: كتابة المحتوى -->
+                <div class="workflow-row reverse">
+                    <div class="workflow-text">
+                        <span class="step-number">الخطوة 02 — الإستراتيجية</span>
+                        <h3>صناعة كتابة المحتوى المناسب</h3>
+                        <p>صياغة خطط ومحتوى استراتيجي مخصص لنشاطك التجاري، يخاطب اهتمامات جمهورك المستهدف بدقة ويعزز من القيمة السوقية لخدماتك.</p>
+                        <a href="./content-creation.html" class="btn-link-action">استكشف استراتيجية المحتوى <i class="fa-solid fa-arrow-left"></i></a>
+                    </div>
+                    <div class="workflow-widget">
+                        <div class="widget-header">
+                            <span><i class="fa-solid fa-pen-nib" style="color: var(--accent-cyan,#00e5ff);"></i> Content Engine</span>
+                            <span style="color: var(--accent-cyan,#00e5ff);">Tone: Professional</span>
+                        </div>
+                        <div class="widget-body">
+                            <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; font-size: 0.85rem; color: #c9d1d9;">
+                                📌 "كيف تضاعف كفاءة تشغيل شركتك باستخدام أتمتة الصفقات؟"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: أتمتة النشر -->
+                <div class="workflow-row">
+                    <div class="workflow-text">
+                        <span class="step-number">الخطوة 03 — الخوارزميات</span>
+                        <h3>أتمتة النشر المنهجي الذكي</h3>
+                        <p>جدولة ونشر المحتوى تلقائياً بالأوقات المثالية التي تستهدف خوارزميات كل منصة (Facebook, Instagram, LinkedIn, X) لضمان أعلى نسبة وصول مجاني.</p>
+                        <a href="./publishing-automation.html" class="btn-link-action">تفاصيل أتمتة النشر <i class="fa-solid fa-arrow-left"></i></a>
+                    </div>
+                    <div class="workflow-widget">
+                        <div class="widget-header">
+                            <span><i class="fa-solid fa-calendar-check" style="color: var(--accent-cyan,#00e5ff);"></i> Cross-Platform Scheduler</span>
+                            <span style="color: #7ee787;">Auto-Active</span>
+                        </div>
+                        <div class="widget-body">
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; font-size: 0.85rem;">
+                                <span><i class="fa-brands fa-instagram" style="color: #e1306c;"></i> منشور انستجرام مجدول</span>
+                                <span style="color: #7ee787;">تم بنجاح 06:00 م</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: التصميم والتصوير -->
+                <div class="workflow-row reverse">
+                    <div class="workflow-text">
+                        <span class="step-number">الخطوة 04 — الإنتاج البصري</span>
+                        <h3>تصميم الصور والفيديوهات</h3>
+                        <p>إنتاج ورسم التصاميم الملائمة للموضوع، بجانب تصوير ومونتاج الفيديوهات القصيرة (Reels & Shorts) المجهزة لجذب انتباه العميل من الثواني الأولى.</p>
+                        <a href="./visual-production.html" class="btn-link-action">نماذج الإنتاج البصري <i class="fa-solid fa-arrow-left"></i></a>
+                    </div>
+                    <div class="workflow-widget">
+                        <div class="widget-header">
+                            <span><i class="fa-solid fa-photo-film" style="color: var(--accent-cyan,#00e5ff);"></i> Media Studio</span>
+                            <span>4K Rendered</span>
+                        </div>
+                        <div class="widget-body" style="text-align: center; padding: 1rem;">
+                            <i class="fa-solid fa-circle-play" style="font-size: 2.5rem; color: var(--accent-cyan,#00e5ff); margin-bottom: 0.5rem;"></i>
+                            <div style="font-size: 0.85rem; color: #8b949e;">جاهز للتصدير: Reel_Automation_01.mp4</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: المتابعة والتفاعل -->
+                <div class="workflow-row">
+                    <div class="workflow-text">
+                        <span class="step-number">الخطوة 05 — المتابعة اللحظية</span>
+                        <h3>تحليل التفاعل والمتابعة</h3>
+                        <p>رصد ومتابعة تفاعل المتابعين مع كل عملية نشر بشكل لحظي، وتحليل سلوك الجمهور لتحديد أفضل أوقات النشر والنوعيات الأكثر تأثيراً.</p>
+                        <a href="./engagement-analytics.html" class="btn-link-action">عرض أدوات المتابعة <i class="fa-solid fa-arrow-left"></i></a>
+                    </div>
+                    <div class="workflow-widget">
+                        <div class="widget-header">
+                            <span><i class="fa-solid fa-chart-line" style="color: var(--accent-cyan,#00e5ff);"></i> Live Engagement Tracker</span>
+                            <span style="color: #7ee787;">+340% تفاعل</span>
+                        </div>
+                        <div class="widget-body">
+                            <div style="height: 40px; display: flex; align-items: flex-end; gap: 8px;">
+                                <div style="flex: 1; height: 30%; background: rgba(0,229,255,0.3); border-radius: 4px;"></div>
+                                <div style="flex: 1; height: 55%; background: rgba(0,229,255,0.5); border-radius: 4px;"></div>
+                                <div style="flex: 1; height: 85%; background: rgba(0,229,255,0.8); border-radius: 4px;"></div>
+                                <div style="flex: 1; height: 100%; background: var(--accent-cyan,#00e5ff); border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6: إدارة التعليقات -->
+                <div class="workflow-row reverse">
+                    <div class="workflow-text">
+                        <span class="step-number">الخطوة 06 — الخدمة الفورية</span>
+                        <h3>الرد التلقائي على التعليقات</h3>
+                        <p>الرد السريع والمتناسق على جميع التعليقات وإرسال التفاصيل مباشرة للخاص لضمان تحويل المتابعين المهتمين إلى عملاء حقيقيين فوراً.</p>
+                        <a href="./comments-automation.html" class="btn-link-action">أتمتة التعليقات <i class="fa-solid fa-arrow-left"></i></a>
+                    </div>
+                    <div class="workflow-widget">
+                        <div class="widget-header">
+                            <span><i class="fa-solid fa-comments" style="color: var(--accent-cyan,#00e5ff);"></i> Comment Auto-Responder</span>
+                            <span style="color: #7ee787;">رد في 0.2 ثانية</span>
+                        </div>
+                        <div class="widget-body">
+                            <div style="font-size: 0.8rem; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 6px;">
+                                💬 <strong>العميل:</strong> ممكن سعر الخدمة؟
+                            </div>
+                            <div style="font-size: 0.8rem; background: rgba(0,229,255,0.05); border-right: 2px solid #00e5ff; padding: 8px; border-radius: 6px;">
+                                ⚡ <strong>Proton:</strong> تم إرسال التفاصيل والعرض في الرسائل الخاصة 📥
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 7: الرسائل وتقفيل الصفقات -->
+                <div class="workflow-row">
+                    <div class="workflow-text">
+                        <span class="step-number">الخطوة 07 — المبيعات</span>
+                        <h3>إدارة الرسائل وتقفيل الصفقات</h3>
+                        <p>تحليل احتياجات العميل عبر المحادثات الخاصة تلقائياً، والرد بالحلول المناسبة، ومتابعة العميل حتى إتمام عملية البيع بنجاح.</p>
+                        <a href="./deals-automation.html" class="btn-link-action">نظام إدارة الصفقات <i class="fa-solid fa-arrow-left"></i></a>
+                    </div>
+                    <div class="workflow-widget">
+                        <div class="widget-header">
+                            <span><i class="fa-solid fa-handshake" style="color: var(--accent-cyan,#00e5ff);"></i> Deal Closer Bot</span>
+                            <span style="color: #7ee787;">تم إغلاق الصفقة 🎉</span>
+                        </div>
+                        <div class="widget-body">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #c9d1d9;">
+                                <span>حالة المحادثة:</span>
+                                <span style="color: #7ee787; font-weight: 700;">تم تأكيد الطلب</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 8: التحليل والتطوير -->
+                <div class="workflow-row reverse">
+                    <div class="workflow-text">
+                        <span class="step-number">الخطوة 08 — الاستدامة</span>
+                        <h3>تحليل النتائج وتطوير الخطة</h3>
+                        <p>قراءة وتفكيك ردود أفعال العملاء وتفاعلهم، وبناء تقارير دورية لتطوير الخطة التسويقية باستمرار بناءً على أرقام واقعية.</p>
+                        <a href="./growth-analytics.html" class="btn-link-action">تقارير النمو <i class="fa-solid fa-arrow-left"></i></a>
+                    </div>
+                    <div class="workflow-widget">
+                        <div class="widget-header">
+                            <span><i class="fa-solid fa-magnifying-glass-chart" style="color: var(--accent-cyan,#00e5ff);"></i> Strategic Growth Report</span>
+                            <span>Monthly Insights</span>
+                        </div>
+                        <div class="widget-body">
+                            <div style="font-size: 0.85rem; color: #8b949e;">
+                                📈 توصية النظام: زيادة التركيز على محتوى الفيديوهات القصيرة في الفترة القادمة بنسبة 20%.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 9: الموقع الإلكتروني المخصص (الختام) -->
+                <div class="workflow-row">
+                    <div class="workflow-text">
+                        <span class="step-number">الخطوة 09 — المقر الرقمي الرسمي</span>
+                        <h3>بناء موقع إلكتروني مفصل خصيصاً</h3>
+                        <p>تصميم وتطوير موقع إلكتروني سريع ومفصل خصيصاً ليناسب نشاطك التجاري، ويضمن تقديم تجربة مستخدم فائقة السلاسة تلبي جميع احتياجات عملائك وتزيد من معدلات التحويل (Conversion Rate).</p>
+                        <a href="./web-development.html" class="btn-link-action">استكشف خدمات تطوير المواقع <i class="fa-solid fa-arrow-left"></i></a>
+                    </div>
+                    <div class="workflow-widget">
+                        <div class="widget-header">
+                            <span><i class="fa-solid fa-globe" style="color: var(--accent-cyan,#00e5ff);"></i> Custom Web Development</span>
+                            <span style="color: #7ee787;">100% Tailored</span>
+                        </div>
+                        <div class="widget-body">
+                            <div style="background: rgba(255,255,255,0.03); border: 1px dashed rgba(0,229,255,0.3); padding: 12px; border-radius: 8px; text-align: center;">
+                                <i class="fa-solid fa-laptop-code" style="font-size: 1.8rem; color: var(--accent-cyan,#00e5ff); margin-bottom: 6px;"></i>
+                                <div style="font-size: 0.85rem; color: #fff; font-weight: 700;">موقع إلكتروني متجاوب وسريع جداً</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
+
+            <!-- CTA النهائي بعد استعراض الرحلة -->
+            <div class="cta-container">
+                <h2 style="font-size: 2.2rem; font-weight: 800; color: #fff; margin-bottom: 1rem;">جاهز لتحويل براندك إلى منظومة أتمتة متكاملة؟</h2>
+                <p style="font-size: 1rem; color: rgba(255,255,255,0.7); max-width: 600px; margin-bottom: 2rem; line-height: 1.7;">
+                    احصل على استشارة مخصصة واكتشف كيف يمكن لمنظومة Proton قيادة براندك نحو القمة بثبات وبدون تعقيدات تشغيلية.
+                </p>
+                <a href="./auth.html" class="btn-primary-custom">ابدأ الآن وانضم للنخبة 🚀</a>
+            </div>
+
         </div>
 
         <!-- Social Media Icons Footer (يتم تحميله تلقائياً) -->
