@@ -30,8 +30,8 @@
         }
 
         .proton-logo-img {
-            height: 38px !important;
-            max-width: 170px !important;
+            height: 57px !important;
+            max-width: 255px !important;
             width: auto !important;
             object-fit: contain !important;
             display: block !important;
