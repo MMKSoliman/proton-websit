@@ -35,7 +35,7 @@ html, body {
 
 /* تثبيت الخلفية على مستوى الـ body لكي تظل ثابتة تماماً ولا تتحرك مع المحتوى ولا يظهر سواد بالأسفل */
 body {
-    background: var(--bg-color) url('./bg1.png') center/cover no-repeat fixed !important;
+    background: var(--bg-color) url('./o_bg.webp') center/cover no-repeat fixed !important;
 }
 
 /* Main Container Layout */
