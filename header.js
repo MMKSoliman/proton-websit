@@ -13,36 +13,41 @@
             z-index: 9999;
             pointer-events: none;
             gap: 12px;
+            /* تثبيت الاتجاه ليكون اللوجو يسار والأزرار يمين بغض النظر عن dir=rtl */
+            direction: ltr !important;
         }
 
-        /* حاوية اللوجو على اليسار */
+        /* حاوية اللوجو في جهة اليسار */
         .proton-header-brand {
             pointer-events: auto;
             display: flex;
             align-items: center;
             text-decoration: none;
+            flex-shrink: 0;
         }
 
         .proton-logo-img {
             height: 38px;
+            max-width: 170px;
             width: auto;
             object-fit: contain;
-            filter: drop-shadow(0 2px 8px rgba(0, 229, 255, 0.25));
+            display: block;
+            filter: drop-shadow(0 2px 8px rgba(0, 229, 255, 0.3));
             transition: transform 0.3s ease, filter 0.3s ease;
         }
 
         .proton-header-brand:hover .proton-logo-img {
-            transform: scale(1.04);
-            filter: drop-shadow(0 4px 12px rgba(0, 229, 255, 0.45));
+            transform: scale(1.03);
+            filter: drop-shadow(0 4px 14px rgba(0, 229, 255, 0.5));
         }
 
-        /* الأزرار والقوائم في اليمين */
+        /* الأزرار والقوائم في جهة اليمين */
         .proton-header-actions {
             display: flex;
             align-items: center;
             gap: 10px;
             pointer-events: auto;
-            margin-left: auto;
+            direction: rtl !important; /* إبقاء النصوص والأيقونات داخل الأزرار بالاتجاه العربي */
         }
 
         .proton-header-btn {
@@ -99,6 +104,7 @@
             overflow: hidden;
             z-index: 10000;
             backdrop-filter: blur(15px);
+            direction: rtl !important;
         }
 
         .proton-dropdown-menu.active {
@@ -130,17 +136,18 @@
             background: rgba(255, 77, 77, 0.12);
         }
 
-        /* تحسين التنسيق لشاشات الهواتف الذكية (الموبايل) */
-        @media (max-width: 600px) {
+        /* تجاوب ممتاز لشاشات الموبايل */
+        @media (max-width: 650px) {
             .proton-global-header {
                 top: 10px;
                 right: 10px;
                 left: 10px;
-                gap: 8px;
+                gap: 6px;
             }
 
             .proton-logo-img {
-                height: 30px; /* تصغير اللوجو لتوفير مساحة */
+                height: 28px;
+                max-width: 110px;
             }
 
             .proton-header-actions {
@@ -155,28 +162,23 @@
 
             .proton-header-btn img,
             .proton-header-btn svg {
-                width: 16px !important;
-                height: 16px !important;
+                width: 15px !important;
+                height: 15px !important;
             }
 
             .proton-dropdown-menu {
-                width: 170px;
+                width: 160px;
                 top: 40px;
             }
         }
     `;
     document.head.appendChild(style);
 
-    // 2. إنشاء هيكل الهيدر مع حقل اللوجو الأيسر المربوط بالصفحة الرئيسية
+    // 2. إنشاء هيكل الهيدر HTML
     const headerWrapper = document.createElement('div');
     headerWrapper.className = 'proton-global-header';
     
     headerWrapper.innerHTML = `
-        <!-- اللوجو في اليسار مربوط بالصفحة الرئيسية -->
-        <a href="./index.html" class="proton-header-brand" title="الرئيسية - Proton">
-            <img src="./logo_06.png" alt="Proton Logo" class="proton-logo-img">
-        </a>
-
         <!-- أزرار الإجراءات في اليمين -->
         <div class="proton-header-actions">
             <div class="proton-dropdown-container">
@@ -201,6 +203,11 @@
                 <div class="proton-dropdown-menu" id="userDropdownMenu"></div>
             </div>
         </div>
+
+        <!-- اللوجو في اليسار مربوط بالصفحة الرئيسية -->
+        <a href="./index.html" class="proton-header-brand" title="الرئيسية - Proton">
+            <img src="./logo_06.png" alt="Proton Logo" class="proton-logo-img">
+        </a>
     `;
 
     document.addEventListener('DOMContentLoaded', () => {
