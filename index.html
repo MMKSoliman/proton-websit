@@ -19,7 +19,7 @@
     <meta name="keywords" content="بروتون, Proton, أتمتة التسويق, خطط تسويقية, تسويق رقمي مصر, Proton Marketing, إدارة منصات التواصل">
     <meta name="robots" content="index, follow">
     
-    <!-- Open Graph / Facebook & WhatsApp Preview (لمعاينة الرابط بشكل فاخر عند إرساله) -->
+    <!-- Open Graph / Facebook & WhatsApp Preview -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://protonag.com/">
     <meta property="og:title" content="Proton - Your Digital Growth Partner">
@@ -33,6 +33,10 @@
     <meta name="twitter:image" content="https://protonag.com/Logo%2006.jpg">
     
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         html, body {
             overflow-x: hidden !important;
             width: 100%;
@@ -281,13 +285,13 @@
             margin-bottom: 1.5rem;
         }
 
-        /* المخطط البصري وتصميم العقد التفاعلي المتجاوب */
+        /* المخطط البصري والتفرع بأسلوب SVG متناسق في كل المنصات */
         .card-visual-side {
             flex: 1.3;
             background: #0d1117;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 18px;
-            padding: 2rem 1.5rem;
+            padding: 2.5rem 1.5rem;
             min-height: 280px;
             display: flex;
             align-items: center;
@@ -296,16 +300,15 @@
             background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
             background-size: 16px 16px;
             width: 100%;
-            box-sizing: border-box;
         }
 
         .workflow-canvas {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
             width: 100%;
             position: relative;
+            gap: 0;
         }
 
         .node-box {
@@ -324,18 +327,18 @@
         }
 
         .node-icon-img {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             object-fit: contain;
         }
 
-        /* خطوط الاتصالات مع النقاط النيون الضوئية */
+        /* خط التوصيل النيون المستمر مع توهج ثابت */
         .node-connector-line {
             flex: 1;
             height: 2px;
             background: linear-gradient(90deg, #00e5ff, #0088ff);
             position: relative;
-            min-width: 20px;
+            min-width: 25px;
         }
 
         .node-connector-line::after {
@@ -350,15 +353,27 @@
             box-shadow: 0 0 10px #00e5ff;
         }
 
-        /* تفرع العقد الثلاثية في النهاية */
+        /* هيكل التفرع المتشعب بالخطوط الملساء (Tree Branches) */
+        .branch-tree-wrapper {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .branch-lines-svg {
+            width: 45px;
+            height: 140px;
+            overflow: visible;
+        }
+
         .multi-branch-group {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             z-index: 2;
         }
 
-        /* 5. قسم الأسعار الفردية للخدمات والمنصات */
+        /* 5. قسم استراتيجية التسعير المطور */
         .pricing-services-section {
             padding: 3rem 0 5rem 0;
             text-align: center;
@@ -380,7 +395,7 @@
             border: 1px solid #30363d;
             border-radius: 22px;
             padding: 2rem;
-            max-width: 650px;
+            max-width: 700px;
             margin: 0 auto;
             box-shadow: 0 15px 35px rgba(0,0,0,0.4);
             text-align: right;
@@ -419,33 +434,53 @@
             font-size: 1.2rem;
         }
 
+        /* الأسطر الخاصة بالخدمات والأسعار المحدثة لمنع أي تداخل على الموبايل */
         .service-item-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
             background: #0d1117;
             border: 1px solid rgba(255,255,255,0.08);
-            padding: 12px 18px;
-            border-radius: 12px;
+            padding: 14px 18px;
+            border-radius: 14px;
             margin-bottom: 1rem;
-            gap: 10px;
+            gap: 15px;
         }
 
         .service-info {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 10px;
-            font-weight: 700;
             font-size: 0.95rem;
+        }
+
+        .service-text-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .service-title {
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .service-subtext {
+            color: #7ee787;
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.4;
         }
 
         .service-price-tag {
             color: #00e5ff;
             font-weight: 800;
             font-size: 1.1rem;
+            white-space: nowrap;
         }
 
-        /* التكيف المتاكمل للموبايل والشاشات الصغيرة */
+        /* التكيف الكامل والتناسق للعمل على الموبايل بكفاءة بدون أي تداخل */
         @media (max-width: 900px) {
             .n8n-big-card {
                 flex-direction: column;
@@ -459,28 +494,30 @@
 
             .card-visual-side {
                 width: 100%;
-                padding: 1.5rem 0.8rem;
+                padding: 1.8rem 0.6rem;
                 overflow-x: auto;
             }
 
             .workflow-canvas {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 8px;
+                justify-content: flex-start;
+                min-width: max-content;
+                padding: 0 10px;
             }
 
-            .multi-branch-group {
-                width: 100%;
+            .service-item-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 14px;
+            }
+
+            .service-price-tag {
+                align-self: flex-end;
+                font-size: 1.05rem;
+            }
+
+            .platform-card-header {
                 align-items: center;
-            }
-
-            .node-connector-line {
-                min-width: 12px;
-            }
-
-            .node-box {
-                font-size: 0.78rem;
-                padding: 8px 10px;
             }
         }
     </style>
@@ -504,7 +541,7 @@
             </div>
         </section>
 
-        <!-- 2. شريط البراندات المتحرك بدعم الصور -->
+        <!-- 2. شريط البراندات المتحرك بالصور -->
         <div class="brands-ticker-wrapper">
             <div class="brands-track">
                 <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 1" onerror="this.style.display='none'"> COMMA</div>
@@ -516,8 +553,6 @@
                 <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 1" onerror="this.style.display='none'"> COMMA</div>
                 <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 2" onerror="this.style.display='none'"> NEXUS AG</div>
                 <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 3" onerror="this.style.display='none'"> GLOBAL MEDIA</div>
-                <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 4" onerror="this.style.display='none'"> APEX DIGITAL</div>
-                <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 5" onerror="this.style.display='none'"> SAFE CORP</div>
             </div>
         </div>
 
@@ -537,10 +572,10 @@
             </div>
         </div>
 
-        <!-- 4. الكروت الضخمة الكبيرة على طراز n8n -->
+        <!-- 4. الكروت الضخمة الهيكلية بأسلوب n8n مع الخطوط المنسقة المحدثة -->
         <section id="workflow-section" class="big-cards-container">
 
-            <!-- كارت 1: مع 3 عقد فرعية في النهاية ولوجو افتراضي -->
+            <!-- كارت 1: مع تفرع الخطوط لـ 3 عقد فرعية بأسلوب SVG متناسق في كل الشاشات -->
             <div class="n8n-big-card">
                 <div class="card-content-side">
                     <div class="card-tags">
@@ -556,18 +591,8 @@
                 </div>
                 <div class="card-visual-side">
                     <div class="workflow-canvas">
-                        <div class="node-box">
-                            <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
-                            منشور جديد
-                        </div>
-                        <div class="node-connector-line"></div>
-                        <div class="node-box">
-                            <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
-                            تحليل التعليق
-                        </div>
-                        <div class="node-connector-line"></div>
                         
-                        <!-- التفرع لـ 3 عقد فرعية في النهاية -->
+                        <!-- العقدة 3 المجهزة بالتفرع الثلاثي الناعم -->
                         <div class="multi-branch-group">
                             <div class="node-box">
                                 <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
@@ -582,6 +607,29 @@
                                 تسجيل صفقة
                             </div>
                         </div>
+
+                        <!-- رسم خط التشعب الناعم SVG ليظهر بدقة ناعمة بكل الشاشات -->
+                        <div class="branch-tree-wrapper">
+                            <svg class="branch-lines-svg" viewBox="0 0 45 140" fill="none">
+                                <path d="M0 20 C20 20, 25 70, 45 70" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 70 L45 70" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 120 C20 120, 25 70, 45 70" stroke="#00e5ff" stroke-width="2" />
+                                <circle cx="45" cy="70" r="4" fill="#00e5ff" />
+                            </svg>
+                        </div>
+
+                        <div class="node-box">
+                            <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
+                            تحليل التعليق
+                        </div>
+
+                        <div class="node-connector-line"></div>
+
+                        <div class="node-box">
+                            <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
+                            منشور جديد
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -601,9 +649,9 @@
                 </div>
                 <div class="card-visual-side">
                     <div class="workflow-canvas">
-                        <div class="node-box">
+                        <div class="node-box" style="border-color: #00e5ff;">
                             <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
-                            رسالة العميل
+                            صفقة ناجحة 🎉
                         </div>
                         <div class="node-connector-line"></div>
                         <div class="node-box">
@@ -611,9 +659,9 @@
                             تحديد الاحتياج
                         </div>
                         <div class="node-connector-line"></div>
-                        <div class="node-box" style="border-color: #00e5ff;">
+                        <div class="node-box">
                             <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
-                            صفقة ناجحة 🎉
+                            رسالة العميل
                         </div>
                     </div>
                 </div>
@@ -621,7 +669,7 @@
 
         </section>
 
-        <!-- 5. قسم استراتيجية التسعير الفردية للخدمات والمنصات -->
+        <!-- 5. قسم استراتيجية التسعير الفردية المحدث والشارح بالميزات -->
         <section class="pricing-services-section">
             <div class="pricing-header">
                 <h2>استراتيجية التسعير والخدمات</h2>
@@ -637,38 +685,50 @@
                     <span style="color: #7ee787; font-size: 0.85rem; font-weight: 700;">تسعير شهري</span>
                 </div>
 
+                <!-- خدمة 1 -->
                 <div class="service-item-row">
                     <div class="service-info">
-                        <i class="fa-solid fa-square-check" style="color: #00e5ff;"></i>
-                        <span>إدارة المحتوى</span>
-                        <span style="color: #7ee787; font-size: 0.55rem; font-weight: 700;">يشمل خطة وكتابة المحتوى والنشر</span>
+                        <i class="fa-solid fa-square-check" style="color: #00e5ff; margin-top: 3px;"></i>
+                        <div class="service-text-group">
+                            <span class="service-title">إدارة المحتوى</span>
+                            <p class="service-subtext">يشمل خطة وكتابة المحتوى والنشر</p>
+                        </div>
                     </div>
                     <div class="service-price-tag">EGP 5000</div>
                 </div>
 
+                <!-- خدمة 2 -->
                 <div class="service-item-row">
                     <div class="service-info">
-                        <i class="fa-solid fa-square-check" style="color: #00e5ff;"></i>
-                        <span>إدارة الريلز</span>
-                        <p>يشمل التصوير والمونتاج والمؤثرات</p>
+                        <i class="fa-solid fa-square-check" style="color: #00e5ff; margin-top: 3px;"></i>
+                        <div class="service-text-group">
+                            <span class="service-title">إدارة الريلز</span>
+                            <p class="service-subtext">يشمل التصوير والمونتاج والمؤثرات</p>
+                        </div>
                     </div>
                     <div class="service-price-tag">EGP 1500 / ريل</div>
                 </div>
 
+                <!-- خدمة 3 -->
                 <div class="service-item-row">
                     <div class="service-info">
-                        <i class="fa-solid fa-square-check" style="color: #00e5ff;"></i>
-                        <span>إدارة التعليقات</span>
-                        <p>يشمل التفاعل والرد على التعليقات</p>
+                        <i class="fa-solid fa-square-check" style="color: #00e5ff; margin-top: 3px;"></i>
+                        <div class="service-text-group">
+                            <span class="service-title">إدارة التعليقات</span>
+                            <p class="service-subtext">يشمل التفاعل والرد على التعليقات</p>
+                        </div>
                     </div>
                     <div class="service-price-tag">EGP 3000</div>
                 </div>
 
+                <!-- خدمة 4 -->
                 <div class="service-item-row">
                     <div class="service-info">
-                        <i class="fa-solid fa-square-check" style="color: #00e5ff;"></i>
-                        <span>إدارة الرسائل</span>
-                        <p>يشمل التحليل والرد وتقفيل المبيعات</p>
+                        <i class="fa-solid fa-square-check" style="color: #00e5ff; margin-top: 3px;"></i>
+                        <div class="service-text-group">
+                            <span class="service-title">إدارة الرسائل</span>
+                            <p class="service-subtext">يشمل التحليل والرد وتقفيل المبيعات</p>
+                        </div>
                     </div>
                     <div class="service-price-tag">EGP 4500</div>
                 </div>
