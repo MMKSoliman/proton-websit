@@ -6,7 +6,7 @@
     <title>Proton - أتمتة أعمالك بأسلوب حديث</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/favicon.png" href="./favicon.png">
+    <link rel="icon" type="image/png" href="./favicon.png">
 
     <!-- Google Fonts & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,19 +18,6 @@
     <meta name="description" content="منظومة بروتون المتكاملة للهندسة الرقمية والنمو المتسارع. أتمتة النشر، الخطط التسويقية الاستراتيجية، وإدارة الصفقات للبراندات النخبوية.">
     <meta name="keywords" content="بروتون, Proton, أتمتة التسويق, خطط تسويقية, تسويق رقمي مصر, Proton Marketing, إدارة منصات التواصل">
     <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph / Facebook & WhatsApp Preview -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://protonag.com/">
-    <meta property="og:title" content="Proton - Your Digital Growth Partner">
-    <meta property="og:description" content="منظومة متكاملة تجمع أتمتة النشر، الخطط التسويقية الاستراتيجية، وإدارة التفاعل للبراندات النخبوية.">
-    <meta property="og:image" content="https://protonag.com/Logo%2006.jpg">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Proton - Your Digital Growth Partner">
-    <meta name="twitter:description" content="هندسة الحضور الرقمي وتحقيق النمو المتسارع لعملك.">
-    <meta name="twitter:image" content="https://protonag.com/Logo%2006.jpg">
     
     <style>
         * {
@@ -285,13 +272,13 @@
             margin-bottom: 1.5rem;
         }
 
-        /* المخطط البصري والتفرع بأسلوب SVG متناسق في كل المنصات */
+        /* المخطط البصري المتناسق 100% بدون خروج عن الشاشة */
         .card-visual-side {
             flex: 1.3;
             background: #0d1117;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 18px;
-            padding: 2.5rem 1.5rem;
+            padding: 2rem 1rem;
             min-height: 280px;
             display: flex;
             align-items: center;
@@ -300,6 +287,7 @@
             background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
             background-size: 16px 16px;
             width: 100%;
+            overflow: hidden;
         }
 
         .workflow-canvas {
@@ -308,52 +296,51 @@
             justify-content: center;
             width: 100%;
             position: relative;
-            gap: 0;
+            gap: 8px;
         }
 
         .node-box {
             background: #161b22;
             border: 1px solid #30363d;
-            padding: 10px 14px;
+            padding: 10px 12px;
             border-radius: 12px;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.4);
             z-index: 2;
             white-space: nowrap;
         }
 
         .node-icon-img {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             object-fit: contain;
         }
 
-        /* خط التوصيل النيون المستمر مع توهج ثابت */
         .node-connector-line {
             flex: 1;
             height: 2px;
             background: linear-gradient(90deg, #00e5ff, #0088ff);
             position: relative;
-            min-width: 25px;
+            min-width: 15px;
         }
 
         .node-connector-line::after {
             content: '';
             position: absolute;
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             background: #00e5ff;
             border-radius: 50%;
-            top: -3px;
+            top: -2.5px;
             right: 50%;
-            box-shadow: 0 0 10px #00e5ff;
+            box-shadow: 0 0 8px #00e5ff;
         }
 
-        /* هيكل التفرع المتشعب بالخطوط الملساء (Tree Branches) */
+        /* توحيد هيكل التفرع في الكارتين ليكون متطابقاً تماماً */
         .branch-tree-wrapper {
             display: flex;
             align-items: center;
@@ -361,15 +348,15 @@
         }
 
         .branch-lines-svg {
-            width: 45px;
-            height: 140px;
+            width: 35px;
+            height: 120px;
             overflow: visible;
         }
 
         .multi-branch-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             z-index: 2;
         }
 
@@ -434,7 +421,6 @@
             font-size: 1.2rem;
         }
 
-        /* الأسطر الخاصة بالخدمات والأسعار المحدثة لمنع أي تداخل على الموبايل */
         .service-item-row {
             display: flex;
             align-items: center;
@@ -480,8 +466,8 @@
             white-space: nowrap;
         }
 
-        /* التكيف الكامل والتناسق للعمل على الموبايل بكفاءة بدون أي تداخل */
-        @media (max-width: 900px) {
+        /* التكيف الذكي للشاشات الكبيرة والموبايل لمنع أي خروج عن الشاشة */
+        @media (max-width: 992px) {
             .n8n-big-card {
                 flex-direction: column;
                 padding: 1.8rem 1.2rem;
@@ -494,14 +480,14 @@
 
             .card-visual-side {
                 width: 100%;
-                padding: 1.8rem 0.6rem;
-                overflow-x: auto;
+                padding: 1.2rem 0.5rem;
+                overflow-x: auto; /* يسمح بالتمرير الداخلي السلس لو زاد المحتوى بدون كسر الشاشة */
             }
 
             .workflow-canvas {
                 justify-content: flex-start;
-                min-width: max-content;
-                padding: 0 10px;
+                min-width: 420px; /* ضمان عدم تداخل العقد وضبط أبعادها */
+                padding: 0 5px;
             }
 
             .service-item-row {
@@ -514,10 +500,6 @@
             .service-price-tag {
                 align-self: flex-end;
                 font-size: 1.05rem;
-            }
-
-            .platform-card-header {
-                align-items: center;
             }
         }
     </style>
@@ -549,10 +531,8 @@
                 <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 3" onerror="this.style.display='none'"> GLOBAL MEDIA</div>
                 <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 4" onerror="this.style.display='none'"> APEX DIGITAL</div>
                 <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 5" onerror="this.style.display='none'"> SAFE CORP</div>
-                <!-- التكرار للحركة المستمرة -->
                 <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 1" onerror="this.style.display='none'"> COMMA</div>
                 <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 2" onerror="this.style.display='none'"> NEXUS AG</div>
-                <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 3" onerror="this.style.display='none'"> GLOBAL MEDIA</div>
             </div>
         </div>
 
@@ -572,10 +552,10 @@
             </div>
         </div>
 
-        <!-- 4. الكروت الضخمة الهيكلية بأسلوب n8n مع الخطوط المنسقة المحدثة -->
+        <!-- 4. الكروت الضخمة الهيكلية (تم توحيد اتجاه وتصميم العقد في الكارتين معاً) -->
         <section id="workflow-section" class="big-cards-container">
 
-            <!-- كارت 1: مع تفرع الخطوط لـ 3 عقد فرعية بأسلوب SVG متناسق في كل الشاشات -->
+            <!-- كارت 1: النشر والرد الفوري (بتصميم متناسق وموحد) -->
             <div class="n8n-big-card">
                 <div class="card-content-side">
                     <div class="card-tags">
@@ -591,8 +571,24 @@
                 </div>
                 <div class="card-visual-side">
                     <div class="workflow-canvas">
-                        
-                        <!-- العقدة 3 المجهزة بالتفرع الثلاثي الناعم -->
+                        <div class="node-box">
+                            <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
+                            منشور جديد
+                        </div>
+                        <div class="node-connector-line"></div>
+                        <div class="node-box">
+                            <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
+                            تحليل التعليق
+                        </div>
+                        <div class="node-connector-line"></div>
+                        <div class="branch-tree-wrapper">
+                            <svg class="branch-lines-svg" viewBox="0 0 35 120" fill="none">
+                                <path d="M35 20 C15 20, 10 60, 0 60" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M35 60 L0 60" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M35 100 C15 100, 10 60, 0 60" stroke="#00e5ff" stroke-width="2" />
+                                <circle cx="0" cy="60" r="3.5" fill="#00e5ff" />
+                            </svg>
+                        </div>
                         <div class="multi-branch-group">
                             <div class="node-box">
                                 <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
@@ -607,34 +603,11 @@
                                 تسجيل صفقة
                             </div>
                         </div>
-
-                        <!-- رسم خط التشعب الناعم SVG ليظهر بدقة ناعمة بكل الشاشات -->
-                        <div class="branch-tree-wrapper">
-                            <svg class="branch-lines-svg" viewBox="0 0 45 140" fill="none">
-                                <path d="M0 20 C20 20, 25 70, 45 70" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 70 L45 70" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 120 C20 120, 25 70, 45 70" stroke="#00e5ff" stroke-width="2" />
-                                <circle cx="45" cy="70" r="4" fill="#00e5ff" />
-                            </svg>
-                        </div>
-
-                        <div class="node-box">
-                            <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
-                            تحليل التعليق
-                        </div>
-
-                        <div class="node-connector-line"></div>
-
-                        <div class="node-box">
-                            <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
-                            منشور جديد
-                        </div>
-
                     </div>
                 </div>
             </div>
 
-            <!-- كارت 2: إدارة المبيعات وتقفيل الصفقات -->
+            <!-- كارت 2: إدارة المبيعات وتقفيل الصفقات (بنفس الهيكل المتناسق الموحد) -->
             <div class="n8n-big-card">
                 <div class="card-content-side">
                     <div class="card-tags">
@@ -649,9 +622,9 @@
                 </div>
                 <div class="card-visual-side">
                     <div class="workflow-canvas">
-                        <div class="node-box" style="border-color: #00e5ff;">
+                        <div class="node-box">
                             <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
-                            صفقة ناجحة 🎉
+                            رسالة العميل
                         </div>
                         <div class="node-connector-line"></div>
                         <div class="node-box">
@@ -659,9 +632,27 @@
                             تحديد الاحتياج
                         </div>
                         <div class="node-connector-line"></div>
-                        <div class="node-box">
-                            <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
-                            رسالة العميل
+                        <div class="branch-tree-wrapper">
+                            <svg class="branch-lines-svg" viewBox="0 0 35 120" fill="none">
+                                <path d="M35 20 C15 20, 10 60, 0 60" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M35 60 L0 60" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M35 100 C15 100, 10 60, 0 60" stroke="#00e5ff" stroke-width="2" />
+                                <circle cx="0" cy="60" r="3.5" fill="#00e5ff" />
+                            </svg>
+                        </div>
+                        <div class="multi-branch-group">
+                            <div class="node-box">
+                                <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
+                                رد آلي فوري
+                            </div>
+                            <div class="node-box">
+                                <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
+                                إرسال الفاتورة
+                            </div>
+                            <div class="node-box" style="border-color: #00e5ff;">
+                                <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
+                                صفقة ناجحة 🎉
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -669,7 +660,7 @@
 
         </section>
 
-        <!-- 5. قسم استراتيجية التسعير الفردية المحدث والشارح بالميزات -->
+        <!-- 5. قسم استراتيجية التسعير الفردية المطور -->
         <section class="pricing-services-section">
             <div class="pricing-header">
                 <h2>استراتيجية التسعير والخدمات</h2>
@@ -685,7 +676,6 @@
                     <span style="color: #7ee787; font-size: 0.85rem; font-weight: 700;">تسعير شهري</span>
                 </div>
 
-                <!-- خدمة 1 -->
                 <div class="service-item-row">
                     <div class="service-info">
                         <i class="fa-solid fa-square-check" style="color: #00e5ff; margin-top: 3px;"></i>
@@ -697,7 +687,6 @@
                     <div class="service-price-tag">EGP 5000</div>
                 </div>
 
-                <!-- خدمة 2 -->
                 <div class="service-item-row">
                     <div class="service-info">
                         <i class="fa-solid fa-square-check" style="color: #00e5ff; margin-top: 3px;"></i>
@@ -709,7 +698,6 @@
                     <div class="service-price-tag">EGP 1500 / ريل</div>
                 </div>
 
-                <!-- خدمة 3 -->
                 <div class="service-item-row">
                     <div class="service-info">
                         <i class="fa-solid fa-square-check" style="color: #00e5ff; margin-top: 3px;"></i>
@@ -721,7 +709,6 @@
                     <div class="service-price-tag">EGP 3000</div>
                 </div>
 
-                <!-- خدمة 4 -->
                 <div class="service-item-row">
                     <div class="service-info">
                         <i class="fa-solid fa-square-check" style="color: #00e5ff; margin-top: 3px;"></i>
@@ -743,10 +730,9 @@
         <div id="footer-container"></div>
     </footer>
 
-    <!-- سكربت العدادات الحية والحركة التفاعلية -->
+    <!-- سكربت العدادات والحركة التفاعلية -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. تشغيل حركة الكروت الكبيرة
             const cards = document.querySelectorAll('.n8n-big-card');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -758,7 +744,6 @@
 
             cards.forEach(card => observer.observe(card));
 
-            // 2. العدادات التفاعلية للبيانات الحية
             function animateCounter(id, start, end, duration) {
                 let obj = document.getElementById(id);
                 if(!obj) return;
@@ -784,19 +769,16 @@
                 run();
             }
 
-            // قيم إفتراضية محاكية لقاعدة البيانات قابلة للزيادة
             animateCounter("counter-users", 0, 1420, 2000);
             animateCounter("counter-brands", 0, 385, 2000);
             animateCounter("counter-accounts", 0, 5910, 2000);
         });
 
-        // جلب الفوتر الموحد
         fetch('footer.html')
             .then(response => response.text())
             .then(data => { document.getElementById('footer-container').innerHTML = data; });
     </script>
 
-    <!-- ملف الجارد المخصص للتحقق من تسجيل الدخول والمستلزمات -->
     <script src="./header.js" defer></script>
     <script src="./auth-guard.js"></script>
 
