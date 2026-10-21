@@ -272,13 +272,13 @@
             margin-bottom: 1.5rem;
         }
 
-        /* المخطط البصري المتناسق 100% بدون خروج عن الشاشة */
+        /* تحكم المخطط البصري وتثبيت اتجاه LTR لحساب الـ SVG بدقة دائمًا */
         .card-visual-side {
             flex: 1.3;
             background: #0d1117;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 18px;
-            padding: 2rem 1rem;
+            padding: 2.2rem 1.2rem;
             min-height: 280px;
             display: flex;
             align-items: center;
@@ -288,6 +288,7 @@
             background-size: 16px 16px;
             width: 100%;
             overflow: hidden;
+            direction: ltr !important; /* ضمان الاتجاه من اليسار لليمين دون تأثر بـ RTL */
         }
 
         .workflow-canvas {
@@ -296,22 +297,24 @@
             justify-content: center;
             width: 100%;
             position: relative;
-            gap: 8px;
+            gap: 0;
+            direction: ltr !important;
         }
 
         .node-box {
             background: #161b22;
             border: 1px solid #30363d;
-            padding: 10px 12px;
+            padding: 10px 14px;
             border-radius: 12px;
             font-size: 0.82rem;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.4);
             z-index: 2;
             white-space: nowrap;
+            direction: rtl; /* المحافظة على قراءة النص العربي داخل المربع */
         }
 
         .node-icon-img {
@@ -321,11 +324,11 @@
         }
 
         .node-connector-line {
-            flex: 1;
+            width: 45px;
             height: 2px;
             background: linear-gradient(90deg, #00e5ff, #0088ff);
             position: relative;
-            min-width: 15px;
+            flex-shrink: 0;
         }
 
         .node-connector-line::after {
@@ -336,20 +339,23 @@
             background: #00e5ff;
             border-radius: 50%;
             top: -2.5px;
-            right: 50%;
+            left: 50%;
             box-shadow: 0 0 8px #00e5ff;
         }
 
-        /* توحيد هيكل التفرع في الكارتين ليكون متطابقاً تماماً */
+        /* المسار القوسي للـ SVG المحسوب بدقة هندسية */
         .branch-tree-wrapper {
             display: flex;
             align-items: center;
             position: relative;
+            width: 40px;
+            height: 135px;
+            flex-shrink: 0;
         }
 
         .branch-lines-svg {
-            width: 35px;
-            height: 120px;
+            width: 100%;
+            height: 100%;
             overflow: visible;
         }
 
@@ -360,7 +366,7 @@
             z-index: 2;
         }
 
-        /* 5. قسم استراتيجية التسعير المطور */
+        /* 5. قسم استراتيجية التسعير */
         .pricing-services-section {
             padding: 3rem 0 5rem 0;
             text-align: center;
@@ -466,7 +472,7 @@
             white-space: nowrap;
         }
 
-        /* التكيف الذكي للشاشات الكبيرة والموبايل لمنع أي خروج عن الشاشة */
+        /* تصحيح أحجام الهواتف الذكية وتصغير الشارت ليحتوي بالكامل داخل الكارت */
         @media (max-width: 992px) {
             .n8n-big-card {
                 flex-direction: column;
@@ -480,14 +486,12 @@
 
             .card-visual-side {
                 width: 100%;
-                padding: 1.2rem 0.5rem;
-                overflow-x: auto; /* يسمح بالتمرير الداخلي السلس لو زاد المحتوى بدون كسر الشاشة */
+                padding: 1.5rem 0.2rem;
             }
 
             .workflow-canvas {
-                justify-content: flex-start;
-                min-width: 420px; /* ضمان عدم تداخل العقد وضبط أبعادها */
-                padding: 0 5px;
+                transform: scale(0.82); /* مقياس تصغير متناسق لاحتواء الشارت بالكامل بالموبايل */
+                transform-origin: center center;
             }
 
             .service-item-row {
@@ -500,6 +504,12 @@
             .service-price-tag {
                 align-self: flex-end;
                 font-size: 1.05rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .workflow-canvas {
+                transform: scale(0.72); /* لملاءمة الشاشات الصغيرة جداً دون أي اقتصاص */
             }
         }
     </style>
@@ -523,7 +533,7 @@
             </div>
         </section>
 
-        <!-- 2. شريط البراندات المتحرك بالصور -->
+        <!-- 2. شريط البراندات المتحرك -->
         <div class="brands-ticker-wrapper">
             <div class="brands-track">
                 <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 1" onerror="this.style.display='none'"> COMMA</div>
@@ -536,7 +546,7 @@
             </div>
         </div>
 
-        <!-- 3. عداد الإحصائيات الحية بناء على قاعدة البيانات -->
+        <!-- 3. عداد الإحصائيات الحية -->
         <div class="stats-counter-bar">
             <div class="stat-card">
                 <div class="stat-number" id="counter-users">0</div>
@@ -552,10 +562,10 @@
             </div>
         </div>
 
-        <!-- 4. الكروت الضخمة الهيكلية (تم توحيد اتجاه وتصميم العقد في الكارتين معاً) -->
+        <!-- 4. الكروت الضخمة الهيكلية (معالجة الاتصال والمسار بالكامل) -->
         <section id="workflow-section" class="big-cards-container">
 
-            <!-- كارت 1: النشر والرد الفوري (بتصميم متناسق وموحد) -->
+            <!-- كارت 1: النشر والرد الفوري -->
             <div class="n8n-big-card">
                 <div class="card-content-side">
                     <div class="card-tags">
@@ -580,15 +590,17 @@
                             <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
                             تحليل التعليق
                         </div>
-                        <div class="node-connector-line"></div>
+                        
+                        <!-- المسار القوسي المصحح بالكامل LTR -->
                         <div class="branch-tree-wrapper">
-                            <svg class="branch-lines-svg" viewBox="0 0 35 120" fill="none">
-                                <path d="M35 20 C15 20, 10 60, 0 60" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M35 60 L0 60" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M35 100 C15 100, 10 60, 0 60" stroke="#00e5ff" stroke-width="2" />
-                                <circle cx="0" cy="60" r="3.5" fill="#00e5ff" />
+                            <svg class="branch-lines-svg" viewBox="0 0 40 135" fill="none">
+                                <path d="M0 67.5 C 20 67.5, 20 18, 40 18" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 67.5 L 40 67.5" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 67.5 C 20 67.5, 20 117, 40 117" stroke="#00e5ff" stroke-width="2" />
+                                <circle cx="0" cy="67.5" r="3.5" fill="#00e5ff" />
                             </svg>
                         </div>
+
                         <div class="multi-branch-group">
                             <div class="node-box">
                                 <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
@@ -607,7 +619,7 @@
                 </div>
             </div>
 
-            <!-- كارت 2: إدارة المبيعات وتقفيل الصفقات (بنفس الهيكل المتناسق الموحد) -->
+            <!-- كارت 2: إدارة المبيعات وتقفيل الصفقات -->
             <div class="n8n-big-card">
                 <div class="card-content-side">
                     <div class="card-tags">
@@ -631,15 +643,17 @@
                             <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
                             تحديد الاحتياج
                         </div>
-                        <div class="node-connector-line"></div>
+                        
+                        <!-- المسار القوسي المصحح بالكامل LTR -->
                         <div class="branch-tree-wrapper">
-                            <svg class="branch-lines-svg" viewBox="0 0 35 120" fill="none">
-                                <path d="M35 20 C15 20, 10 60, 0 60" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M35 60 L0 60" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M35 100 C15 100, 10 60, 0 60" stroke="#00e5ff" stroke-width="2" />
-                                <circle cx="0" cy="60" r="3.5" fill="#00e5ff" />
+                            <svg class="branch-lines-svg" viewBox="0 0 40 135" fill="none">
+                                <path d="M0 67.5 C 20 67.5, 20 18, 40 18" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 67.5 L 40 67.5" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 67.5 C 20 67.5, 20 117, 40 117" stroke="#00e5ff" stroke-width="2" />
+                                <circle cx="0" cy="67.5" r="3.5" fill="#00e5ff" />
                             </svg>
                         </div>
+
                         <div class="multi-branch-group">
                             <div class="node-box">
                                 <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
@@ -660,7 +674,7 @@
 
         </section>
 
-        <!-- 5. قسم استراتيجية التسعير الفردية المطور -->
+        <!-- 5. قسم استراتيجية التسعير -->
         <section class="pricing-services-section">
             <div class="pricing-header">
                 <h2>استراتيجية التسعير والخدمات</h2>
@@ -730,7 +744,7 @@
         <div id="footer-container"></div>
     </footer>
 
-    <!-- سكربت العدادات والحركة التفاعلية -->
+    <!-- سكربت الحركة والعدادات -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const cards = document.querySelectorAll('.n8n-big-card');
