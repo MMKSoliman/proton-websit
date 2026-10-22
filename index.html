@@ -272,7 +272,7 @@
             margin-bottom: 1.5rem;
         }
 
-        /* لوحة العرض البصرية بضبط التوازي RTL الصحيح من اليمين إلى اليسار */
+        /* لوحة العرض البصرية */
         .card-visual-side {
             flex: 1.3;
             background: #0d1117;
@@ -296,32 +296,33 @@
             width: 100%;
             position: relative;
             gap: 0;
-            direction: rtl; /* التدفق البديهي من اليمين إلى اليسار */
+            direction: rtl;
         }
 
+        /* تصغير المستطيلات قليلاً كما طلبت */
         .node-box {
             background: #161b22;
             border: 1px solid #30363d;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 0.82rem;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.78rem;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+            gap: 6px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
             z-index: 2;
             white-space: nowrap;
         }
 
         .node-icon-img {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             object-fit: contain;
         }
 
         .node-connector-line {
-            width: 45px;
+            width: 35px;
             height: 2px;
             background: linear-gradient(270deg, #00e5ff, #0088ff);
             position: relative;
@@ -331,22 +332,21 @@
         .node-connector-line::after {
             content: '';
             position: absolute;
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             background: #00e5ff;
             border-radius: 50%;
-            top: -2.5px;
+            top: -2px;
             right: 50%;
-            box-shadow: 0 0 8px #00e5ff;
+            box-shadow: 0 0 6px #00e5ff;
         }
 
-        /* القوس التشعبي المظبوط هندسياً للتدفق من اليمين لليسار */
         .branch-tree-wrapper {
             display: flex;
             align-items: center;
             position: relative;
-            width: 40px;
-            height: 135px;
+            width: 35px;
+            height: 130px;
             flex-shrink: 0;
         }
 
@@ -359,7 +359,7 @@
         .multi-branch-group {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             z-index: 2;
         }
 
@@ -456,20 +456,23 @@
 
         .service-subtext {
             color: #7ee787;
-            font-size: 0.58rem;
+            font-size: 0.75rem;
             font-weight: 700;
             margin: 0;
             line-height: 1.4;
         }
 
+        /* محاذاة السعر ليكون في محاذاة السطر الأول (عنوان الخدمة) تماماً */
         .service-price-tag {
             color: #00e5ff;
             font-weight: 800;
             font-size: 1.1rem;
             white-space: nowrap;
+            align-self: flex-start;
+            margin-top: 2px;
         }
 
-        /* تحويل الشارت على الموبايل لتشعب رأسي جميل وسلس يمنع الخروج عن الحدود تماماً */
+        /* التكيف الذكي للشاشات الصغيرة */
         @media (max-width: 992px) {
             .n8n-big-card {
                 flex-direction: column;
@@ -483,52 +486,23 @@
 
             .card-visual-side {
                 width: 100%;
-                padding: 1.8rem 1rem;
+                padding: 1.5rem 0.5rem;
+                overflow-x: auto;
             }
 
-            /* تحويل الترتيب أفقياً لعمودي متناسق للموبايل */
             .workflow-canvas {
-                flex-direction: column;
-                gap: 12px;
-                width: 100%;
-            }
-
-            .node-box {
-                width: 50%;
-                justify-content: center;
-                max-width: 260px;
-            }
-
-            .node-connector-line {
-                width: 2px;
-                height: 25px;
-            }
-
-            .node-connector-line::after {
-                top: 50%;
-                right: -2.5px;
-            }
-
-             .branch-tree-wrapper {
-                display: none; /* إخفاء الأقواس المعقدة على الهواتف واستبدالها بتدفق عمودي أنيق */
-            }
-
-            .multi-branch-group {
-                width: 100%;
-                align-items: center;
-                gap: 10px;
+                min-width: 380px;
             }
 
             .service-item-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-                padding: 14px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
             }
 
             .service-price-tag {
-                align-self: flex-end;
-                font-size: 1.05rem;
+                align-self: flex-start;
+                margin-top: 2px;
             }
         }
     </style>
@@ -581,7 +555,7 @@
             </div>
         </div>
 
-        <!-- 4. الكروت الضخمة الهيكلية (التدفق الصحيح من اليمين لليسار) -->
+        <!-- 4. الكروت الضخمة الهيكلية -->
         <section id="workflow-section" class="big-cards-container">
 
             <!-- كارت 1: النشر والرد الفوري -->
@@ -600,7 +574,6 @@
                 </div>
                 <div class="card-visual-side">
                     <div class="workflow-canvas">
-                        <!-- بداية التدفق من اليمين -->
                         <div class="node-box">
                             <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
                             منشور جديد
@@ -613,17 +586,15 @@
                             تحليل التعليق
                         </div>
 
-                        <!-- قوس الاتصال المنحني لليسار بدقة -->
                         <div class="branch-tree-wrapper">
-                            <svg class="branch-lines-svg" viewBox="0 0 40 135" fill="none">
-                                <path d="M0 18 C 40 18, 20 67.5, 40 67.5" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 67.5 L 40 67.5" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 117 C 40 117, 20 67.5, 40 67.5" stroke="#00e5ff" stroke-width="2" />
-                                <circle cx="40" cy="67.5" r="3.5" fill="#00e5ff" />
+                            <svg class="branch-lines-svg" viewBox="0 0 40 130" fill="none">
+                                <path d="M0 18 C 40 18, 20 65, 40 65" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 65 L 40 65" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 112 C 40 112, 20 65, 40 65" stroke="#00e5ff" stroke-width="2" />
+                                <circle cx="40" cy="65" r="3.5" fill="#00e5ff" />
                             </svg>
                         </div>
 
-                        <!-- التشعب الثلاثي النهائي جهة اليسار -->
                         <div class="multi-branch-group">
                             <div class="node-box">
                                 <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
@@ -642,7 +613,7 @@
                 </div>
             </div>
 
-            <!-- كارت 2: إدارة المبيعات وتقفيل الصفقات -->
+            <!-- كارت 2: إدارة المبيعات وتقفيل الصفقات (تم تحديثه بالكامل ليتطابق مع طلبك والصورة الرابعة) -->
             <div class="n8n-big-card">
                 <div class="card-content-side">
                     <div class="card-tags">
@@ -657,7 +628,6 @@
                 </div>
                 <div class="card-visual-side">
                     <div class="workflow-canvas">
-                        <!-- بداية التدفق من اليمين -->
                         <div class="node-box">
                             <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
                             رسالة العميل
@@ -670,17 +640,15 @@
                             تحديد الاحتياج
                         </div>
 
-                        <!-- قوس الاتصال المنحني لليسار بدقة -->
                         <div class="branch-tree-wrapper">
-                            <svg class="branch-lines-svg" viewBox="0 0 40 135" fill="none">
-                                <path d="M0 18 C 40 18, 20 67.5, 40 67.5" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 67.5 L 40 67.5" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 117 C 40 117, 20 67.5, 40 67.5" stroke="#00e5ff" stroke-width="2" />
-                                <circle cx="40" cy="67.5" r="3.5" fill="#00e5ff" />
+                            <svg class="branch-lines-svg" viewBox="0 0 40 130" fill="none">
+                                <path d="M0 18 C 40 18, 20 65, 40 65" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 65 L 40 65" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 112 C 40 112, 20 65, 40 65" stroke="#00e5ff" stroke-width="2" />
+                                <circle cx="40" cy="65" r="3.5" fill="#00e5ff" />
                             </svg>
                         </div>
 
-                        <!-- التشعب الثلاثي النهائي جهة اليسار -->
                         <div class="multi-branch-group">
                             <div class="node-box">
                                 <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
