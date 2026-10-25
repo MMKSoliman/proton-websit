@@ -943,28 +943,28 @@ footer, #footer-container {
     }
 }
 
-/* تخصيص شريط التمرير (Scrollbar) ليتناسب مع ألوان بروتون */
+/* جعل خلفية مسار شريط التمرير شفافة تماماً لتظهر صورة خلفية الموقع خلفه */
 ::-webkit-scrollbar {
-    width: 10px; /* عرض شريط التمرير */
+    width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(13, 17, 23, 0.9); /* خلفية مسار الشريط (شفافة داكنة) */
-    border-radius: 10px;
+    background: transparent !important; /* جعل مسار الشريط شفافاً بالكامل لتظهر الصورة تحته */
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #00e5ff, #0088ff); /* لون المقبض بألوان بروتون المتدرجة */
+    background: linear-gradient(135deg, #00e5ff, #0088ff); /* لون المقبض المتدرج لبروتون */
     border-radius: 10px;
-    border: 2px solid rgba(13, 17, 23, 0.8); /* حدد مسافة شفافة حول المقبض */
+    border: 2px solid transparent; /* حدود شفافة لجعل المقبض متناسقاً وأنحف */
+    background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #00e5ff; /* لون المقبض عند الوقوف عليه بالفأرة */
+    background: #00e5ff; /* لون المقبض عند تمرير الفأرة عليه */
 }
 
-/* دعم متصفحات فايرفوكس (Firefox) */
+/* دعم متصفح فايرفوكس لجعل المسار شفافاً */
 * {
     scrollbar-width: thin;
-    scrollbar-color: #00e5ff rgba(13, 17, 23, 0.9);
+    scrollbar-color: #00e5ff transparent;
 }
