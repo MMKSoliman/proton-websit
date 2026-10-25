@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="./style.css">
     
     <meta name="description" content="منظومة بروتون المتكاملة للهندسة الرقمية والنمو المتسارع. أتمتة النشر، الخطط التسويقية الاستراتيجية، وإدارة الصفقات للبراندات النخبوية.">
-    <meta name="keywords" content="بروتون, Proton, أتمتة التسويق, خطط تسويقية, تسويق رقمي مصر, Proton Marketing, إدارة منصات التواصل">
     <meta name="robots" content="index, follow">
     
     <style>
@@ -119,7 +118,7 @@
             border-color: rgba(255, 255, 255, 0.4);
         }
 
-        /* 2. شريط البراندات المتحرك بالصور */
+        /* 2. شريط البراندات المتحرك */
         .brands-ticker-wrapper {
             width: 100%;
             overflow: hidden;
@@ -166,7 +165,7 @@
             100% { transform: translateX(50%); }
         }
 
-        /* 3. العدادات الحية (Live Stats Bar) */
+        /* 3. العدادات الحية */
         .stats-counter-bar {
             display: flex;
             justify-content: space-around;
@@ -272,14 +271,14 @@
             margin-bottom: 1.5rem;
         }
 
-        /* لوحة العرض البصرية */
+        /* لوحة العرض البصرية (تم توسيع المساحة والمسافات لمنع التلزيق تماماً) */
         .card-visual-side {
-            flex: 1.3;
+            flex: 1.4;
             background: #0d1117;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 18px;
-            padding: 2.2rem 1.2rem;
-            min-height: 280px;
+            padding: 2.5rem 1.5rem;
+            min-height: 320px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -299,30 +298,37 @@
             direction: rtl;
         }
 
+        /* تصميم المستطيلات لتبدو كعقد وورك فلو احترافية ومنسحة */
         .node-box {
             background: #161b22;
             border: 1px solid #30363d;
-            padding: 8px 12px;
-            border-radius: 10px;
-            font-size: 0.78rem;
+            padding: 11px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
             z-index: 2;
             white-space: nowrap;
+            transition: border-color 0.3s;
+        }
+
+        .node-box:hover {
+            border-color: rgba(0, 229, 255, 0.5);
         }
 
         .node-icon-img {
-            width: 14px;
-            height: 14px;
+            width: 15px;
+            height: 15px;
             object-fit: contain;
         }
 
+        /* خطوط الربط الأفقية مع مسافات مريحة للديسكتوب */
         .node-connector-line {
-            width: 35px;
+            width: 50px;
             height: 2px;
             background: linear-gradient(270deg, #00e5ff, #0088ff);
             position: relative;
@@ -338,15 +344,16 @@
             border-radius: 50%;
             top: -2px;
             right: 50%;
-            box-shadow: 0 0 6px #00e5ff;
+            box-shadow: 0 0 8px #00e5ff;
         }
 
+        /* توسيع مساحة القوس التشعبي لمنع أي تداخل أو تلزيق */
         .branch-tree-wrapper {
             display: flex;
             align-items: center;
             position: relative;
-            width: 35px;
-            height: 130px;
+            width: 50px;
+            height: 140px;
             flex-shrink: 0;
         }
 
@@ -359,7 +366,7 @@
         .multi-branch-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
             z-index: 2;
         }
 
@@ -460,7 +467,7 @@
 
         .service-subtext {
             color: #7ee787;
-            font-size: 0.45rem;
+            font-size: 0.75rem;
             font-weight: 700;
             margin: 0;
             line-height: 1.4;
@@ -475,8 +482,28 @@
             margin-top: 2px;
         }
 
+        /* تخصيص شريط التمرير (Scrollbar) الهادئ والمتناسق مع الأزرار الزجاجية */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent !important;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
         /* ========================================================= */
-        /* التكيف الشامل والرأسي للموبايل (Mobile Vertical Flow Solution) */
+        /* التكيف الرأسي المخصص للموبايل */
         /* ========================================================= */
         @media (max-width: 992px) {
             .n8n-big-card {
@@ -494,7 +521,6 @@
                 padding: 1.8rem 0.8rem;
             }
 
-            /* تحويل المخطط ليكون رأسياً من الأعلى للأسفل */
             .workflow-canvas {
                 flex-direction: column !important;
                 align-items: center !important;
@@ -502,16 +528,14 @@
                 gap: 0;
             }
 
-            /* إخفاء الوصلات الأفقية الخاصة بـ Desktop */
             .node-connector-line, .branch-tree-wrapper {
                 display: none !important;
             }
 
-            /* إظهار خط الرابط الرأسي للموبايل */
             .mobile-connector {
                 display: block !important;
                 width: 2px;
-                height: 22px;
+                height: 24px;
                 background: linear-gradient(180deg, #00e5ff, #0088ff);
                 margin: 0 auto;
                 position: relative;
@@ -530,12 +554,11 @@
                 box-shadow: 0 0 6px #00e5ff;
             }
 
-            /* إظهار التشعب القوسي الرأسي قبل المستطيلين */
             .mobile-branch-svg {
                 display: block !important;
                 width: 100%;
                 max-width: 260px;
-                height: 30px;
+                height: 32px;
                 margin: 0 auto;
             }
 
@@ -545,7 +568,6 @@
                 text-align: center;
             }
 
-            /* ترتيب مستطيلين جنب بعض في الأسفل */
             .multi-branch-group {
                 display: flex !important;
                 flex-direction: row !important;
@@ -558,7 +580,7 @@
             .multi-branch-group .node-box {
                 flex: 1;
                 font-size: 0.72rem;
-                padding: 8px 6px;
+                padding: 9px 6px;
                 max-width: 150px;
             }
 
@@ -623,7 +645,7 @@
             </div>
         </div>
 
-        <!-- 4. الكروت الضخمة الهيكلية -->
+        <!-- 4. الكروت الضخمة الهيكلية (بالمسافات الاحترافيّة الواسعة للديسكتوب) -->
         <section id="workflow-section" class="big-cards-container">
 
             <!-- كارت 1: النشر والرد الفوري -->
@@ -647,9 +669,10 @@
                             منشور جديد
                         </div>
 
-                        <!-- خطوط الربط الخاصة بالموبايل -->
+                        <!-- للموبايل -->
                         <div class="mobile-connector"></div>
 
+                        <!-- للديسكتوب (مسافة موسعة ومريحة) -->
                         <div class="node-connector-line"></div>
 
                         <div class="node-box">
@@ -657,23 +680,23 @@
                             تحليل التعليق
                         </div>
 
-                        <!-- خطوط وتفرع SVG للموبايل نحو مستطيلين -->
-                        <svg class="mobile-branch-svg" viewBox="0 0 200 30" fill="none">
-                            <path d="M100 0 L100 12 C100 22, 40 12, 40 30" stroke="#00e5ff" stroke-width="2"/>
-                            <path d="M100 0 L100 12 C100 22, 160 12, 160 30" stroke="#00e5ff" stroke-width="2"/>
+                        <!-- للموبايل -->
+                        <svg class="mobile-branch-svg" viewBox="0 0 200 32" fill="none">
+                            <path d="M100 0 L100 12 C100 22, 40 12, 40 32" stroke="#00e5ff" stroke-width="2"/>
+                            <path d="M100 0 L100 12 C100 22, 160 12, 160 32" stroke="#00e5ff" stroke-width="2"/>
                             <circle cx="100" cy="0" r="3" fill="#00e5ff"/>
                         </svg>
 
-                        <!-- القوس التشعبي المخصص للديسكتوب -->
+                        <!-- للديسكتوب (قوس تشعبي واسع ومتباعد يمنع التداخل) -->
                         <div class="branch-tree-wrapper">
-                            <svg class="branch-lines-svg" viewBox="0 0 40 130" fill="none">
-                                <path d="M0 18 C 40 18, 20 65, 40 65" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 112 C 40 112, 20 65, 40 65" stroke="#00e5ff" stroke-width="2" />
-                                <circle cx="40" cy="65" r="3.5" fill="#00e5ff" />
+                            <svg class="branch-lines-svg" viewBox="0 0 50 140" fill="none">
+                                <path d="M0 20 C 50 20, 25 70, 50 70" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 70 L 50 70" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 120 C 50 120, 25 70, 50 70" stroke="#00e5ff" stroke-width="2" />
+                                <circle cx="50" cy="70" r="3.5" fill="#00e5ff" />
                             </svg>
                         </div>
 
-                        <!-- التشعب (يظهر كمستطيلين متجاورين في الموبايل) -->
                         <div class="multi-branch-group">
                             <div class="node-box">
                                 <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
@@ -708,9 +731,9 @@
                             رسالة العميل
                         </div>
 
-                        <!-- خط الربط الرأسي للموبايل -->
+                        <!-- للموبايل -->
                         <div class="mobile-connector"></div>
-
+                        <!-- للديسكتوب -->
                         <div class="node-connector-line"></div>
 
                         <div class="node-box">
@@ -718,31 +741,33 @@
                             تحديد الاحتياج
                         </div>
 
-                        <!-- خط الربط الرأسي الثاني للموبايل -->
+                        <!-- للموبايل -->
                         <div class="mobile-connector"></div>
+                        <!-- للديسكتوب -->
+                        <div class="node-connector-line"></div>
 
                         <div class="node-box">
                             <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
                             رد آلي فوري
                         </div>
 
-                        <!-- خط القوس والتفرع النهائي المخصص للموبايل -->
-                        <svg class="mobile-branch-svg" viewBox="0 0 200 30" fill="none">
-                            <path d="M100 0 L100 12 C100 22, 40 12, 40 30" stroke="#00e5ff" stroke-width="2"/>
-                            <path d="M100 0 L100 12 C100 22, 160 12, 160 30" stroke="#00e5ff" stroke-width="2"/>
+                        <!-- للموبايل -->
+                        <svg class="mobile-branch-svg" viewBox="0 0 200 32" fill="none">
+                            <path d="M100 0 L100 12 C100 22, 40 12, 40 32" stroke="#00e5ff" stroke-width="2"/>
+                            <path d="M100 0 L100 12 C100 22, 160 12, 160 32" stroke="#00e5ff" stroke-width="2"/>
                             <circle cx="100" cy="0" r="3" fill="#00e5ff"/>
                         </svg>
 
-                        <!-- القوس التشعبي المخصص للديسكتوب -->
+                        <!-- للديسكتوب -->
                         <div class="branch-tree-wrapper">
-                            <svg class="branch-lines-svg" viewBox="0 0 40 130" fill="none">
-                                <path d="M0 18 C 40 18, 20 65, 40 65" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 112 C 40 112, 20 65, 40 65" stroke="#00e5ff" stroke-width="2" />
-                                <circle cx="40" cy="65" r="3.5" fill="#00e5ff" />
+                            <svg class="branch-lines-svg" viewBox="0 0 50 140" fill="none">
+                                <path d="M0 20 C 50 20, 25 70, 50 70" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 70 L 50 70" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 120 C 50 120, 25 70, 50 70" stroke="#00e5ff" stroke-width="2" />
+                                <circle cx="50" cy="70" r="3.5" fill="#00e5ff" />
                             </svg>
                         </div>
 
-                        <!-- التشعب النهائي (مستطيلين متجاورين تحت خط القوس) -->
                         <div class="multi-branch-group">
                             <div class="node-box">
                                 <img src="./home.png" class="node-icon-img" alt="Logo" onerror="this.src='./favicon.png'">
