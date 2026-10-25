@@ -942,3 +942,29 @@ footer, #footer-container {
         gap: 10px;
     }
 }
+
+/* تخصيص شريط التمرير (Scrollbar) ليتناسب مع ألوان بروتون */
+::-webkit-scrollbar {
+    width: 10px; /* عرض شريط التمرير */
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(13, 17, 23, 0.9); /* خلفية مسار الشريط (شفافة داكنة) */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #00e5ff, #0088ff); /* لون المقبض بألوان بروتون المتدرجة */
+    border-radius: 10px;
+    border: 2px solid rgba(13, 17, 23, 0.8); /* حدد مسافة شفافة حول المقبض */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00e5ff; /* لون المقبض عند الوقوف عليه بالفأرة */
+}
+
+/* دعم متصفحات فايرفوكس (Firefox) */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #00e5ff rgba(13, 17, 23, 0.9);
+}
