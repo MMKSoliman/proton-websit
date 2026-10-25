@@ -945,7 +945,7 @@ footer, #footer-container {
 
 /* جعل خلفية مسار شريط التمرير شفافة تماماً لتظهر صورة خلفية الموقع خلفه */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -954,8 +954,8 @@ footer, #footer-container {
 
 ::-webkit-scrollbar-thumb {
     background: linear-gradient(135deg, #00e5ff, #0088ff); /* لون المقبض المتدرج لبروتون */
-    border-radius: 10px;
-    border: 2px solid transparent; /* حدود شفافة لجعل المقبض متناسقاً وأنحف */
+    border-radius: 5px;
+    border: 1px solid transparent; /* حدود شفافة لجعل المقبض متناسقاً وأنحف */
     background-clip: padding-box;
 }
 
