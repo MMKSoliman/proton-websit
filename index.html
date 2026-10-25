@@ -39,11 +39,11 @@
             padding: 0 1.2rem;
         }
 
-        /* 1. قسم الهيرو سيكشن */
+        /* 1. قسم الهيرو سيكشن - تم توسيع العرض الأقصى محاذاةً مع بطاقات الإحصائيات والكروت */
         .hero-section {
             text-align: center;
-            padding: 3.5rem 1rem 2rem 1rem;
-            max-width: 900px;
+            padding: 4rem 1rem 2.5rem 1rem;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
@@ -60,7 +60,7 @@
         }
 
         .hero-title {
-            font-size: 2.6rem;
+            font-size: 2.8rem;
             font-weight: 900;
             line-height: 1.35;
             margin-bottom: 1.2rem;
@@ -68,10 +68,13 @@
         }
 
         .hero-subtitle {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: rgba(255, 255, 255, 0.7);
             line-height: 1.8;
             margin-bottom: 2rem;
+            max-width: 950px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .hero-cta-group {
@@ -118,12 +121,13 @@
             border-color: rgba(255, 255, 255, 0.4);
         }
 
-        /* 2. شريط البراندات المتحرك */
+        /* 2. شريط البراندات المتحرك - العرض الموسع المطابق للخط الأحمر */
         .brands-ticker-wrapper {
             width: 100%;
+            max-width: 1100px;
+            margin: 0 auto 2.5rem auto;
             overflow: hidden;
             padding: 1.5rem 0;
-            margin-bottom: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
@@ -133,6 +137,7 @@
         .brands-track {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 3.5rem;
             width: max-content;
             animation: scrollTicker 25s linear infinite;
@@ -302,6 +307,7 @@
             background: #161b22;
             border: 1px solid #30363d;
             padding: 11px 16px;
+            height: 42px; /* تثبيت الارتفاع لضبط المركز تماماً مع خطوط الـ SVG */
             border-radius: 12px;
             font-size: 0.85rem;
             font-weight: 700;
@@ -345,13 +351,13 @@
             box-shadow: 0 0 8px #00e5ff;
         }
 
-        /* تعديل القوس التشعبي بمسافة أوسع وبدون خط أوسط نهائياً */
+        /* ضبط الأبعاد الهندسية الدقيقة للخط القوسي لتتصل بمنتصف المستطيلات تماماً */
         .branch-tree-wrapper {
             display: flex;
             align-items: center;
             position: relative;
             width: 50px;
-            height: 160px; /* مسافة أوسع بين المستطيلات */
+            height: 112px; /* الارتفاع الدقيق للتوسط الهيكلي */
             flex-shrink: 0;
         }
 
@@ -361,11 +367,11 @@
             overflow: visible;
         }
 
-        /* تباعد رأسي كبير ومرتاح بين المستطيلات المتشعبة ليتوسطها الخط المنحني تماماً */
+        /* تباعد رأسي مضبوط يضمن التماس بمنتصف الضلع الجانبي للمستطيل */
         .multi-branch-group {
             display: flex;
             flex-direction: column;
-            gap: 28px; /* مسافة واضحة ومريحة بين المستطيل العلوي والسفلي */
+            gap: 28px;
             z-index: 2;
         }
 
@@ -481,7 +487,7 @@
             margin-top: 2px;
         }
 
-        /* شريط التمرير الهادئ */
+        /* تخصيص شريط التمرير (Scrollbar) */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -563,6 +569,7 @@
                 width: 100%;
                 max-width: 220px;
                 text-align: center;
+                height: auto;
             }
 
             .multi-branch-group {
@@ -600,7 +607,7 @@
 
     <div class="main-container">
 
-        <!-- 1. الهيرو سيكشن -->
+        <!-- 1. الهيرو سيكشن الموسع والمحاذى بامتياز -->
         <section class="hero-section">
             <div class="hero-badge">⚡ المنظومة الأوتوماتيكية الأولى للنمو</div>
             <h1 class="hero-title">إربط صفحاتك، وإسترخِ، وإشرب قهوتك، وإستنى المبيعات</h1>
@@ -613,7 +620,7 @@
             </div>
         </section>
 
-        <!-- 2. شريط البراندات المتحرك -->
+        <!-- 2. شريط البراندات المتحرك بنفس العرض الموسع محاذاة للخط الأحمر -->
         <div class="brands-ticker-wrapper">
             <div class="brands-track">
                 <div class="brand-item"><img src="./logo_icon.webp" class="brand-logo-img" alt="Brand 1" onerror="this.style.display='none'"> COMMA</div>
@@ -666,10 +673,7 @@
                             منشور جديد
                         </div>
 
-                        <!-- للموبايل -->
                         <div class="mobile-connector"></div>
-
-                        <!-- للديسكتوب -->
                         <div class="node-connector-line"></div>
 
                         <div class="node-box">
@@ -677,19 +681,18 @@
                             تحليل التعليق
                         </div>
 
-                        <!-- للموبايل -->
                         <svg class="mobile-branch-svg" viewBox="0 0 200 32" fill="none">
                             <path d="M100 0 L100 12 C100 22, 40 12, 40 32" stroke="#00e5ff" stroke-width="2"/>
                             <path d="M100 0 L100 12 C100 22, 160 12, 160 32" stroke="#00e5ff" stroke-width="2"/>
                             <circle cx="100" cy="0" r="3" fill="#00e5ff"/>
                         </svg>
 
-                        <!-- للديسكتوب: قوس علوي وقوس سفلي فقط بدون أي خط في المنتصف (تمت إزالة خط المنتصف تماماً) -->
+                        <!-- القوس التشعبي بدقة متناهية يتصل بمنتصف المستطيلات تماماً -->
                         <div class="branch-tree-wrapper">
-                            <svg class="branch-lines-svg" viewBox="0 0 50 160" fill="none">
-                                <path d="M0 20 C 50 20, 25 80, 50 80" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 140 C 50 140, 25 80, 50 80" stroke="#00e5ff" stroke-width="2" />
-                                <circle cx="50" cy="80" r="3.5" fill="#00e5ff" />
+                            <svg class="branch-lines-svg" viewBox="0 0 50 112" fill="none">
+                                <path d="M0 21 C 50 21, 25 56, 50 56" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 91 C 50 91, 25 56, 50 56" stroke="#00e5ff" stroke-width="2" />
+                                <circle cx="50" cy="56" r="3.5" fill="#00e5ff" />
                             </svg>
                         </div>
 
@@ -749,12 +752,12 @@
                             <circle cx="100" cy="0" r="3" fill="#00e5ff"/>
                         </svg>
 
-                        <!-- للديسكتوب: بدون خط أوسط نهائياً -->
+                        <!-- القوس التشعبي بدقة متناهية يتصل بمنتصف المستطيلات تماماً -->
                         <div class="branch-tree-wrapper">
-                            <svg class="branch-lines-svg" viewBox="0 0 50 160" fill="none">
-                                <path d="M0 20 C 50 20, 25 80, 50 80" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 140 C 50 140, 25 80, 50 80" stroke="#00e5ff" stroke-width="2" />
-                                <circle cx="50" cy="80" r="3.5" fill="#00e5ff" />
+                            <svg class="branch-lines-svg" viewBox="0 0 50 112" fill="none">
+                                <path d="M0 21 C 50 21, 25 56, 50 56" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 91 C 50 91, 25 56, 50 56" stroke="#00e5ff" stroke-width="2" />
+                                <circle cx="50" cy="56" r="3.5" fill="#00e5ff" />
                             </svg>
                         </div>
 
