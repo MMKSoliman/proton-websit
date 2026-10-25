@@ -271,14 +271,14 @@
             margin-bottom: 1.5rem;
         }
 
-        /* لوحة العرض البصرية (تم توسيع المساحة والمسافات لمنع التلزيق تماماً) */
+        /* لوحة العرض البصرية */
         .card-visual-side {
             flex: 1.4;
             background: #0d1117;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 18px;
             padding: 2.5rem 1.5rem;
-            min-height: 320px;
+            min-height: 340px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -298,7 +298,6 @@
             direction: rtl;
         }
 
-        /* تصميم المستطيلات لتبدو كعقد وورك فلو احترافية ومنسحة */
         .node-box {
             background: #161b22;
             border: 1px solid #30363d;
@@ -326,7 +325,6 @@
             object-fit: contain;
         }
 
-        /* خطوط الربط الأفقية مع مسافات مريحة للديسكتوب */
         .node-connector-line {
             width: 50px;
             height: 2px;
@@ -347,13 +345,13 @@
             box-shadow: 0 0 8px #00e5ff;
         }
 
-        /* توسيع مساحة القوس التشعبي لمنع أي تداخل أو تلزيق */
+        /* تعديل القوس التشعبي بمسافة أوسع وبدون خط أوسط نهائياً */
         .branch-tree-wrapper {
             display: flex;
             align-items: center;
             position: relative;
             width: 50px;
-            height: 140px;
+            height: 160px; /* مسافة أوسع بين المستطيلات */
             flex-shrink: 0;
         }
 
@@ -363,10 +361,11 @@
             overflow: visible;
         }
 
+        /* تباعد رأسي كبير ومرتاح بين المستطيلات المتشعبة ليتوسطها الخط المنحني تماماً */
         .multi-branch-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 28px; /* مسافة واضحة ومريحة بين المستطيل العلوي والسفلي */
             z-index: 2;
         }
 
@@ -482,7 +481,7 @@
             margin-top: 2px;
         }
 
-        /* تخصيص شريط التمرير (Scrollbar) الهادئ والمتناسق مع الأزرار الزجاجية */
+        /* شريط التمرير الهادئ */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -502,9 +501,7 @@
             border-color: rgba(255, 255, 255, 0.4);
         }
 
-        /* ========================================================= */
-        /* التكيف الرأسي المخصص للموبايل */
-        /* ========================================================= */
+        /* التكيف الرأسي للموبايل */
         @media (max-width: 992px) {
             .n8n-big-card {
                 flex-direction: column;
@@ -645,7 +642,7 @@
             </div>
         </div>
 
-        <!-- 4. الكروت الضخمة الهيكلية (بالمسافات الاحترافيّة الواسعة للديسكتوب) -->
+        <!-- 4. الكروت الضخمة الهيكلية -->
         <section id="workflow-section" class="big-cards-container">
 
             <!-- كارت 1: النشر والرد الفوري -->
@@ -672,7 +669,7 @@
                         <!-- للموبايل -->
                         <div class="mobile-connector"></div>
 
-                        <!-- للديسكتوب (مسافة موسعة ومريحة) -->
+                        <!-- للديسكتوب -->
                         <div class="node-connector-line"></div>
 
                         <div class="node-box">
@@ -687,13 +684,12 @@
                             <circle cx="100" cy="0" r="3" fill="#00e5ff"/>
                         </svg>
 
-                        <!-- للديسكتوب (قوس تشعبي واسع ومتباعد يمنع التداخل) -->
+                        <!-- للديسكتوب: قوس علوي وقوس سفلي فقط بدون أي خط في المنتصف (تمت إزالة خط المنتصف تماماً) -->
                         <div class="branch-tree-wrapper">
-                            <svg class="branch-lines-svg" viewBox="0 0 50 140" fill="none">
-                                <path d="M0 20 C 50 20, 25 70, 50 70" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 70 L 50 70" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 120 C 50 120, 25 70, 50 70" stroke="#00e5ff" stroke-width="2" />
-                                <circle cx="50" cy="70" r="3.5" fill="#00e5ff" />
+                            <svg class="branch-lines-svg" viewBox="0 0 50 160" fill="none">
+                                <path d="M0 20 C 50 20, 25 80, 50 80" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 140 C 50 140, 25 80, 50 80" stroke="#00e5ff" stroke-width="2" />
+                                <circle cx="50" cy="80" r="3.5" fill="#00e5ff" />
                             </svg>
                         </div>
 
@@ -731,9 +727,7 @@
                             رسالة العميل
                         </div>
 
-                        <!-- للموبايل -->
                         <div class="mobile-connector"></div>
-                        <!-- للديسكتوب -->
                         <div class="node-connector-line"></div>
 
                         <div class="node-box">
@@ -741,9 +735,7 @@
                             تحديد الاحتياج
                         </div>
 
-                        <!-- للموبايل -->
                         <div class="mobile-connector"></div>
-                        <!-- للديسكتوب -->
                         <div class="node-connector-line"></div>
 
                         <div class="node-box">
@@ -751,20 +743,18 @@
                             رد آلي فوري
                         </div>
 
-                        <!-- للموبايل -->
                         <svg class="mobile-branch-svg" viewBox="0 0 200 32" fill="none">
                             <path d="M100 0 L100 12 C100 22, 40 12, 40 32" stroke="#00e5ff" stroke-width="2"/>
                             <path d="M100 0 L100 12 C100 22, 160 12, 160 32" stroke="#00e5ff" stroke-width="2"/>
                             <circle cx="100" cy="0" r="3" fill="#00e5ff"/>
                         </svg>
 
-                        <!-- للديسكتوب -->
+                        <!-- للديسكتوب: بدون خط أوسط نهائياً -->
                         <div class="branch-tree-wrapper">
-                            <svg class="branch-lines-svg" viewBox="0 0 50 140" fill="none">
-                                <path d="M0 20 C 50 20, 25 70, 50 70" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 70 L 50 70" stroke="#00e5ff" stroke-width="2" />
-                                <path d="M0 120 C 50 120, 25 70, 50 70" stroke="#00e5ff" stroke-width="2" />
-                                <circle cx="50" cy="70" r="3.5" fill="#00e5ff" />
+                            <svg class="branch-lines-svg" viewBox="0 0 50 160" fill="none">
+                                <path d="M0 20 C 50 20, 25 80, 50 80" stroke="#00e5ff" stroke-width="2" />
+                                <path d="M0 140 C 50 140, 25 80, 50 80" stroke="#00e5ff" stroke-width="2" />
+                                <circle cx="50" cy="80" r="3.5" fill="#00e5ff" />
                             </svg>
                         </div>
 
