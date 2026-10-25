@@ -943,28 +943,28 @@ footer, #footer-container {
     }
 }
 
-/* جعل خلفية مسار شريط التمرير شفافة تماماً لتظهر صورة خلفية الموقع خلفه */
+/* شريط التمرير بزجاجية ولون هادئ مطابق لزر "إعرف المزيد" */
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent !important; /* جعل مسار الشريط شفافاً بالكامل لتظهر الصورة تحته */
+    background: transparent !important;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #00e5ff, #0088ff); /* لون المقبض المتدرج لبروتون */
-    border-radius: 5px;
-    border: 1px solid transparent; /* حدود شفافة لجعل المقبض متناسقاً وأنحف */
-    background-clip: padding-box;
+    background: rgba(255, 255, 255, 0.15); /* لون رمادي زجاجي هادئ وغير فاقع */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* حدود ناعمة مطابقة لزر الإطار */
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #00e5ff; /* لون المقبض عند تمرير الفأرة عليه */
+    background: rgba(255, 255, 255, 0.25); /* درجة أفتح قليلاً عند المرور بالفأرة */
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
-/* دعم متصفح فايرفوكس لجعل المسار شفافاً */
+/* دعم متصفح فايرفوكس */
 * {
     scrollbar-width: thin;
-    scrollbar-color: #00e5ff transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }
