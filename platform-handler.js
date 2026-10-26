@@ -189,53 +189,67 @@ function openPlatformModal(key, title, iconUrl) {
     const hasMessages = existing ? existing.messages : true;
 
     container.innerHTML = `
-        <div class="service-row">
-    <span class="service-price">EGP5000</span>
-    <label class="service-right">
-        <div class="service-info">
+       <div class="service-row">
+    <!-- الجانب الأيسر: السعر -->
+    <div class="service-price-side">
+        <span class="service-price">EGP5000</span>
+    </div>
+
+    <!-- الجانب الأيمن: العنوان، الوصف، والتشيك بوكس -->
+    <div class="service-content-side">
+        <div class="service-text-group">
             <span class="service-title">إدارة المحتوى</span>
             <span class="service-desc">يشمل خطة وكتابة المحتوى والنشر</span>
         </div>
-        <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
-    </label>
+        <input type="checkbox" class="service-checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
+    </div>
 </div>
 
 <div class="service-row">
-    <span class="service-price">EGP1500 / ريل</span>
-    <label class="service-right">
-        <div class="service-info">
-            <div class="service-title-wrapper">
+    <!-- الجانب الأيسر: السعر الخاص بالريلز -->
+    <div class="service-price-side">
+        <span class="service-price">EGP1500 / ريل</span>
+    </div>
+
+    <!-- الجانب الأيمن: إدارة الريلز والعداد -->
+    <div class="service-content-side">
+        <div class="service-text-group">
+            <div class="reels-inline-wrapper">
+                <span class="service-title">إدارة الريلز</span>
                 <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''}>
                     ${generateReelsOptions(reelsCountVal)}
                 </select>
-                <span class="service-title">إدارة الريلز</span>
             </div>
             <span class="service-desc">يشمل التصوير والمونتاج والمؤثرات</span>
         </div>
-        <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
-    </label>
+        <input type="checkbox" class="service-checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
+    </div>
 </div>
 
 <div class="service-row">
-    <span class="service-price">EGP3000</span>
-    <label class="service-right">
-        <div class="service-info">
+    <div class="service-price-side">
+        <span class="service-price">EGP3000</span>
+    </div>
+    <div class="service-content-side">
+        <div class="service-text-group">
             <span class="service-title">إدارة التعليقات</span>
             <span class="service-desc">يشمل التفاعل والرد على التعليقات</span>
         </div>
-        <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
-    </label>
+        <input type="checkbox" class="service-checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
+    </div>
 </div>
 
 <div class="service-row">
-    <span class="service-price">EGP4500</span>
-    <label class="service-right">
-        <div class="service-info">
+    <div class="service-price-side">
+        <span class="service-price">EGP4500</span>
+    </div>
+    <div class="service-content-side">
+        <div class="service-text-group">
             <span class="service-title">إدارة الرسائل</span>
             <span class="service-desc">يشمل التحليل والرد وتقفيل المبيعات</span>
         </div>
-        <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''}>
-    </label>
+        <input type="checkbox" class="service-checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''}>
+    </div>
 </div>
     `;
 
