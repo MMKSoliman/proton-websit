@@ -968,62 +968,93 @@ footer, #footer-container {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }
-/* تنسيق الحاوية للعنوان والوصف الفرعي */
+/* حاوية الصف الرئيسي لتوزيع السعر يميناً ويساراً */
+.service-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #12181f;
+    border: 1px solid #1a2332;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+}
+
+/* جانب السعر (يسار الكارت) */
+.service-left {
+    display: flex;
+    align-items: center;
+}
+
+.service-price {
+    color: #00e5ff; /* سايان بروتون المميز */
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+/* جانب الخدمة والعنوان (يمين الكارت) */
+.service-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* تفاصيل النص (العنوان والوصف الأخضر) */
 .service-info {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    align-items: flex-end; /* محاذاة لليمين باللغة العربية */
+    gap: 2px;
 }
 
-/* العنوان الرئيسي للخدمة */
 .service-title {
     font-weight: bold;
     color: #ffffff;
     font-size: 0.95rem;
 }
 
-/* الوصف الأخضر الفرعي */
 .service-desc {
-    color: #00ffa3; /* لون أخضر نيون متناسق مع Proton */
+    color: #00ffa3; /* أخضر بروتون التوضيحي */
     font-size: 0.78rem;
     font-weight: 500;
 }
 
-/* تجميعة عنوان الريلز مع العداد */
-.reels-title-wrapper {
+/* تجميعة العداد بجانب عنوان الريلز */
+.service-title-wrapper {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-/* تعديل القائمة المنسدلة للريلز بألوان بروتون الداكنة */
+/* قائمة عداد الريلز بألوان بروتون الداكنة وبدون خلفية بيضاء */
 .reels-select {
-    background-color: #12181f; /* خلفية داكنة بدلاً من الأبيض */
-    color: #00e5ff; /* لون نص سايان نيون */
-    border: 1px solid #1a2332;
+    background-color: #1a222c;
+    color: #00e5ff;
+    border: 1px solid #283342;
     border-radius: 6px;
     padding: 2px 8px;
     font-size: 0.85rem;
     font-weight: bold;
     outline: none;
     cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.reels-select:hover:not(:disabled) {
-    border-color: #00e5ff;
-    box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
 }
 
 .reels-select:disabled {
-    background-color: #1a1f26;
-    color: #556070;
-    border-color: #222933;
+    background-color: #141a21;
+    color: #4a5568;
+    border-color: #1d2631;
     cursor: not-allowed;
 }
 
-/* تنسيق الخيارات داخل الـ Select */
 .reels-select option {
     background-color: #0d1117;
     color: #ffffff;
+}
+
+/* تحسين شكل الـ Checkbox ليتناسب مع الثيم */
+.service-right input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #00e5ff;
+    cursor: pointer;
 }
