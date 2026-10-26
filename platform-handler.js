@@ -197,8 +197,9 @@ function openPlatformModal(key, title, iconUrl) {
         </div>
     </label>
     <span class="service-price">EGP5000</span>
+    <p class="service-desc">يشمل خطة وكتابة المحتوى والنشر</p>
 </div>
-<p class="service-desc">يشمل خطة وكتابة المحتوى والنشر</p>
+
 <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
@@ -212,8 +213,9 @@ function openPlatformModal(key, title, iconUrl) {
         </div>
     </label>
     <span class="service-price">EGP1500 / ريل</span>
+    <p class="service-desc">يشمل التصوير والمونتاج والمؤثرات</p>
 </div>
-<p class="service-desc">يشمل التصوير والمونتاج والمؤثرات</p>
+
 <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
