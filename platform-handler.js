@@ -195,9 +195,9 @@ function openPlatformModal(key, title, iconUrl) {
         <div class="service-info">
             <span class="service-title">إدارة المحتوى</span>
         </div>
+        <p class="service-desc">يشمل خطة وكتابة المحتوى والنشر</p>
     </label>
     <span class="service-price">EGP5000</span>
-    <p class="service-desc">يشمل خطة وكتابة المحتوى والنشر</p>
 </div>
 
 <div class="service-row">
@@ -211,9 +211,9 @@ function openPlatformModal(key, title, iconUrl) {
                 </select>
             </div>
         </div>
+        <p class="service-desc">يشمل التصوير والمونتاج والمؤثرات</p>
     </label>
     <span class="service-price">EGP1500 / ريل</span>
-    <p class="service-desc">يشمل التصوير والمونتاج والمؤثرات</p>
 </div>
 
 <div class="service-row">
