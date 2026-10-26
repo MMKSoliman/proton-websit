@@ -109,8 +109,8 @@ async function loadBrandConnections(brandId) {
                     const conn = connections[key];
                     let pTotal = 0;
                     if (conn.posts) pTotal += 5000;
-                    if (conn.reels) pTotal += (conn.rc || 1) * REEL_PRICE_PER_UNIT;
-                    if (conn.comments) pTotal += (key === 'tiktok' ? 3000 : 1500);
+                    if (conn.reels) pTotal += (conn.rc || 1500) * REEL_PRICE_PER_UNIT;
+                    if (conn.comments) pTotal += (key === 'tiktok' ? 1500 : 3000);
                     if (conn.messages) pTotal += (key === 'tiktok' ? 3000 : 4500);
 
                     activePlatforms[key] = {
