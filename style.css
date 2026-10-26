@@ -992,18 +992,18 @@ footer, #footer-container {
 }
 
 .service-price {
-    color: #00e5ff; /* سايان بروتون */
+    color: #00e5ff;
     font-weight: bold;
     font-size: 0.95rem;
     white-space: nowrap;
 }
 
-/* جانب المحتوى (أقصى اليمين: العنوان + الوصف + الـ Checkbox) */
+/* جانب المحتوى (أقصى اليمين) */
 .service-content-side {
     display: flex;
     align-items: center;
     gap: 14px;
-    flex-direction: row-reverse; /* يخلي الـ Checkbox أقصى اليمين والنصوص بجانبه */
+    flex-direction: row-reverse; /* يجعل الـ Checkbox أقصى اليمين والنصوص بجانبه */
     text-align: right;
 }
 
@@ -1023,12 +1023,12 @@ footer, #footer-container {
 
 /* الوصف الأخضر الفرعي في السطر الثاني */
 .service-desc {
-    color: #00ffa3; /* أخضر نيون بروتون */
+    color: #00ffa3;
     font-size: 0.75rem;
     font-weight: 500;
 }
 
-/* سطر عنوان الريلز بجانبه العداد */
+/* سطر عنوان الريلز بجانبه العداد الداكن */
 .reels-inline-wrapper {
     display: flex;
     align-items: center;
@@ -1036,7 +1036,7 @@ footer, #footer-container {
     flex-direction: row-reverse;
 }
 
-/* قائمة عداد الريلز الداكنة */
+/* قائمة عداد الريلز بتصميم بروتون الداكن */
 .reels-select {
     background-color: #1a222c;
     color: #00e5ff;
@@ -1061,7 +1061,7 @@ footer, #footer-container {
     color: #ffffff;
 }
 
-/* تنسيق الـ Checkbox ليكون متناسقاً */
+/* تنسيق الـ Checkbox */
 .service-checkbox {
     width: 20px;
     height: 20px;
