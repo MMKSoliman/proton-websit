@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // 1. إضافة تنسيقات الـ CSS الخاصة بالزر المخصص والعنصر المنبثق
+    // 1. تنسيقات الـ CSS للأيقونة النيونية بدون دائرة خارجية
     const styleElement = document.createElement('style');
     styleElement.innerHTML = `
         .proton-whatsapp-container {
@@ -14,55 +14,73 @@ document.addEventListener("DOMContentLoaded", function() {
         .proton-whatsapp-btn {
             width: 60px;
             height: 60px;
-            background: rgba(22, 27, 34, 0.85);
-            border: 1px solid rgba(0, 229, 255, 0.3);
-            border-radius: 50%;
+            background: transparent;
+            border: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
             cursor: pointer;
+            padding: 0;
+            outline: none;
+            position: relative;
             text-decoration: none;
-            overflow: hidden;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* صورة شعار بروتون داخل الزر */
+        /* التوهج الخلفي (Back-light) بدون إطار أو دائرة */
+        .proton-whatsapp-btn::before {
+            content: '';
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            background: rgba(0, 229, 255, 0.4);
+            border-radius: 50%;
+            filter: blur(14px);
+            z-index: 1;
+            transition: all 0.4s ease;
+        }
+
         .proton-whatsapp-btn img {
-            width: 36px;
-            height: 36px;
+            width: 52px;
+            height: 52px;
             object-fit: contain;
+            position: relative;
+            z-index: 2;
             transition: transform 0.6s ease;
         }
 
-        /* لفة كاملة وزيادة التوهج عند مرور الماوس أو اللمس */
+        /* لفة كاملة وتوهج مضاعف عند التحويم أو اللمس */
         .proton-whatsapp-btn:hover {
             transform: rotate(360deg);
-            border-color: rgba(0, 229, 255, 0.8);
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
         }
 
-        /* فقرة الرسالة التفاعلية بجانب الأيقونة */
+        .proton-whatsapp-btn:hover::before {
+            background: rgba(0, 229, 255, 0.7);
+            filter: blur(18px);
+            width: 55px;
+            height: 55px;
+        }
+
+        /* رسالة التلميح (Tooltip) الأنيقة */
         .proton-whatsapp-tooltip {
             position: absolute;
             right: 75px;
             bottom: 10px;
             background: #161b22;
             color: #ffffff;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 12px;
-            border: 1px solid rgba(0, 229, 255, 0.25);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
             white-space: nowrap;
             pointer-events: none;
             opacity: 0;
             transform: translateX(10px);
             transition: opacity 0.3s ease, transform 0.3s ease;
-            max-width: 280px;
         }
 
         .proton-whatsapp-tooltip .tooltip-title {
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             font-weight: 800;
             color: #00e5ff;
             margin-bottom: 2px;
@@ -70,30 +88,22 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         .proton-whatsapp-tooltip .tooltip-desc {
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.8);
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* إظهار الرسالة عند الوقوف على الزر */
         .proton-whatsapp-container:hover .proton-whatsapp-tooltip {
             opacity: 1;
             transform: translateX(0);
         }
 
-        /* تكييف الموبايل */
         @media (max-width: 768px) {
             .proton-whatsapp-container {
                 bottom: 16px;
                 right: 16px;
-            }
-            .proton-whatsapp-btn {
-                width: 52px;
-                height: 52px;
-            }
-            .proton-whatsapp-btn img {
-                width: 30px;
-                height: 30px;
             }
             .proton-whatsapp-tooltip {
                 display: none;
@@ -102,17 +112,20 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
     document.head.appendChild(styleElement);
 
-    // 2. إعدادات رقم الهاتف والرابط
-    const phoneNumber = "201066581983"; // <--- ضع رقم هاتفك هنا بكود الدولة
+    // 2. إعدادات رقم الهاتف والرسالة الافتراضية
+    const phoneNumber = "201066581983"; // <--- اكتب رقمك هنا بكود الدولة (مثلاً 20مصر)
     const defaultMessage = "مرحباً، لدي استفسار بخصوص خدمات أتمتة بروتون (Proton).";
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(defaultMessage)}`;
 
-    // 3. بناء هيكل الأيقونة مع استبدال الأيقونة العادية بصورة براند بروتون
+    // 3. بناء الهيكل للزر المباشر
     const widgetHTML = `
         <div class="proton-whatsapp-container">
             <div class="proton-whatsapp-tooltip">
                 <span class="tooltip-title">هل لديك استفسار؟</span>
-                <span class="tooltip-desc">تواصل معنا الآن عبر واتساب 💬</span>
+                <span class="tooltip-desc">
+                    تواصل معنا الآن عبر واتساب
+                    <i class="fa-solid fa-comment-dots" style="color: #00e5ff;"></i>
+                </span>
             </div>
             <a href="${whatsappUrl}" target="_blank" class="proton-whatsapp-btn" aria-label="تواصل عبر واتساب">
                 <img src="./WA-W.webp" alt="Proton WhatsApp" onerror="this.src='./favicon.png'">
