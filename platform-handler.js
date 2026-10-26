@@ -108,10 +108,10 @@ async function loadBrandConnections(brandId) {
                 if (connections[key]) {
                     const conn = connections[key];
                     let pTotal = 0;
-                    if (conn.posts) pTotal += 25;
-                    if (conn.reels) pTotal += (conn.rc || 5) * REEL_PRICE_PER_UNIT;
-                    if (conn.comments) pTotal += (key === 'tiktok' ? 20 : 15);
-                    if (conn.messages) pTotal += (key === 'tiktok' ? 25 : 20);
+                    if (conn.posts) pTotal += 5000;
+                    if (conn.reels) pTotal += (conn.rc || 1) * REEL_PRICE_PER_UNIT;
+                    if (conn.comments) pTotal += (key === 'tiktok' ? 3000 : 1500);
+                    if (conn.messages) pTotal += (key === 'tiktok' ? 3000 : 4500);
 
                     activePlatforms[key] = {
                         total: pTotal,
@@ -119,7 +119,7 @@ async function loadBrandConnections(brandId) {
                     };
 
                     if (btn) {
-                        btn.textContent = `تم الربط ($${pTotal})`;
+                        btn.textContent = `تم الربط (EGP${pTotal})`;
                         btn.classList.add('connected');
                         btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
                     }
@@ -147,7 +147,7 @@ function getPlatformTitle(key) {
 }
 
 function getPlatformIcon(key) {
-    const map = { 'facebook': './FB-W.png', 'instagram': './Insta-W.png', 'tiktok': './TT-W.png', 'linkedin': './L in-W.png', 'x': './X-W.png' };
+    const map = { 'facebook': './FB-W.webp', 'instagram': './Insta-W.webp', 'tiktok': './TT-W.webp', 'linkedin': './L in-W.webp', 'x': './X-W.webp' };
     return map[key] || './favicon.png';
 }
 
@@ -363,7 +363,7 @@ function redirectToWhatsApp() {
 
     let message = `مرحباً، أود إتمام الطلب وتفعيل الخطة للنشاط التجاري: *${brandName}*.\n`;
     message += `- عدد المنصات المربوطة: ${count}\n`;
-    message += `- الإجمالي الشهري: $${total}\n\nيرجى استكمال إجراءات التفعيل.`;
+    message += `- الإجمالي الشهري: EGP${total}\n\nيرجى استكمال إجراءات التفعيل.`;
 
     const url = `https://wa.me/+201066581983?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
