@@ -190,9 +190,9 @@ function openPlatformModal(key, title, iconUrl) {
 
     container.innerHTML = `
         <div class="service-row">
-    <label class="service-left">
+    <label class="service-right-group">
         <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
-        <div class="service-text-container">
+        <div class="service-text-box">
             <span class="service-title">إدارة المحتوى</span>
             <span class="service-desc">يشمل خطة وكتابة المحتوى والنشر</span>
         </div>
@@ -201,9 +201,9 @@ function openPlatformModal(key, title, iconUrl) {
 </div>
 
 <div class="service-row">
-    <label class="service-left">
+    <label class="service-right-group">
         <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
-        <div class="service-text-container">
+        <div class="service-text-box">
             <div class="reels-inline-wrapper">
                 <span class="service-title">إدارة الريلز</span>
                 <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''}>
@@ -217,9 +217,9 @@ function openPlatformModal(key, title, iconUrl) {
 </div>
 
 <div class="service-row">
-    <label class="service-left">
+    <label class="service-right-group">
         <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
-        <div class="service-text-container">
+        <div class="service-text-box">
             <span class="service-title">إدارة التعليقات</span>
             <span class="service-desc">يشمل التفاعل والرد على التعليقات</span>
         </div>
@@ -228,9 +228,9 @@ function openPlatformModal(key, title, iconUrl) {
 </div>
 
 <div class="service-row">
-    <label class="service-left">
+    <label class="service-right-group">
         <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''}>
-        <div class="service-text-container">
+        <div class="service-text-box">
             <span class="service-title">إدارة الرسائل</span>
             <span class="service-desc">يشمل التحليل والرد وتقفيل المبيعات</span>
         </div>
