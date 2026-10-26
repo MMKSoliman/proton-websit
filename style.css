@@ -970,38 +970,48 @@ footer, #footer-container {
 }
 
 
-/* حاوية الكارت: السعر على اليسار والعنوان على اليمين */
+/* حاوية الكارت الرئيسية */
 .service-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #12181f;
     border: 1px solid #1a2332;
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 14px 18px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* السعر في جهة اليسار */
+/* جانب السعر (أقصى اليسار) */
+.service-price-side {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
 .service-price {
-    color: #00e5ff;
+    color: #00e5ff; /* سايان بروتون */
     font-weight: bold;
     font-size: 0.95rem;
+    white-space: nowrap;
 }
 
-/* جهة اليمين (العنوان، الوصف، الـ Checkbox) */
-.service-right {
+/* جانب المحتوى (أقصى اليمين: العنوان + الوصف + الـ Checkbox) */
+.service-content-side {
     display: flex;
     align-items: center;
     gap: 14px;
-    cursor: pointer;
+    flex-direction: row-reverse; /* يخلي الـ Checkbox أقصى اليمين والنصوص بجانبه */
+    text-align: right;
 }
 
-/* تفاصيل النص (العنوان فوق والوصف الأخضر تحته) */
-.service-info {
+/* تجميعة العنوان والوصف الأخضر فوق بعض */
+.service-text-group {
     display: flex;
     flex-direction: column;
-    align-items: flex-end; /* محاذاة لليمين */
+    align-items: flex-end;
     gap: 3px;
 }
 
@@ -1011,26 +1021,28 @@ footer, #footer-container {
     font-size: 0.95rem;
 }
 
+/* الوصف الأخضر الفرعي في السطر الثاني */
 .service-desc {
-    color: #00ffa3; /* الأخضر النيون المطلوب */
-    font-size: 0.76rem;
+    color: #00ffa3; /* أخضر نيون بروتون */
+    font-size: 0.75rem;
     font-weight: 500;
 }
 
-/* تجميعة العداد بجانب عنوان الريلز */
-.service-title-wrapper {
+/* سطر عنوان الريلز بجانبه العداد */
+.reels-inline-wrapper {
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-direction: row-reverse;
 }
 
-/* قائمة العداد بدون خلفية بيضاء وألوان بروتون */
+/* قائمة عداد الريلز الداكنة */
 .reels-select {
     background-color: #1a222c;
     color: #00e5ff;
     border: 1px solid #283342;
     border-radius: 6px;
-    padding: 2px 8px;
+    padding: 2px 6px;
     font-size: 0.85rem;
     font-weight: bold;
     outline: none;
@@ -1049,10 +1061,11 @@ footer, #footer-container {
     color: #ffffff;
 }
 
-/* تحسين شكل الـ Checkbox */
-.service-right input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
+/* تنسيق الـ Checkbox ليكون متناسقاً */
+.service-checkbox {
+    width: 20px;
+    height: 20px;
     accent-color: #00e5ff;
     cursor: pointer;
+    flex-shrink: 0;
 }
