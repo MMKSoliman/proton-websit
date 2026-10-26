@@ -190,23 +190,19 @@ function openPlatformModal(key, title, iconUrl) {
 
     container.innerHTML = `
         <div class="service-row">
-    <div class="service-left">
-        <span class="service-price">EGP5000</span>
-    </div>
-    <div class="service-right">
+    <span class="service-price">EGP5000</span>
+    <label class="service-right">
         <div class="service-info">
             <span class="service-title">إدارة المحتوى</span>
             <span class="service-desc">يشمل خطة وكتابة المحتوى والنشر</span>
         </div>
         <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
-    </div>
+    </label>
 </div>
 
 <div class="service-row">
-    <div class="service-left">
-        <span class="service-price">EGP1500 / ريل</span>
-    </div>
-    <div class="service-right">
+    <span class="service-price">EGP1500 / ريل</span>
+    <label class="service-right">
         <div class="service-info">
             <div class="service-title-wrapper">
                 <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''}>
@@ -217,33 +213,29 @@ function openPlatformModal(key, title, iconUrl) {
             <span class="service-desc">يشمل التصوير والمونتاج والمؤثرات</span>
         </div>
         <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
-    </div>
+    </label>
 </div>
 
 <div class="service-row">
-    <div class="service-left">
-        <span class="service-price">EGP3000</span>
-    </div>
-    <div class="service-right">
+    <span class="service-price">EGP3000</span>
+    <label class="service-right">
         <div class="service-info">
             <span class="service-title">إدارة التعليقات</span>
             <span class="service-desc">يشمل التفاعل والرد على التعليقات</span>
         </div>
         <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
-    </div>
+    </label>
 </div>
 
 <div class="service-row">
-    <div class="service-left">
-        <span class="service-price">EGP4500</span>
-    </div>
-    <div class="service-right">
+    <span class="service-price">EGP4500</span>
+    <label class="service-right">
         <div class="service-info">
             <span class="service-title">إدارة الرسائل</span>
             <span class="service-desc">يشمل التحليل والرد وتقفيل المبيعات</span>
         </div>
         <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''}>
-    </div>
+    </label>
 </div>
     `;
 
