@@ -204,7 +204,7 @@ function openPlatformModal(key, title, iconUrl) {
         <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
         <div class="service-info">
             <div class="reels-title-wrapper">
-                <span class="service-title">إدارة الريلز</span>
+                <span class="service-title">   إدارة الريلز</span>
                 <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''}>
                     ${generateReelsOptions(reelsCountVal)}
                 </select>
