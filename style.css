@@ -970,57 +970,11 @@ footer, #footer-container {
 }
 
 
-/* حاوية الكارت الرئيسية */
-.service-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #12181f;
-    border: 1px solid #1a2332;
-    border-radius: 12px;
-    padding: 14px 18px;
-    margin-bottom: 12px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* الجهة اليمنى: التشيك بوكس والعنوان على نفس السطر */
-.service-right-group {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    flex-direction: row-reverse; /* يجعل التشيك بوكس أقصى اليمين والعنوان بجانبه */
-}
-
-/* حاوية النصوص (العنوان وفوقه/تحته الوصف الأخضر) */
-.service-text-box {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* محاذاة لليمين */
-    gap: 3px;
-}
-
-/* العنوان الرئيسي باللون الأبيض */
-.service-title {
-    font-weight: bold;
-    color: #ffffff;
-    font-size: 0.95rem;
-}
-
 /* الوصف الأخضر في السطر الثاني */
 .service-desc {
     color: #00ffa3; /* أخضر بروتون النيون */
     font-size: 0.75rem;
     font-weight: 500;
-}
-
-/* سطر عنوان الريلز بجانبه العداد */
-.reels-inline-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-direction: row-reverse;
 }
 
 /* قائمة عداد الريلز بتصميم بروتون الداكن */
@@ -1046,15 +1000,6 @@ footer, #footer-container {
 .reels-select option {
     background-color: #0d1117;
     color: #ffffff;
-}
-
-/* السعر في أقصى اليسار وباللون السايان النيون الأصلي */
-.service-price {
-    color: #00e5ff;
-    font-weight: bold;
-    font-size: 0.95rem;
-    white-space: nowrap;
-    flex-shrink: 0;
 }
 
 /* تنسيق الـ Checkbox */
