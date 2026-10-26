@@ -984,51 +984,40 @@ footer, #footer-container {
     box-sizing: border-box;
 }
 
-/* جانب السعر (أقصى اليسار) */
-.service-price-side {
+/* الجهة اليمنى (التشيك بوكس + النصوص) */
+.service-left {
     display: flex;
-    align-items: center;
-    flex-shrink: 0;
+    align-items: flex-start; /* لضمان محاذاة التشيك بوكس مع أول سطر */
+    gap: 12px;
+    cursor: pointer;
+    flex-direction: row-reverse; /* ليكون التشيك بوكس أقصى اليمين والنصوص بجانبه */
 }
 
-.service-price {
-    color: #00e5ff;
-    font-weight: bold;
-    font-size: 0.95rem;
-    white-space: nowrap;
-}
-
-/* جانب المحتوى (أقصى اليمين) */
-.service-content-side {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    flex-direction: row-reverse; /* يجعل الـ Checkbox أقصى اليمين والنصوص بجانبه */
-    text-align: right;
-}
-
-/* تجميعة العنوان والوصف الأخضر فوق بعض */
-.service-text-group {
+/* حاوية النصوص (العنوان في السطر الأول، الوصف في السطر الثاني) */
+.service-text-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    gap: 3px;
+    align-items: flex-end; /* محاذاة لليمين */
+    gap: 4px;
 }
 
+/* العنوان الرئيسي */
 .service-title {
     font-weight: bold;
     color: #ffffff;
     font-size: 0.95rem;
+    line-height: 1.2;
 }
 
-/* الوصف الأخضر الفرعي في السطر الثاني */
+/* الوصف الأخضر في السطر التالي */
 .service-desc {
-    color: #00ffa3;
+    color: #00ffa3; /* أخضر بروتون النيون */
     font-size: 0.75rem;
     font-weight: 500;
+    line-height: 1.2;
 }
 
-/* سطر عنوان الريلز بجانبه العداد الداكن */
+/* سطر عنوان الريلز بجانبه العداد */
 .reels-inline-wrapper {
     display: flex;
     align-items: center;
@@ -1061,11 +1050,21 @@ footer, #footer-container {
     color: #ffffff;
 }
 
+/* السعر في جهة اليسار */
+.service-price {
+    color: #00e5ff;
+    font-weight: bold;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
 /* تنسيق الـ Checkbox */
-.service-checkbox {
-    width: 20px;
-    height: 20px;
+.service-left input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
     accent-color: #00e5ff;
     cursor: pointer;
+    margin-top: 2px; /* ضبط المحاذاة الرأسية مع السطر الأول */
     flex-shrink: 0;
 }
