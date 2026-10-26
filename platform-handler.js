@@ -233,6 +233,7 @@ function openPlatformModal(key, title, iconUrl) {
     </label>
     <span class="service-price">EGP4500</span>
 </div>
+<p clss="service-desc">تفاصيل الخدمات</p>
     `;
 
     document.getElementById('authModal').style.display = 'flex';
