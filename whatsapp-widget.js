@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 </span>
             </div>
             <a href="${whatsappUrl}" target="_blank" class="proton-whatsapp-btn" aria-label="تواصل عبر واتساب">
-                <img src="./WA-W.webp" alt="Proton WhatsApp" onerror="this.src='./favicon.png'">
+                <img src="./WA-P.webp" alt="Proton WhatsApp" onerror="this.src='./favicon.png'">
             </a>
         </div>
     `;
