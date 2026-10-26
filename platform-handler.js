@@ -190,52 +190,71 @@ function openPlatformModal(key, title, iconUrl) {
 
     container.innerHTML = `
        <div class="service-row">
-    <label class="service-left">
-        <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
-        <div class="service-info">
-            <span class="service-title">إدارة المحتوى</span>
+    <!-- السعر في أقصى اليسار -->
+    <div class="service-price-side">
+        <span class="service-price">EGP5000</span>
+    </div>
+
+    <!-- المحتوى في أقصى اليمين -->
+    <div class="service-content-side">
+        <div class="service-text-group">
+            <div class="title-with-checkbox">
+                <input type="checkbox" class="service-checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
+                <span class="service-title">إدارة المحتوى</span>
+            </div>
             <span class="service-desc">يشمل خطة وكتابة المحتوى والنشر</span>
         </div>
-    </label>
-    <span class="service-price">EGP5000</span>
+    </div>
 </div>
 
 <div class="service-row">
-    <label class="service-left">
-        <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
-        <div class="service-info">
-            <div class="reels-title-wrapper">
-                <span class="service-title">إدارة الريلز</span>
-                <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''}>
-                    ${generateReelsOptions(reelsCountVal)}
-                </select>
+    <div class="service-price-side">
+        <span class="service-price">EGP1500 / ريل</span>
+    </div>
+    <div class="service-content-side">
+        <div class="service-text-group">
+            <div class="title-with-checkbox">
+                <input type="checkbox" class="service-checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
+                <div class="reels-inline-wrapper">
+                    <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''}>
+                        ${generateReelsOptions(reelsCountVal)}
+                    </select>
+                    <span class="service-title">إدارة الريلز</span>
+                </div>
             </div>
             <span class="service-desc">يشمل التصوير والمونتاج والمؤثرات</span>
         </div>
-    </label>
-    <span class="service-price">EGP1500 / ريل</span>
+    </div>
 </div>
 
 <div class="service-row">
-    <label class="service-left">
-        <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
-        <div class="service-info">
-            <span class="service-title">إدارة التعليقات</span>
+    <div class="service-price-side">
+        <span class="service-price">EGP3000</span>
+    </div>
+    <div class="service-content-side">
+        <div class="service-text-group">
+            <div class="title-with-checkbox">
+                <input type="checkbox" class="service-checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
+                <span class="service-title">إدارة التعليقات</span>
+            </div>
             <span class="service-desc">يشمل التفاعل والرد على التعليقات</span>
         </div>
-    </label>
-    <span class="service-price">EGP3000</span>
+    </div>
 </div>
 
 <div class="service-row">
-    <label class="service-left">
-        <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''}>
-        <div class="service-info">
-            <span class="service-title">إدارة الرسائل</span>
+    <div class="service-price-side">
+        <span class="service-price">EGP4500</span>
+    </div>
+    <div class="service-content-side">
+        <div class="service-text-group">
+            <div class="title-with-checkbox">
+                <input type="checkbox" class="service-checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''}>
+                <span class="service-title">إدارة الرسائل</span>
+            </div>
             <span class="service-desc">يشمل التحليل والرد وتقفيل المبيعات</span>
         </div>
-    </label>
-    <span class="service-price">EGP4500</span>
+    </div>
 </div>
     `;
 
