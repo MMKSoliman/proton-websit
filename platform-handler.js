@@ -190,12 +190,12 @@ function openPlatformModal(key, title, iconUrl) {
 
     container.innerHTML = `
        <div class="service-row">
-    <!-- الجانب الأيسر: السعر -->
+    <!-- السعر في أقصى اليسار -->
     <div class="service-price-side">
         <span class="service-price">EGP5000</span>
     </div>
 
-    <!-- الجانب الأيمن: العنوان، الوصف، والتشيك بوكس -->
+    <!-- المحتوى في أقصى اليمين (العنوان، الوصف، والتشيك بوكس) -->
     <div class="service-content-side">
         <div class="service-text-group">
             <span class="service-title">إدارة المحتوى</span>
@@ -206,12 +206,9 @@ function openPlatformModal(key, title, iconUrl) {
 </div>
 
 <div class="service-row">
-    <!-- الجانب الأيسر: السعر الخاص بالريلز -->
     <div class="service-price-side">
         <span class="service-price">EGP1500 / ريل</span>
     </div>
-
-    <!-- الجانب الأيمن: إدارة الريلز والعداد -->
     <div class="service-content-side">
         <div class="service-text-group">
             <div class="reels-inline-wrapper">
