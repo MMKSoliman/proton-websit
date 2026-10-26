@@ -968,3 +968,62 @@ footer, #footer-container {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }
+/* تنسيق الحاوية للعنوان والوصف الفرعي */
+.service-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+/* العنوان الرئيسي للخدمة */
+.service-title {
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 0.95rem;
+}
+
+/* الوصف الأخضر الفرعي */
+.service-desc {
+    color: #00ffa3; /* لون أخضر نيون متناسق مع Proton */
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+/* تجميعة عنوان الريلز مع العداد */
+.reels-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* تعديل القائمة المنسدلة للريلز بألوان بروتون الداكنة */
+.reels-select {
+    background-color: #12181f; /* خلفية داكنة بدلاً من الأبيض */
+    color: #00e5ff; /* لون نص سايان نيون */
+    border: 1px solid #1a2332;
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.reels-select:hover:not(:disabled) {
+    border-color: #00e5ff;
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+}
+
+.reels-select:disabled {
+    background-color: #1a1f26;
+    color: #556070;
+    border-color: #222933;
+    cursor: not-allowed;
+}
+
+/* تنسيق الخيارات داخل الـ Select */
+.reels-select option {
+    background-color: #0d1117;
+    color: #ffffff;
+}
