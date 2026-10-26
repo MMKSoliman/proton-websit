@@ -194,12 +194,11 @@ function openPlatformModal(key, title, iconUrl) {
         <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
         <div class="service-info">
             <span class="service-title">إدارة المحتوى</span>
-            <p class="service-desc">يشمل خطة وكتابة المحتوى والنشر</p>
         </div>
     </label>
     <span class="service-price">EGP5000</span>
 </div>
-
+<p class="service-desc">يشمل خطة وكتابة المحتوى والنشر</p>
 <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
