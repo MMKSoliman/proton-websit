@@ -973,8 +973,8 @@ footer, #footer-container {
 /* الوصف الأخضر في السطر الثاني */
 .service-desc {
     color: #00ffa3; /* أخضر بروتون النيون */
-    font-size: 0.55rem;
-    font-weight: 200;
+    font-size: 0.85rem;
+    font-weight: 100;
 }
 
 /* قائمة عداد الريلز بتصميم بروتون الداكن */
