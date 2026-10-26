@@ -184,7 +184,7 @@ function openPlatformModal(key, title, iconUrl) {
     const existing = activePlatforms[key] ? activePlatforms[key].raw : null;
     const hasPosts = existing ? existing.posts : true;
     const hasReels = existing ? existing.reels : true;
-    const reelsCountVal = existing ? (existing.rc || 5) : 5;
+    const reelsCountVal = existing ? (existing.rc || 5) : 1500;
     const hasComments = existing ? existing.comments : true;
     const hasMessages = existing ? existing.messages : true;
 
