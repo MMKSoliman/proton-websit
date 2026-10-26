@@ -194,7 +194,7 @@ function openPlatformModal(key, title, iconUrl) {
         <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
         <div class="service-info">
             <span class="service-title">إدارة المحتوى</span>
-            <span class="service-desc">يشمل خطة وكتابة المحتوى والنشر</span>
+            <p class="service-desc">يشمل خطة وكتابة المحتوى والنشر</p>
         </div>
     </label>
     <span class="service-price">EGP5000</span>
@@ -210,7 +210,7 @@ function openPlatformModal(key, title, iconUrl) {
                     ${generateReelsOptions(reelsCountVal)}
                 </select>
             </div>
-            <span class="service-desc">يشمل التصوير والمونتاج والمؤثرات</span>
+            <p class="service-desc">يشمل التصوير والمونتاج والمؤثرات</p>
         </div>
     </label>
     <span class="service-price">EGP1500 / ريل</span>
@@ -221,7 +221,7 @@ function openPlatformModal(key, title, iconUrl) {
         <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
         <div class="service-info">
             <span class="service-title">إدارة التعليقات</span>
-            <span class="service-desc">يشمل التفاعل والرد على التعليقات</span>
+            <p class="service-desc">يشمل التفاعل والرد على التعليقات</p>
         </div>
     </label>
     <span class="service-price">EGP3000</span>
@@ -232,7 +232,7 @@ function openPlatformModal(key, title, iconUrl) {
         <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''}>
         <div class="service-info">
             <span class="service-title">إدارة الرسائل</span>
-            <span class="service-desc">يشمل التحليل والرد وتقفيل المبيعات</span>
+            <p class="service-desc">يشمل التحليل والرد وتقفيل المبيعات</p>
         </div>
     </label>
     <span class="service-price">EGP4500</span>
