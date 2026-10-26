@@ -194,7 +194,7 @@ function openPlatformModal(key, title, iconUrl) {
                 <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
                 <span>النشر التلقائي للمنشورات + صورة</span>
             </label>
-            <span class="service-price">$25</span>
+            <span class="service-price">EGP5000</span>
         </div>
         <div class="service-row">
             <label class="service-left">
@@ -204,21 +204,21 @@ function openPlatformModal(key, title, iconUrl) {
                     ${generateReelsOptions(reelsCountVal)}
                 </select>
             </label>
-            <span class="service-price">$5 / ريل</span>
+            <span class="service-price">EGP1500 / ريل</span>
         </div>
         <div class="service-row">
             <label class="service-left">
                 <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
                 <span>التفاعل والرد على التعليقات</span>
             </label>
-            <span class="service-price">$15</span>
+            <span class="service-price">EGP3000</span>
         </div>
         <div class="service-row">
             <label class="service-left">
                 <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''}>
                 <span>الرد على الرسائل الخاصة</span>
             </label>
-            <span class="service-price">$20</span>
+            <span class="service-price">EGP4500</span>
         </div>
     `;
 
