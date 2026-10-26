@@ -198,7 +198,7 @@ function openPlatformModal(key, title, iconUrl) {
     </label>
     <span class="service-price">EGP5000</span>
 </div>
-<p class="service-desc">يشمل خطة وكتابة المحتوى والنشر</p>
+
 <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
@@ -213,7 +213,7 @@ function openPlatformModal(key, title, iconUrl) {
     </label>
     <span class="service-price">EGP1500 / ريل</span>
 </div>
-<p class="service-desc">يشمل التصوير والمونتاج والمؤثرات</p>
+
 <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
@@ -223,7 +223,7 @@ function openPlatformModal(key, title, iconUrl) {
     </label>
     <span class="service-price">EGP3000</span>
 </div>
-<p class="service-desc">يشمل التفاعل والرد على التعليقات</p>
+
 <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''}>
@@ -233,7 +233,6 @@ function openPlatformModal(key, title, iconUrl) {
     </label>
     <span class="service-price">EGP4500</span>
 </div>
-<p class="service-desc">يشمل التحليل والرد وتقفيل المبيعات</p>
     `;
 
     document.getElementById('authModal').style.display = 'flex';
