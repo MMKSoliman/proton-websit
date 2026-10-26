@@ -193,7 +193,6 @@ function openPlatformModal(key, title, iconUrl) {
             <label class="service-left">
                 <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
                 <span>إدارة المحتوى</span>
-                <p>يشمل خطة وكتابة المحتوى والنشر</p>
             </label>
             <span class="service-price">EGP5000</span>
         </div>
