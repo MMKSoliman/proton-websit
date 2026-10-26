@@ -1,4 +1,4 @@
-const REEL_PRICE_PER_UNIT = 5; 
+const REEL_PRICE_PER_UNIT = 1500; 
 let activePlatforms = {}; 
 let currentPlatformKey = null;
 
@@ -109,7 +109,7 @@ async function loadBrandConnections(brandId) {
                     const conn = connections[key];
                     let pTotal = 0;
                     if (conn.posts) pTotal += 5000;
-                    if (conn.reels) pTotal += (conn.rc || 5) * REEL_PRICE_PER_UNIT;
+                    if (conn.reels) pTotal += (conn.rc || 1) * REEL_PRICE_PER_UNIT;
                     if (conn.comments) pTotal += (key === 'tiktok' ? 1500 : 3000);
                     if (conn.messages) pTotal += (key === 'tiktok' ? 3000 : 4500);
 
@@ -184,7 +184,7 @@ function openPlatformModal(key, title, iconUrl) {
     const existing = activePlatforms[key] ? activePlatforms[key].raw : null;
     const hasPosts = existing ? existing.posts : true;
     const hasReels = existing ? existing.reels : true;
-    const reelsCountVal = existing ? (existing.rc || 6) : 7;
+    const reelsCountVal = existing ? (existing.rc || 1) : 1;
     const hasComments = existing ? existing.comments : true;
     const hasMessages = existing ? existing.messages : true;
 
@@ -262,7 +262,7 @@ async function confirmPlatformSelection() {
 
     const posts = document.getElementById('srv_posts').checked;
     const reels = document.getElementById('srv_reels').checked;
-    const rc = parseInt(document.getElementById('reels_count').value) || 5;
+    const rc = parseInt(document.getElementById('reels_count').value) || 1;
     const comments = document.getElementById('srv_comments').checked;
     const messages = document.getElementById('srv_messages').checked;
 
