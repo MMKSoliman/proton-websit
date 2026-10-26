@@ -192,7 +192,7 @@ function openPlatformModal(key, title, iconUrl) {
         <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
-        <div class="service-info">
+        <div class="service-text-container">
             <span class="service-title">إدارة المحتوى</span>
             <span class="service-desc">يشمل خطة وكتابة المحتوى والنشر</span>
         </div>
@@ -203,8 +203,8 @@ function openPlatformModal(key, title, iconUrl) {
 <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
-        <div class="service-info">
-            <div class="reels-title-wrapper">
+        <div class="service-text-container">
+            <div class="reels-inline-wrapper">
                 <span class="service-title">إدارة الريلز</span>
                 <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''}>
                     ${generateReelsOptions(reelsCountVal)}
@@ -219,7 +219,7 @@ function openPlatformModal(key, title, iconUrl) {
 <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
-        <div class="service-info">
+        <div class="service-text-container">
             <span class="service-title">إدارة التعليقات</span>
             <span class="service-desc">يشمل التفاعل والرد على التعليقات</span>
         </div>
@@ -230,7 +230,7 @@ function openPlatformModal(key, title, iconUrl) {
 <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''}>
-        <div class="service-info">
+        <div class="service-text-container">
             <span class="service-title">إدارة الرسائل</span>
             <span class="service-desc">يشمل التحليل والرد وتقفيل المبيعات</span>
         </div>
