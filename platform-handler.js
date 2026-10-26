@@ -194,13 +194,11 @@ function openPlatformModal(key, title, iconUrl) {
         <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
         <div class="service-info">
             <span class="service-title">إدارة المحتوى</span>
-            <br>
-            <p class="service-desc">يشمل خطة وكتابة المحتوى والنشر</p>
         </div>
     </label>
     <span class="service-price">EGP5000</span>
 </div>
-
+<p class="service-desc">يشمل خطة وكتابة المحتوى والنشر</p>
 <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
@@ -212,32 +210,30 @@ function openPlatformModal(key, title, iconUrl) {
                 </select>
             </div>
         </div>
-        <p class="service-desc">يشمل التصوير والمونتاج والمؤثرات</p>
     </label>
     <span class="service-price">EGP1500 / ريل</span>
 </div>
-
+<p class="service-desc">يشمل التصوير والمونتاج والمؤثرات</p>
 <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
         <div class="service-info">
             <span class="service-title">إدارة التعليقات</span>
-            <p class="service-desc">يشمل التفاعل والرد على التعليقات</p>
         </div>
     </label>
     <span class="service-price">EGP3000</span>
 </div>
-
+<p class="service-desc">يشمل التفاعل والرد على التعليقات</p>
 <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''}>
         <div class="service-info">
             <span class="service-title">إدارة الرسائل</span>
-            <p class="service-desc">يشمل التحليل والرد وتقفيل المبيعات</p>
         </div>
     </label>
     <span class="service-price">EGP4500</span>
 </div>
+<p class="service-desc">يشمل التحليل والرد وتقفيل المبيعات</p>
     `;
 
     document.getElementById('authModal').style.display = 'flex';
