@@ -209,12 +209,11 @@ function openPlatformModal(key, title, iconUrl) {
                     ${generateReelsOptions(reelsCountVal)}
                 </select>
             </div>
-            <p class="service-desc">يشمل التصوير والمونتاج والمؤثرات</p>
         </div>
     </label>
     <span class="service-price">EGP1500 / ريل</span>
 </div>
-
+<p class="service-desc">يشمل التصوير والمونتاج والمؤثرات</p>
 <div class="service-row">
     <label class="service-left">
         <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
