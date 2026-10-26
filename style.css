@@ -984,37 +984,35 @@ footer, #footer-container {
     box-sizing: border-box;
 }
 
-/* الجهة اليمنى (التشيك بوكس + النصوص) */
-.service-left {
+/* الجهة اليمنى: التشيك بوكس والعنوان على نفس السطر */
+.service-right-group {
     display: flex;
-    align-items: flex-start; /* لضمان محاذاة التشيك بوكس مع أول سطر */
+    align-items: center;
     gap: 12px;
     cursor: pointer;
-    flex-direction: row-reverse; /* ليكون التشيك بوكس أقصى اليمين والنصوص بجانبه */
+    flex-direction: row-reverse; /* يجعل التشيك بوكس أقصى اليمين والعنوان بجانبه */
 }
 
-/* حاوية النصوص (العنوان في السطر الأول، الوصف في السطر الثاني) */
-.service-text-container {
+/* حاوية النصوص (العنوان وفوقه/تحته الوصف الأخضر) */
+.service-text-box {
     display: flex;
     flex-direction: column;
     align-items: flex-end; /* محاذاة لليمين */
-    gap: 4px;
+    gap: 3px;
 }
 
-/* العنوان الرئيسي */
+/* العنوان الرئيسي باللون الأبيض */
 .service-title {
     font-weight: bold;
     color: #ffffff;
     font-size: 0.95rem;
-    line-height: 1.2;
 }
 
-/* الوصف الأخضر في السطر التالي */
+/* الوصف الأخضر في السطر الثاني */
 .service-desc {
     color: #00ffa3; /* أخضر بروتون النيون */
     font-size: 0.75rem;
     font-weight: 500;
-    line-height: 1.2;
 }
 
 /* سطر عنوان الريلز بجانبه العداد */
@@ -1050,7 +1048,7 @@ footer, #footer-container {
     color: #ffffff;
 }
 
-/* السعر في جهة اليسار */
+/* السعر في أقصى اليسار وباللون السايان النيون الأصلي */
 .service-price {
     color: #00e5ff;
     font-weight: bold;
@@ -1060,11 +1058,10 @@ footer, #footer-container {
 }
 
 /* تنسيق الـ Checkbox */
-.service-left input[type="checkbox"] {
+.service-right-group input[type="checkbox"] {
     width: 18px;
     height: 18px;
     accent-color: #00e5ff;
     cursor: pointer;
-    margin-top: 2px; /* ضبط المحاذاة الرأسية مع السطر الأول */
     flex-shrink: 0;
 }
