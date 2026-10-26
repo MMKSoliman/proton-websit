@@ -109,7 +109,7 @@ async function loadBrandConnections(brandId) {
                     const conn = connections[key];
                     let pTotal = 0;
                     if (conn.posts) pTotal += 5000;
-                    if (conn.reels) pTotal += (conn.rc || 1500) * REEL_PRICE_PER_UNIT;
+                    if (conn.reels) pTotal += (conn.rc || 5) * REEL_PRICE_PER_UNIT;
                     if (conn.comments) pTotal += (key === 'tiktok' ? 1500 : 3000);
                     if (conn.messages) pTotal += (key === 'tiktok' ? 3000 : 4500);
 
@@ -184,7 +184,7 @@ function openPlatformModal(key, title, iconUrl) {
     const existing = activePlatforms[key] ? activePlatforms[key].raw : null;
     const hasPosts = existing ? existing.posts : true;
     const hasReels = existing ? existing.reels : true;
-    const reelsCountVal = existing ? (existing.rc || 5) : 1500;
+    const reelsCountVal = existing ? (existing.rc || 6) : 7;
     const hasComments = existing ? existing.comments : true;
     const hasMessages = existing ? existing.messages : true;
 
