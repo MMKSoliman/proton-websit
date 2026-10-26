@@ -1,6 +1,4 @@
-const REEL_PRICE_PER_UNIT = 1500; 
-let activePlatforms = {}; 
-let currentPlatformKey = null;
+const REEL_PRICE_PER_UNIT = 1500; let activePlatforms = {}; let currentPlatformKey = null;
 
 document.addEventListener("DOMContentLoaded", async function() {
     const token = localStorage.getItem("access_token") || new URLSearchParams(window.location.search).get('token');
@@ -140,17 +138,14 @@ async function loadBrandConnections(brandId) {
         console.error("Error loading connections:", err);
     }
 }
-
 function getPlatformTitle(key) {
     const map = { 'facebook': 'Facebook Pages', 'instagram': 'Instagram Business', 'tiktok': 'TikTok Business', 'linkedin': 'LinkedIn Page', 'x': 'X Platform' };
     return map[key] || key;
 }
-
 function getPlatformIcon(key) {
     const map = { 'facebook': './FB-W.webp', 'instagram': './Insta-W.webp', 'tiktok': './TT-W.webp', 'linkedin': './L in-W.webp', 'x': './X-W.webp' };
     return map[key] || './favicon.png';
 }
-
 function resetPlatformsUI() {
     const platforms = ['facebook', 'instagram', 'tiktok', 'linkedin', 'x'];
     platforms.forEach(key => {
@@ -166,7 +161,6 @@ function resetPlatformsUI() {
     activePlatforms = {};
     updateMainSummary();
 }
-
 function openPlatformModal(key, title, iconUrl) {
     const selectedBrandId = localStorage.getItem("selected_brand_id");
     if (!selectedBrandId) {
@@ -190,63 +184,57 @@ function openPlatformModal(key, title, iconUrl) {
 
     container.innerHTML = `
         <div class="service-row">
-            <label class="service-right-group">
+            <label class="service-left">
                 <input type="checkbox" id="srv_posts" ${hasPosts ? 'checked' : ''}>
-                <div class="service-text-box">
+                <div class="service-info">
                     <span class="service-title">إدارة المحتوى</span>
-                    <span class="service-desc">يشمل خطة وكتابة المحتوى والنشر</span>
                 </div>
             </label>
             <span class="service-price">EGP5000</span>
         </div>
 
         <div class="service-row">
-            <label class="service-right-group">
+            <label class="service-left">
                 <input type="checkbox" id="srv_reels" ${hasReels ? 'checked' : ''} onchange="toggleReelsDropdown()">
-                <div class="service-text-box">
-                    <div class="reels-inline-wrapper">
-                        <span class="service-title">إدارة الريلز</span>
+                <div class="service-info">
+                    <div class="reels-title-wrapper">
+                        <span class="service-title">   إدارة الريلز</span>
                         <select id="reels_count" class="reels-select" ${!hasReels ? 'disabled' : ''}>
                             ${generateReelsOptions(reelsCountVal)}
                         </select>
                     </div>
-                    <span class="service-desc">يشمل التصوير والمونتاج والمؤثرات</span>
                 </div>
             </label>
             <span class="service-price">EGP1500 / ريل</span>
         </div>
 
         <div class="service-row">
-            <label class="service-right-group">
+            <label class="service-left">
                 <input type="checkbox" id="srv_comments" ${hasComments ? 'checked' : ''}>
-                <div class="service-text-box">
+                <div class="service-info">
                     <span class="service-title">إدارة التعليقات</span>
-                    <span class="service-desc">يشمل التفاعل والرد على التعليقات</span>
                 </div>
             </label>
             <span class="service-price">EGP3000</span>
         </div>
 
         <div class="service-row">
-            <label class="service-right-group">
+            <label class="service-left">
                 <input type="checkbox" id="srv_messages" ${hasMessages ? 'checked' : ''}>
-                <div class="service-text-box">
+                <div class="service-info">
                     <span class="service-title">إدارة الرسائل</span>
-                    <span class="service-desc">يشمل التحليل والرد وتقفيل المبيعات</span>
                 </div>
             </label>
             <span class="service-price">EGP4500</span>
         </div>
-
-        <!-- رابط تفاصيل الخدمات -->
+        
         <div class="service-details-link-container">
-            <a href="javascript:void(0);" onclick="openServiceDetailsModal()" class="service-details-link">تفاصيل الخدمات</a>
+            <a href="javascript:void(0);" onclick="openServiceDetailsModal()" class="service-desc service-details-link">تفاصيل الخدمات</a>
         </div>
     `;
 
     document.getElementById('authModal').style.display = 'flex';
 }
-
 function generateReelsOptions(selectedValue) {
     let options = '';
     for (let i = 1; i <= 30; i++) {
@@ -254,18 +242,16 @@ function generateReelsOptions(selectedValue) {
     }
     return options;
 }
-
 function toggleReelsDropdown() {
     const isChecked = document.getElementById('srv_reels').checked;
     const select = document.getElementById('reels_count');
     select.disabled = !isChecked;
 }
-
 function closeAuthModal() {
     document.getElementById('authModal').style.display = 'none';
 }
 
-// دوال التحكم بكارت تفاصيل الخدمات المنبثق (Modal)
+// دوال الكارت المنبثق لتفاصيل الخدمات
 function openServiceDetailsModal() {
     let modal = document.getElementById('serviceModal');
     if (!modal) {
@@ -280,16 +266,13 @@ function openServiceDetailsModal() {
                 </div>
                 <div class="proton-modal-body">
                     <h4>1. إدارة المحتوى</h4>
-                    <p>يشمل إعداد خطة محتوى متكاملة، كتابة النصوص التسويقية، وتصميم وتخطيط الجدول الزمني للنشر.</p>
-                    
+                    <p>يشمل إعداد خطة محتوى متكاملة، كتابة النصوص التسويقية، وتصميم الجدول الزمني للنشر.</p>
                     <h4>2. إدارة الريلز</h4>
-                    <p>يشمل جلسات التصوير، المونتاج الاحترافي، إضافة المؤثرات البصرية والصوتية المناسبة لزيادة تفاعل الجمهور.</p>
-                    
+                    <p>يشمل التصوير، المونتاج الاحترافي، وإضافة المؤثرات البصرية والصوتية.</p>
                     <h4>3. إدارة التعليقات</h4>
-                    <p>المتابعة المستمرة للتفاعل، الرد الفوري على تعليقات العملاء، وبناء مجتمع تفاعلي إيجابي حول العلامة التجارية.</p>
-                    
+                    <p>المتابعة المستمرة والتفاعل والرد الفوري على تعليقات العملاء.</p>
                     <h4>4. إدارة الرسائل</h4>
-                    <p>تحليل استفسارات العملاء، الرد السريع على الرسائل الخاصة، وتوجيه العملاء نحو إتمام عمليات الشفع أو المبيعات.</p>
+                    <p>تحليل الرسائل، الرد السريع، وتقفيل المبيعات عبر المحادثات الخاصة.</p>
                 </div>
             </div>
         `;
@@ -305,7 +288,6 @@ function closeServiceDetailsModal() {
     }
 }
 
-// إغلاق الكارت عند النقر في المساحة الفارغة حوله
 window.addEventListener('click', function(event) {
     const modal = document.getElementById('serviceModal');
     if (event.target === modal) {
@@ -394,7 +376,6 @@ async function applyPendingSavedServices() {
         console.error("Error applying pending services:", e);
     }
 }
-
 function updateMainSummary() {
     let count = 0;
     let totalSum = 0;
@@ -407,7 +388,6 @@ function updateMainSummary() {
     document.getElementById('selectedCount').textContent = count;
     document.getElementById('totalPrice').textContent = totalSum;
 }
-
 function redirectToWhatsApp() {
     const brandName = localStorage.getItem("selected_brand_name") || "النشاط التجاري";
     const total = document.getElementById('totalPrice').textContent;
@@ -419,7 +399,6 @@ function redirectToWhatsApp() {
 
     const url = `https://wa.me/+201066581983?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
-    
     setTimeout(() => {
         window.location.href = "./dashboard.html";
     }, 1000);
