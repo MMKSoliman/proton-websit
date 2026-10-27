@@ -364,6 +364,37 @@ async function confirmPlatformSelection() {
     }
 }
 
+async function disconnectPlatform(platformKey) {
+    const selectedBrandId = localStorage.getItem("selected_brand_id");
+    if (!selectedBrandId) {
+        alert("يرجى اختيار النشاط التجاري أولاً.");
+        return;
+    }
+
+    if (!confirm(`هل أنت متأكد من رغبتك في إلغاء ربط منصة ${getPlatformTitle(platformKey)}؟`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`https://api.protonag.com/social/disconnect/${selectedBrandId}/${platformKey}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": "Bearer " + (localStorage.getItem("access_token") || "")
+            },
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            // إعادة تحميل وتحديث اتصالات البراند لتفريغ الزر وتحديث الإجمالي فوراً
+            await loadBrandConnections(selectedBrandId);
+        } else {
+            alert("حدث خطأ أثناء محاولة إلغاء الربط.");
+        }
+    } catch (error) {
+        console.error("Error disconnecting platform:", error);
+    }
+}
+
 async function applyPendingSavedServices() {
     const pendingStr = localStorage.getItem("pending_services");
     if (!pendingStr) return;
