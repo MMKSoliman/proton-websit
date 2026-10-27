@@ -312,8 +312,18 @@ async function confirmPlatformSelection() {
         posts, reels, rc, comments, messages
     }));
 
+    // إذا كانت الخدمات مسجلة مسبقاً، قم بتحديثها مباشرة دون إعادة توجيه للـ OAuth
     if (existingRecord && existingRecord.account_id) {
-        await fetch("https://api.protonag.com/social/meta/update-services", {
+        let updateEndpoint = "https://api.protonag.com/social/meta/update-services"; // افتراضي
+        if (currentPlatformKey === 'tiktok') {
+            updateEndpoint = "https://api.protonag.com/social/tiktok/update-services";
+        } else if (currentPlatformKey === 'linkedin') {
+            updateEndpoint = "https://api.protonag.com/social/linkedin/update-services";
+        } else if (currentPlatformKey === 'x') {
+            updateEndpoint = "https://api.protonag.com/social/x/update-services";
+        }
+
+        await fetch(updateEndpoint, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -329,8 +339,20 @@ async function confirmPlatformSelection() {
 
     closeAuthModal();
 
+    // توجيه المستخدم لربط الحساب الجديد بناءً على المنصة المختارة
+    let loginEndpoint = "";
     if (currentPlatformKey === 'facebook' || currentPlatformKey === 'instagram') {
-        const res = await fetch(`https://api.protonag.com/social/meta/login/${selectedBrandId}`, {
+        loginEndpoint = `https://api.protonag.com/social/meta/login/${selectedBrandId}`;
+    } else if (currentPlatformKey === 'tiktok') {
+        loginEndpoint = `https://api.protonag.com/social/tiktok/login/${selectedBrandId}`;
+    } else if (currentPlatformKey === 'linkedin') {
+        loginEndpoint = `https://api.protonag.com/social/linkedin/login/${selectedBrandId}`;
+    } else if (currentPlatformKey === 'x') {
+        loginEndpoint = `https://api.protonag.com/social/x/login/${selectedBrandId}`;
+    }
+
+    if (loginEndpoint) {
+        const res = await fetch(loginEndpoint, {
             method: "GET",
             headers: { "Authorization": "Bearer " + (localStorage.getItem("access_token") || "") },
             credentials: 'include'
