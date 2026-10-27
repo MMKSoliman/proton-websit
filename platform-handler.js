@@ -393,12 +393,43 @@ function redirectToWhatsApp() {
     const total = document.getElementById('totalPrice').textContent;
     const count = document.getElementById('selectedCount').textContent;
 
-    let message = `مرحباً، أود إتمام الطلب وتفعيل الخطة للنشاط التجاري: *${brandName}*.\n`;
-    message += `- عدد المنصات المربوطة: ${count}\n`;
-    message += `- الإجمالي الشهري: EGP${total}\n\nيرجى استكمال إجراءات التفعيل.`;
+    let message = `مرحباً، أود إتمام الطلب وتفعيل الخطة للنشاط التجاري: *${brandName}*.\n\n`;
+    message += `📋 *تفاصيل الفاتورة والاشتراكات:*\n`;
+
+    // خرائط لأسماء المنصات بالعربي لتكون الرسالة احترافية
+    const platformNames = {
+        'facebook': 'Facebook Pages',
+        'instagram': 'Instagram Business',
+        'tiktok': 'TikTok Business',
+        'linkedin': 'LinkedIn Page',
+        'x': 'X Platform'
+    };
+
+    // المرور على المنصات النشطة واستخراج تفاصيل كل منصة وفاتورتها
+    Object.keys(activePlatforms).forEach(key => {
+        const plat = activePlatforms[key];
+        const raw = plat.raw || {};
+        const pName = platformNames[key] || key;
+        
+        message += `\n🔹 *${pName}* (EGP${plat.total}):\n`;
+        if (raw.posts) message += `  - إدارة المحتوى (EGP5000)\n`;
+        if (raw.reels) {
+            const rc = raw.rc || 1;
+            const reelsTotal = rc * 1500;
+            message += `  - إدارة الريلز: ${rc} ريل (EGP${reelsTotal})\n`;
+        }
+        if (raw.comments) message += `  - إدارة التعليقات\n`;
+        if (raw.messages) message += `  - إدارة الرسائل\n`;
+    });
+
+    message += `\n-------------------\n`;
+    message += `📊 *إجمالي المنصات المربوطة:* ${count}\n`;
+    message += `💰 *الإجمالي الشهري الكلي:* EGP${total}\n\n`;
+    message += `يرجى استكمال إجراءات التفعيل.`;
 
     const url = `https://wa.me/+201066581983?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
+    
     setTimeout(() => {
         window.location.href = "./dashboard.html";
     }, 1000);
