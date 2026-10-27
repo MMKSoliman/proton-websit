@@ -394,9 +394,8 @@ function redirectToWhatsApp() {
     const total = document.getElementById('totalPrice').textContent;
     const count = document.getElementById('selectedCount').textContent;
     
-    // استخراج بيانات المستخدم من الـ localStorage أو الـ Token إن وجدت
-    const username = localStorage.getItem("username") || localStorage.getItem("user_name") || "مستخدم بروتون";
-    const userId = localStorage.getItem("user_id") || localStorage.getItem("id") || "غير متوفر";
+    const username = localStorage.getItem("user_name") || localStorage.getItem("username") || "مستخدم بروتون";
+    const userId = localStorage.getItem("user_id") || localStorage.getItem("id") || "غير محدد";
 
     let message = `مرحباً، أود إتمام الطلب وتفعيل الخطة للنشاط التجاري: *${brandName}*.\n\n`;
     message += `👤 *بيانات العميل:*\n`;
@@ -406,7 +405,6 @@ function redirectToWhatsApp() {
     
     message += `📋 *تفاصيل الفاتورة والاشتراكات:*\n`;
 
-    // خرائط لأسماء المنصات بالعربي لتكون الرسالة احترافية
     const platformNames = {
         'facebook': 'Facebook Pages',
         'instagram': 'Instagram Business',
@@ -415,21 +413,30 @@ function redirectToWhatsApp() {
         'x': 'X Platform'
     };
 
-    // المرور على المنصات النشطة واستخراج تفاصيل كل منصة وفاتورتها
     Object.keys(activePlatforms).forEach(key => {
         const plat = activePlatforms[key];
         const raw = plat.raw || {};
         const pName = platformNames[key] || key;
         
+        // تحديد أسعار التعليقات والرسائل حسب المنصة
+        const commentsPrice = (key === 'tiktok' ? 1500 : 3000);
+        const messagesPrice = (key === 'tiktok' ? 3000 : 4500);
+
         message += `\n🔹 *${pName}* (EGP${plat.total}):\n`;
-        if (raw.posts) message += `  - إدارة المحتوى (EGP5000)\n`;
+        if (raw.posts) {
+            message += `  - إدارة المحتوى (EGP5000)\n`;
+        }
         if (raw.reels) {
             const rc = raw.rc || 1;
             const reelsTotal = rc * 1500;
             message += `  - إدارة الريلز: ${rc} ريل (EGP${reelsTotal})\n`;
         }
-        if (raw.comments) message += `  - إدارة التعليقات\n`;
-        if (raw.messages) message += `  - إدارة الرسائل\n`;
+        if (raw.comments) {
+            message += `  - إدارة التعليقات (EGP${commentsPrice})\n`;
+        }
+        if (raw.messages) {
+            message += `  - إدارة الرسائل (EGP${messagesPrice})\n`;
+        }
     });
 
     message += `\n-------------------\n`;
