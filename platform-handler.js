@@ -108,8 +108,8 @@ async function loadBrandConnections(brandId) {
                     let pTotal = 0;
                     if (conn.posts) pTotal += 5000;
                     if (conn.reels) pTotal += (conn.rc || 1) * REEL_PRICE_PER_UNIT;
-                    if (conn.comments) pTotal += (key === 'tiktok' ? 1500 : 3000);
-                    if (conn.messages) pTotal += (key === 'tiktok' ? 3000 : 4500);
+                    if (conn.comments) pTotal += (key === 'tiktok' ? 3000 : 3000);
+                    if (conn.messages) pTotal += (key === 'tiktok' ? 4500 : 4500);
 
                     activePlatforms[key] = {
                         total: pTotal,
@@ -472,8 +472,8 @@ function redirectToWhatsApp() {
         const pName = platformNames[key] || key;
         
         // تحديد أسعار التعليقات والرسائل حسب المنصة
-        const commentsPrice = (key === 'tiktok' ? 1500 : 3000);
-        const messagesPrice = (key === 'tiktok' ? 3000 : 4500);
+        const commentsPrice = (key === 'tiktok' ? 3000 : 3000);
+        const messagesPrice = (key === 'tiktok' ? 4500 : 4500);
 
         message += `\n🔹 *${pName}* (EGP${plat.total}):\n`;
         if (raw.posts) {
