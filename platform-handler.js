@@ -390,10 +390,20 @@ function updateMainSummary() {
 }
 function redirectToWhatsApp() {
     const brandName = localStorage.getItem("selected_brand_name") || "النشاط التجاري";
+    const brandId = localStorage.getItem("selected_brand_id") || "غير محدد";
     const total = document.getElementById('totalPrice').textContent;
     const count = document.getElementById('selectedCount').textContent;
+    
+    // استخراج بيانات المستخدم من الـ localStorage أو الـ Token إن وجدت
+    const username = localStorage.getItem("username") || localStorage.getItem("user_name") || "مستخدم بروتون";
+    const userId = localStorage.getItem("user_id") || localStorage.getItem("id") || "غير متوفر";
 
     let message = `مرحباً، أود إتمام الطلب وتفعيل الخطة للنشاط التجاري: *${brandName}*.\n\n`;
+    message += `👤 *بيانات العميل:*\n`;
+    message += `- اسم المستخدم: ${username}\n`;
+    message += `- معرف المستخدم (User ID): ${userId}\n`;
+    message += `- معرف البراند (Brand ID): ${brandId}\n\n`;
+    
     message += `📋 *تفاصيل الفاتورة والاشتراكات:*\n`;
 
     // خرائط لأسماء المنصات بالعربي لتكون الرسالة احترافية
