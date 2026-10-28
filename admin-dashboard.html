@@ -41,13 +41,16 @@
                             <th>النشاط ورقم الهاتف</th>
                             <th>المنصة</th>
                             <th>حالة العميل</th>
-                            <th>عدد الريلز (rc / المنشور)</th>
+                            <th>نشر تلقائي</th>
+                            <th>نشر الريلز</th>
+                            <th>التعليقات</th>
+                            <th>الرسائل</th>
                             <th>مدة الاشتراك وتاريخ الانتهاء</th>
-                            <th>المبلغ المدفوع (EGP)</th>
+                            <th>المبلغ (EGP)</th>
                         </tr>
                     </thead>
                     <tbody id="clientsTableBody">
-                        <!-- يتم جلب البيانات ديناميكياً من الباك إند -->
+                        <!-- يتم جلب البيانات الحقيقية ديناميكياً هنا -->
                     </tbody>
                 </table>
             </div>
@@ -70,9 +73,12 @@
     </div>
 
     <script>
+        let currentAuthToken = '';
+
         window.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('admin_token');
             if (token) {
+                currentAuthToken = token;
                 document.getElementById('loginOverlay').style.display = 'none';
                 fetchClientsData(token);
             }
@@ -82,9 +88,10 @@
             const user = document.getElementById('adminUser').value;
             const pass = document.getElementById('adminPass').value;
             if (user === 'admin' && pass === '123456') {
-                localStorage.setItem('admin_token', 'active_session');
+                currentAuthToken = 'active_session';
+                localStorage.setItem('admin_token', currentAuthToken);
                 document.getElementById('loginOverlay').style.display = 'none';
-                fetchClientsData('active_session');
+                fetchClientsData(currentAuthToken);
             } else {
                 alert('بيانات الدخول غير صحيحة!');
             }
@@ -99,33 +106,11 @@
                     const data = await response.json();
                     renderTable(data);
                 } else {
-                    loadFallbackData();
+                    console.error("فشل جلب البيانات الحقيقية");
                 }
             } catch (err) {
-                loadFallbackData();
+                console.error("خطأ في الاتصال:", err);
             }
-        }
-
-        function loadFallbackData() {
-            const fallback = [
-                {
-                    account_id: 1,
-                    client_id: "CL-1001",
-                    client_name: "محمد سليمان",
-                    client_phone: "+201012345678",
-                    brand_name: "شركة الأمل للتجارة",
-                    brand_phone: "+201099887766",
-                    platform: "Facebook",
-                    active: true,
-                    rc: 15,
-                    posted_reels: 10,
-                    subscription_days: 30,
-                    expiry_date: "2026-05-28",
-                    paid_amount: 1500,
-                    currency: "EGP"
-                }
-            ];
-            renderTable(fallback);
         }
 
         function renderTable(data) {
@@ -152,16 +137,41 @@
                     <td><span class="platform-badge">${item.platform}</span></td>
                     <td>
                         <label class="switch">
-                            <input type="checkbox" ${item.active ? 'checked' : ''} onchange="toggleActivation(${item.account_id}, this.checked, this)">
+                            <input type="checkbox" ${item.active ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'active', this.checked)">
                             <span class="slider"></span>
                         </label>
                     </td>
-                    <td><b>${item.rc}</b>طلب / (${item.posted_reels} منشور)</td>
                     <td>
-                        <input type="number" class="days-input" value="${item.subscription_days}" id="days-${item.account_id}" style="width:60px;"> يوم
+                        <label class="switch">
+                            <input type="checkbox" ${item.posts ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'posts', this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="switch">
+                            <input type="checkbox" ${item.reels ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'reels', this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="switch">
+                            <input type="checkbox" ${item.comments ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'comments', this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="switch">
+                            <input type="checkbox" ${item.messages ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'messages', this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <input type="number" class="days-input" value="${item.subscription_days}" id="days-${item.account_id}" style="width:50px;" onchange="updateDays(${item.account_id}, this.value)"> يوم
                         <br><small style="color:#00e5ff;">الانتهاء: <span id="expiry-${item.account_id}">${item.expiry_date}</span></small>
                     </td>
-                    <td style="color: #00e5ff; font-weight: bold;"><span id="price-${item.account_id}">${item.paid_amount}</span> ${item.currency}</td>
+                    <td>
+                        <input type="number" value="${item.paid_amount}" style="width:70px; background:#0d1117; color:#00e5ff; border:1px solid #30363d; border-radius:6px; padding:4px;" onchange="updatePrice(${item.account_id}, this.value)"> EGP
+                    </td>
                 `;
                 tbody.appendChild(row);
             });
@@ -171,23 +181,38 @@
             document.getElementById('totalRevenue').textContent = `${totalRev} EGP`;
         }
 
-        async function toggleActivation(accountId, isActive, checkbox) {
-            const daysInput = document.getElementById(`days-${accountId}`).value;
-            
+        async function updateAccountField(accountId, fieldName, value) {
+            const payload = { [fieldName]: value };
+            await sendUpdate(accountId, payload);
+        }
+
+        async function updateDays(accountId, daysValue) {
+            const payload = { subscription_days: parseInt(daysValue) };
+            const res = await sendUpdate(accountId, payload);
+            if (res && res.ok) {
+                location.reload(); // إعادة تحميل لتحديث تاريخ الانتهاء المعروض
+            }
+        }
+
+        async function updatePrice(accountId, priceValue) {
+            const payload = { paid_amount: parseFloat(priceValue) };
+            await sendUpdate(accountId, payload);
+            location.reload();
+        }
+
+        async function sendUpdate(accountId, payload) {
             try {
-                const response = await fetch(`https://api.protonag.com/v1/admin/clients/${accountId}/activate`, {
+                const response = await fetch(`https://api.protonag.com/v1/admin/clients/${accountId}/update`, {
                     method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ active: isActive, subscription_days: parseInt(daysInput) })
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + currentAuthToken 
+                    },
+                    body: JSON.stringify(payload)
                 });
-                
-                if (response.ok) {
-                    const resData = await response.json();
-                    document.getElementById(`expiry-${accountId}`).textContent = resData.expiry_date;
-                    document.getElementById(`price-${accountId}`).textContent = resData.paid_amount;
-                }
+                return response;
             } catch (error) {
-                console.error("فشل التحديث الفوري:", error);
+                console.error("خطأ في حفظ التعديل:", error);
             }
         }
 
