@@ -7,50 +7,81 @@
     <link rel="icon" type="image/png" href="./favicon.webp">
     <link rel="stylesheet" href="./style.css">
     <style>
-        /* تنسيقات إضافية لضبط أزرار التحكم والتصميم الاحترافي */
+        /* 1. إخفاء أسهم الزيادة والنقصان في المدخلات الرقمية */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* 2. إصلاح تنسيق Client ID Badge */
+        .client-id-badge {
+            background: rgba(0, 229, 255, 0.1);
+            color: #00e5ff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            white-space: nowrap; /* إبقاء النص في سطر واحد */
+            display: inline-block;
+            border: 1px solid rgba(0, 229, 255, 0.2);
+        }
+
+        /* 3. أزرار التحكم المصغرة (Switches) */
         .proton-switch {
             position: relative;
             display: inline-block;
-            width: 44px;
-            height: 22px;
+            width: 38px;
+            height: 20px;
         }
         .proton-switch input { opacity: 0; width: 0; height: 0; }
         .proton-slider {
             position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #30363d; transition: .3s; border-radius: 22px;
+            background-color: #30363d; transition: .3s; border-radius: 20px;
         }
         .proton-slider:before {
-            position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px;
+            position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
             background-color: white; transition: .3s; border-radius: 50%;
         }
-        input:checked + .proton-slider {
-            background-color: #00e5ff; /* لون بروتون النيوني المميز لزر التفعيل */
+
+        /* تفعيل أزرار الخدمات باللون الأخضر */
+        .service-switch input:checked + .proton-slider {
+            background-color: #2ea043;
+            box-shadow: 0 0 6px rgba(46, 160, 67, 0.5);
+        }
+        .service-switch input:checked + .proton-slider:before { transform: translateX(18px); }
+
+        /* تفعيل زر حالة العميل بلون بروتون النيوني المميز */
+        .master-switch input:checked + .proton-slider {
+            background-color: #00e5ff;
             box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
         }
-        input:checked + .proton-slider:before { transform: translateX(22px); }
+        .master-switch input:checked + .proton-slider:before { transform: translateX(18px); }
         
-        /* تجميد السطر أو عناصر التحكم عند عدم التفعيل */
+        /* تجميد الأزرار في السطر عند عدم تفعيل العميل */
         .row-disabled {
-            opacity: 0.45;
+            opacity: 0.35;
             pointer-events: none;
         }
 
-        .days-input, .price-input {
+        /* حقول إدخال الأيام، المبلغ، وعدد الريلز */
+        .days-input, .price-input, .rc-input {
             background: #0d1117;
             color: #00e5ff;
             border: 1px solid #30363d;
             border-radius: 6px;
-            padding: 4px 8px;
+            padding: 4px;
             text-align: center;
             font-family: 'Cairo', sans-serif;
+            font-weight: 600;
         }
-        .client-id-badge {
-            background: rgba(0, 229, 255, 0.1);
-            color: #00e5ff;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 0.85rem;
+        .rc-input {
+            width: 42px;
+            color: #3fb950;
+            border-color: rgba(46, 160, 67, 0.4);
         }
         .platform-badge {
             background: #21262d;
@@ -104,7 +135,7 @@
                         </tr>
                     </thead>
                     <tbody id="clientsTableBody">
-                        <!-- يتم جلب البيانات ديناميكياً -->
+                        <!-- البيانات الحقيقية تمشيطاً مع السيرفر -->
                     </tbody>
                 </table>
             </div>
@@ -179,7 +210,6 @@
                 const daysVal = (item.subscription_duration_days !== null && item.subscription_duration_days !== undefined) ? item.subscription_duration_days : 30;
 
                 const row = document.createElement('tr');
-                // إذا كان العميل غير مفعل، يتم تطبيق كلاس التجميد (Freeze) على أزرار الخدمات في نفس السطر
                 row.innerHTML = `
                     <td><span class="client-id-badge">${item.client_id}</span></td>
                     <td class="client-info">
@@ -191,43 +221,48 @@
                         <small style="color: rgba(255,255,255,0.6);">${item.brand_phone || 'غير متوفر'}</small>
                     </td>
                     <td><span class="platform-badge">${item.platform}</span></td>
+                    <!-- زر تفعيل العميل الأساسي (Master Switch - Proton Color) -->
                     <td>
-                        <label class="proton-switch">
+                        <label class="proton-switch master-switch">
                             <input type="checkbox" ${isActive ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'active', this.checked)">
                             <span class="proton-slider"></span>
                         </label>
                     </td>
-                    <td class="services-group-${item.account_id} ${!isActive ? 'row-disabled' : ''}">
-                        <label class="proton-switch">
+                    <!-- أزرار الخدمات (Service Switches - Green Color) -->
+                    <td class="${!isActive ? 'row-disabled' : ''}">
+                        <label class="proton-switch service-switch">
                             <input type="checkbox" ${item.posts ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'posts', this.checked)">
                             <span class="proton-slider"></span>
                         </label>
                     </td>
-                    <td class="services-group-${item.account_id} ${!isActive ? 'row-disabled' : ''}">
+                    <td class="${!isActive ? 'row-disabled' : ''}">
                         <div style="display:flex; align-items:center; gap:6px;">
-                            <label class="proton-switch">
+                            <label class="proton-switch service-switch">
                                 <input type="checkbox" ${item.reels ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'reels', this.checked)">
                                 <span class="proton-slider"></span>
                             </label>
-                            <span style="font-size:0.75rem; color:#00e5ff;">(${item.rc || 0})</span>
+                            <!-- حقل إدخال عدد الريلز rc قابل للتعديل المباشر -->
+                            <input type="number" class="rc-input" value="${item.rc || 0}" onchange="updateAccountField(${item.account_id}, 'rc', parseInt(this.value))">
                         </div>
                     </td>
-                    <td class="services-group-${item.account_id} ${!isActive ? 'row-disabled' : ''}">
-                        <label class="proton-switch">
+                    <td class="${!isActive ? 'row-disabled' : ''}">
+                        <label class="proton-switch service-switch">
                             <input type="checkbox" ${item.comments ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'comments', this.checked)">
                             <span class="proton-slider"></span>
                         </label>
                     </td>
-                    <td class="services-group-${item.account_id} ${!isActive ? 'row-disabled' : ''}">
-                        <label class="proton-switch">
+                    <td class="${!isActive ? 'row-disabled' : ''}">
+                        <label class="proton-switch service-switch">
                             <input type="checkbox" ${item.messages ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'messages', this.checked)">
                             <span class="proton-slider"></span>
                         </label>
                     </td>
+                    <!-- مدة الاشتراك والتاريخ بدون أسهم رقمية -->
                     <td>
-                        <input type="number" class="days-input" value="${daysVal}" id="days-${item.account_id}" style="width:55px;" onchange="updateDays(${item.account_id}, this.value)"> يوم
+                        <input type="number" class="days-input" value="${daysVal}" id="days-${item.account_id}" style="width:50px;" onchange="updateDays(${item.account_id}, this.value)"> يوم
                         <br><small style="color:#00e5ff; font-size:0.75rem;">الانتهاء: <span id="expiry-${item.account_id}">${item.expiry_date || '---'}</span></small>
                     </td>
+                    <!-- المبلغ بدون أسهم رقمية -->
                     <td>
                         <input type="number" class="price-input" value="${item.paid_amount || 0}" id="price-${item.account_id}" style="width:75px;" onchange="updatePrice(${item.account_id}, this.value)"> EGP
                     </td>
@@ -244,7 +279,7 @@
             const payload = { [fieldName]: value };
             const res = await sendUpdate(accountId, payload);
             if (res && res.ok && fieldName === 'active') {
-                fetchClientsData(currentAuthToken); // إعادة تحميل البيانات لتطبيق تأثير التجميد الفوري على الخدمات
+                fetchClientsData(currentAuthToken); // إعادة تحميل البيانات فورياً لتطبيق تجميد الخدمات
             }
         }
 
