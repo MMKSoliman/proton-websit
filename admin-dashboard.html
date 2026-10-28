@@ -6,6 +6,60 @@
     <title>Proton - لوحة تحكم الإدارة</title>
     <link rel="icon" type="image/png" href="./favicon.webp">
     <link rel="stylesheet" href="./style.css">
+    <style>
+        /* تنسيقات إضافية لضبط أزرار التحكم والتصميم الاحترافي */
+        .proton-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+        .proton-switch input { opacity: 0; width: 0; height: 0; }
+        .proton-slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #30363d; transition: .3s; border-radius: 22px;
+        }
+        .proton-slider:before {
+            position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px;
+            background-color: white; transition: .3s; border-radius: 50%;
+        }
+        input:checked + .proton-slider {
+            background-color: #00e5ff; /* لون بروتون النيوني المميز لزر التفعيل */
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+        }
+        input:checked + .proton-slider:before { transform: translateX(22px); }
+        
+        /* تجميد السطر أو عناصر التحكم عند عدم التفعيل */
+        .row-disabled {
+            opacity: 0.45;
+            pointer-events: none;
+        }
+
+        .days-input, .price-input {
+            background: #0d1117;
+            color: #00e5ff;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 4px 8px;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+        }
+        .client-id-badge {
+            background: rgba(0, 229, 255, 0.1);
+            color: #00e5ff;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .platform-badge {
+            background: #21262d;
+            color: #c9d1d9;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+    </style>
 </head>
 <body>
 
@@ -50,7 +104,7 @@
                         </tr>
                     </thead>
                     <tbody id="clientsTableBody">
-                        <!-- البيانات الحقيقية -->
+                        <!-- يتم جلب البيانات ديناميكياً -->
                     </tbody>
                 </table>
             </div>
@@ -121,57 +175,61 @@
                 uniqueClients.add(item.client_id);
                 totalRev += Number(item.paid_amount) || 0;
 
+                const isActive = item.active === true;
+                const daysVal = (item.subscription_duration_days !== null && item.subscription_duration_days !== undefined) ? item.subscription_duration_days : 30;
+
                 const row = document.createElement('tr');
+                // إذا كان العميل غير مفعل، يتم تطبيق كلاس التجميد (Freeze) على أزرار الخدمات في نفس السطر
                 row.innerHTML = `
                     <td><span class="client-id-badge">${item.client_id}</span></td>
                     <td class="client-info">
-                        <span class="client-name">${item.client_name}</span><br>
-                        <small class="client-phone">${item.client_phone}</small>
+                        <span class="client-name">${item.client_name || 'غير معروف'}</span><br>
+                        <small style="color: rgba(255,255,255,0.6);">${item.client_phone || 'غير متوفر'}</small>
                     </td>
                     <td class="client-info">
-                        <span class="client-name">${item.brand_name}</span><br>
-                        <small class="client-phone">${item.brand_phone}</small>
+                        <span class="client-name">${item.brand_name || 'غير معروف'}</span><br>
+                        <small style="color: rgba(255,255,255,0.6);">${item.brand_phone || 'غير متوفر'}</small>
                     </td>
                     <td><span class="platform-badge">${item.platform}</span></td>
                     <td>
-                        <label class="switch">
-                            <input type="checkbox" ${item.active ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'active', this.checked)">
-                            <span class="slider"></span>
+                        <label class="proton-switch">
+                            <input type="checkbox" ${isActive ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'active', this.checked)">
+                            <span class="proton-slider"></span>
                         </label>
                     </td>
-                    <td>
-                        <label class="switch">
+                    <td class="services-group-${item.account_id} ${!isActive ? 'row-disabled' : ''}">
+                        <label class="proton-switch">
                             <input type="checkbox" ${item.posts ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'posts', this.checked)">
-                            <span class="slider"></span>
+                            <span class="proton-slider"></span>
                         </label>
                     </td>
-                    <td>
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <label class="switch">
+                    <td class="services-group-${item.account_id} ${!isActive ? 'row-disabled' : ''}">
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <label class="proton-switch">
                                 <input type="checkbox" ${item.reels ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'reels', this.checked)">
-                                <span class="slider"></span>
+                                <span class="proton-slider"></span>
                             </label>
-                            <span style="font-size:0.8rem; color:#00e5ff;">(${item.rc} طلب)</span>
+                            <span style="font-size:0.75rem; color:#00e5ff;">(${item.rc || 0})</span>
                         </div>
                     </td>
-                    <td>
-                        <label class="switch">
+                    <td class="services-group-${item.account_id} ${!isActive ? 'row-disabled' : ''}">
+                        <label class="proton-switch">
                             <input type="checkbox" ${item.comments ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'comments', this.checked)">
-                            <span class="slider"></span>
+                            <span class="proton-slider"></span>
                         </label>
                     </td>
-                    <td>
-                        <label class="switch">
+                    <td class="services-group-${item.account_id} ${!isActive ? 'row-disabled' : ''}">
+                        <label class="proton-switch">
                             <input type="checkbox" ${item.messages ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'messages', this.checked)">
-                            <span class="slider"></span>
+                            <span class="proton-slider"></span>
                         </label>
                     </td>
                     <td>
-                        <input type="number" class="days-input" value="${item.subscription_days}" id="days-${item.account_id}" style="width:50px;" onchange="updateDays(${item.account_id}, this.value)"> يوم
-                        <br><small style="color:#00e5ff;">الانتهاء: <span id="expiry-${item.account_id}">${item.expiry_date}</span></small>
+                        <input type="number" class="days-input" value="${daysVal}" id="days-${item.account_id}" style="width:55px;" onchange="updateDays(${item.account_id}, this.value)"> يوم
+                        <br><small style="color:#00e5ff; font-size:0.75rem;">الانتهاء: <span id="expiry-${item.account_id}">${item.expiry_date || '---'}</span></small>
                     </td>
                     <td>
-                        <input type="number" value="${item.paid_amount}" id="price-${item.account_id}" style="width:70px; background:#0d1117; color:#00e5ff; border:1px solid #30363d; border-radius:6px; padding:4px;" onchange="updatePrice(${item.account_id}, this.value)"> EGP
+                        <input type="number" class="price-input" value="${item.paid_amount || 0}" id="price-${item.account_id}" style="width:75px;" onchange="updatePrice(${item.account_id}, this.value)"> EGP
                     </td>
                 `;
                 tbody.appendChild(row);
@@ -184,22 +242,25 @@
 
         async function updateAccountField(accountId, fieldName, value) {
             const payload = { [fieldName]: value };
-            await sendUpdate(accountId, payload);
+            const res = await sendUpdate(accountId, payload);
+            if (res && res.ok && fieldName === 'active') {
+                fetchClientsData(currentAuthToken); // إعادة تحميل البيانات لتطبيق تأثير التجميد الفوري على الخدمات
+            }
         }
 
         async function updateDays(accountId, daysValue) {
-            const payload = { subscription_days: parseInt(daysValue) };
+            const payload = { subscription_duration_days: parseInt(daysValue) || 30 };
             const res = await sendUpdate(accountId, payload);
             if (res && res.ok) {
-                fetchClientsData(currentAuthToken); // تحديث بيانات الجدول بدون ريفريش كامل للصفحة
+                fetchClientsData(currentAuthToken);
             }
         }
 
         async function updatePrice(accountId, priceValue) {
-            const payload = { paid_amount: parseFloat(priceValue) };
+            const payload = { paid_amount: parseFloat(priceValue) || 0 };
             const res = await sendUpdate(accountId, payload);
             if (res && res.ok) {
-                fetchClientsData(currentAuthToken); // تحديث بدون ريفريش وحفظ السجل بجدول المدفوعات
+                fetchClientsData(currentAuthToken);
             }
         }
 
