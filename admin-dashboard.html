@@ -42,7 +42,7 @@
                             <th>المنصة</th>
                             <th>حالة العميل</th>
                             <th>نشر تلقائي</th>
-                            <th>نشر الريلز</th>
+                            <th>نشر الريلز (rc)</th>
                             <th>التعليقات</th>
                             <th>الرسائل</th>
                             <th>مدة الاشتراك وتاريخ الانتهاء</th>
@@ -50,7 +50,7 @@
                         </tr>
                     </thead>
                     <tbody id="clientsTableBody">
-                        <!-- يتم جلب البيانات الحقيقية ديناميكياً هنا -->
+                        <!-- البيانات الحقيقية -->
                     </tbody>
                 </table>
             </div>
@@ -105,11 +105,9 @@
                 if (response.ok) {
                     const data = await response.json();
                     renderTable(data);
-                } else {
-                    console.error("فشل جلب البيانات الحقيقية");
                 }
             } catch (err) {
-                console.error("خطأ في الاتصال:", err);
+                console.error("خطأ في جلب البيانات:", err);
             }
         }
 
@@ -148,10 +146,13 @@
                         </label>
                     </td>
                     <td>
-                        <label class="switch">
-                            <input type="checkbox" ${item.reels ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'reels', this.checked)">
-                            <span class="slider"></span>
-                        </label>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <label class="switch">
+                                <input type="checkbox" ${item.reels ? 'checked' : ''} onchange="updateAccountField(${item.account_id}, 'reels', this.checked)">
+                                <span class="slider"></span>
+                            </label>
+                            <span style="font-size:0.8rem; color:#00e5ff;">(${item.rc} طلب)</span>
+                        </div>
                     </td>
                     <td>
                         <label class="switch">
@@ -170,7 +171,7 @@
                         <br><small style="color:#00e5ff;">الانتهاء: <span id="expiry-${item.account_id}">${item.expiry_date}</span></small>
                     </td>
                     <td>
-                        <input type="number" value="${item.paid_amount}" style="width:70px; background:#0d1117; color:#00e5ff; border:1px solid #30363d; border-radius:6px; padding:4px;" onchange="updatePrice(${item.account_id}, this.value)"> EGP
+                        <input type="number" value="${item.paid_amount}" id="price-${item.account_id}" style="width:70px; background:#0d1117; color:#00e5ff; border:1px solid #30363d; border-radius:6px; padding:4px;" onchange="updatePrice(${item.account_id}, this.value)"> EGP
                     </td>
                 `;
                 tbody.appendChild(row);
@@ -190,14 +191,16 @@
             const payload = { subscription_days: parseInt(daysValue) };
             const res = await sendUpdate(accountId, payload);
             if (res && res.ok) {
-                location.reload(); // إعادة تحميل لتحديث تاريخ الانتهاء المعروض
+                fetchClientsData(currentAuthToken); // تحديث بيانات الجدول بدون ريفريش كامل للصفحة
             }
         }
 
         async function updatePrice(accountId, priceValue) {
             const payload = { paid_amount: parseFloat(priceValue) };
-            await sendUpdate(accountId, payload);
-            location.reload();
+            const res = await sendUpdate(accountId, payload);
+            if (res && res.ok) {
+                fetchClientsData(currentAuthToken); // تحديث بدون ريفريش وحفظ السجل بجدول المدفوعات
+            }
         }
 
         async function sendUpdate(accountId, payload) {
@@ -212,7 +215,7 @@
                 });
                 return response;
             } catch (error) {
-                console.error("خطأ في حفظ التعديل:", error);
+                console.error("خطأ في التحديث:", error);
             }
         }
 
