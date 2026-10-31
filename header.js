@@ -1,4 +1,21 @@
 (function() {
+    // 1. حقن كود تتبع Google Analytics مباشرة في الـ head
+    const gaScript1 = document.createElement('script');
+    gaScript1.async = true;
+    gaScript1.src = 'https://www.googletagmanager.com/gtag/js?id=G-RPSNN0T3PW';
+    document.head.appendChild(gaScript1);
+
+    const gaScript2 = document.createElement('script');
+    gaScript2.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-RPSNN0T3PW');
+    `;
+    document.head.appendChild(gaScript2);
+
+    // 2. باقي كود الهيدر الخاص بك (الـ CSS، الأيقونات، والقوائم)...
+(function() {
     // 1. حقن تنسيقات الـ CSS الخاصة بالهيدر واللوجو والقوائم المنسدلة
     const style = document.createElement('style');
     style.innerHTML = `
