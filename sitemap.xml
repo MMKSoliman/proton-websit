@@ -1,1 +1,44 @@
-sitemap.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- الصفحة الرئيسية للموقع -->
+  <url>
+    <loc>https://protonag.com/</loc>
+    <lastmod>2026-10-31T00:00:00+00:00</lastmod>
+    <priority>1.0000</priority>
+  </url>
+
+  <!-- صفحة ربط وسائل التواصل الاجتماعي -->
+  <url>
+    <loc>https://protonag.com/connect-social.html</loc>
+    <lastmod>2026-10-31T00:00:00+00:00</lastmod>
+    <priority>0.8000</priority>
+  </url>
+
+  <!-- لوحة تحكم المستخدم -->
+  <url>
+    <loc>https://protonag.com/dashboard.html</loc>
+    <lastmod>2026-10-31T00:00:00+00:00</lastmod>
+    <priority>0.6400</priority>
+  </url>
+
+  <!-- صفحة تسجيل الدخول -->
+  <url>
+    <loc>https://protonag.com/login.html</loc>
+    <lastmod>2026-10-31T00:00:00+00:00</lastmod>
+    <priority>0.5000</priority>
+  </url>
+
+  <!-- صفحة سياسة الخصوصية -->
+  <url>
+    <loc>https://protonag.com/privacy-policy.html</loc>
+    <lastmod>2026-10-31T00:00:00+00:00</lastmod>
+    <priority>0.3000</priority>
+  </url>
+
+  <!-- صفحة الشروط والأحكام -->
+  <url>
+    <loc>https://protonag.com/terms.html</loc>
+    <lastmod>2026-10-31T00:00:00+00:00</lastmod>
+    <priority>0.3000</priority>
+  </url>
+</urlset>
