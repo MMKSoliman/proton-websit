@@ -13,12 +13,8 @@
         gtag('config', 'G-RPSNN0T3PW');
     `;
     document.head.appendChild(gaScript2);
-// نهاية دالة checkUserAuthState وباقي الدوال...
-    }
-})(); // <--- هذا السطر ضروري جداً لإغلاق الدالة الـ IIFE الرئيسية التي تبدأ بـ (function() {
-    // 2. باقي كود الهيدر الخاص بك (الـ CSS، الأيقونات، والقوائم)...
-(function() {
-    // 1. حقن تنسيقات الـ CSS الخاصة بالهيدر واللوجو والقوائم المنسدلة
+
+    // 2. حقن تنسيقات الـ CSS الخاصة بالهيدر واللوجو والقوائم المنسدلة
     const style = document.createElement('style');
     style.innerHTML = `
         .proton-global-header {
@@ -33,19 +29,17 @@
             z-index: 999999 !important;
             pointer-events: none !important;
             gap: 12px !important;
-            /* تثبيت الاتجاه ليكون اللوجو أقصى اليسار والأزرار أقصى اليمين */
             direction: ltr !important;
             box-sizing: border-box !important;
         }
 
-        /* حاوية اللوجو - جهة اليسار */
         .proton-header-brand {
             pointer-events: auto !important;
             display: flex !important;
             align-items: center !important;
             text-decoration: none !important;
             flex-shrink: 0 !important;
-            order: 1 !important; /* يضمن وجود اللوجو جهة اليسار */
+            order: 1 !important;
         }
 
         .proton-logo-img {
@@ -63,14 +57,13 @@
             filter: drop-shadow(0 4px 14px rgba(0, 229, 255, 0.5)) !important;
         }
 
-        /* الأزرار والقوائم - جهة اليمين */
         .proton-header-actions {
             display: flex !important;
             align-items: center !important;
             gap: 10px !important;
             pointer-events: auto !important;
-            direction: rtl !important; /* اتجاه النصوص داخل الأزرار من اليمين لليسار */
-            order: 2 !important; /* يضمن وجود الأزرار جهة اليمين */
+            direction: rtl !important;
+            order: 2 !important;
         }
 
         .proton-header-btn {
@@ -162,7 +155,6 @@
             background: rgba(255, 77, 77, 0.12) !important;
         }
 
-        /* تجاوب الشاشات الصغيرة (الموبايل) */
         @media (max-width: 650px) {
             .proton-global-header {
                 top: 10px !important;
@@ -200,17 +192,15 @@
     `;
     document.head.appendChild(style);
 
-    // 2. إنشاء هيكل الهيدر HTML مع الترتيب الصحيح
+    // 3. إنشاء هيكل الهيدر HTML مع الترتيب الصحيح
     const headerWrapper = document.createElement('div');
     headerWrapper.className = 'proton-global-header';
     
     headerWrapper.innerHTML = `
-        <!-- اللوجو في اليسار -->
         <a href="./index.html" class="proton-header-brand" title="الرئيسية - Proton">
             <img src="./logo_06.webp" alt="Proton Logo" class="proton-logo-img">
         </a>
 
-        <!-- أزرار الإجراءات في اليمين -->
         <div class="proton-header-actions">
             <div class="proton-dropdown-container">
                 <button class="proton-header-btn" id="homeDropdownBtn" title="الرئيسية والصفحات">
@@ -276,7 +266,6 @@
         initHeader();
     }
 
-    // دالة لاستخراج التوكن وحفظه بالمتصفح
     function getAuthToken() {
         const urlParams = new URLSearchParams(window.location.search);
         const tokenParam = urlParams.get('token');
