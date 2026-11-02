@@ -126,18 +126,12 @@ async function loadBrandConnections(brandId) {
                         const isActive = conn.active; // حالة التفعيل من الأدمن
 
                         if (isActive) {
-                            // الحالة بعد تفعيل الأدمن: أخضر زاهي (مثل الصورة الأصلية) وكلمة "تم الربط" فقط
-                            btn.textContent = "تم الربط";
-                            btn.className = "btn-connect connected";
-                            btn.style.cssText = "";
-                        } else {
-                            // الحالة قبل التفعيل (في انتظار الموافقة): أخضر مطفي/شفاف مع السعر وكلمة (تعديل)
-                            btn.textContent = `تم الربط (EGP${pTotal}) - تعديل`;
-                            btn.className = "btn-connect";
-                            btn.style.backgroundColor = "rgba(16, 185, 129, 0.3)"; // أخضر مطفي متناسق
-                            btn.style.borderColor = "rgba(16, 185, 129, 0.5)";
-                            btn.style.color = "#ffffff";
-                        }
+                        btn.textContent = "تم الربط";
+                        btn.className = "btn-connect connected";
+                    } else {
+                        btn.textContent = `EGP${pTotal} (تعديل)`;
+                        btn.className = "btn-connect pending-state";
+                    }
                         btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
                     }
                     if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
