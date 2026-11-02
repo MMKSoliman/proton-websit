@@ -82,7 +82,8 @@ async function loadBrandConnections(brandId) {
         if (btn) {
             btn.disabled = false;
             btn.textContent = "ربط المنصة";
-            btn.classList.remove('connected', 'pending-state');
+            btn.className = "btn-connect";
+            btn.style.cssText = "";
             btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
         }
     });
@@ -122,18 +123,19 @@ async function loadBrandConnections(brandId) {
                     };
 
                     if (btn) {
-                        // التحقق من حقل active أو admin_activated القادم من قاعدة البيانات
-                        const isActive = conn.active || conn.admin_activated;
+                        const isActive = conn.active; // حالة التفعيل من الأدمن
 
                         if (isActive) {
-                            // الحالة بعد تفعيل الأدمن: أخضر وكلمة "تم الربط" فقط
+                            // الحالة بعد تفعيل الأدمن: أخضر زاهي (مثل الصورة الأصلية) وكلمة "تم الربط" فقط
                             btn.textContent = "تم الربط";
                             btn.className = "btn-connect connected";
+                            btn.style.cssText = "";
                         } else {
-                            // الحالة في انتظار الموافقة/التفعيل: رمادي مع السعر وكلمة (تعديل) وقابل للنقر لتعديل الخدمات
-                            btn.textContent = `EGP${pTotal} (تعديل)`;
-                            btn.className = "btn-connect pending-state"; 
-                            btn.style.backgroundColor = "#4a5568"; // لون رمادي مميز
+                            // الحالة قبل التفعيل (في انتظار الموافقة): أخضر مطفي/شفاف مع السعر وكلمة (تعديل)
+                            btn.textContent = `تم الربط (EGP${pTotal}) - تعديل`;
+                            btn.className = "btn-connect";
+                            btn.style.backgroundColor = "rgba(16, 185, 129, 0.3)"; // أخضر مطفي متناسق
+                            btn.style.borderColor = "rgba(16, 185, 129, 0.5)";
                             btn.style.color = "#ffffff";
                         }
                         btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
@@ -143,8 +145,7 @@ async function loadBrandConnections(brandId) {
                     if (btn) {
                         btn.textContent = "ربط المنصة";
                         btn.className = "btn-connect";
-                        btn.style.backgroundColor = "";
-                        btn.style.color = "";
+                        btn.style.cssText = "";
                         btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
                     }
                     if (disconnectBtn) disconnectBtn.style.display = 'none';
@@ -176,9 +177,8 @@ function resetPlatformsUI() {
         if (btn) {
             btn.disabled = true;
             btn.textContent = "اختر براند أولاً";
-            btn.classList.remove('connected', 'pending-state');
-            btn.style.backgroundColor = "";
-            btn.style.color = "";
+            btn.className = "btn-connect";
+            btn.style.cssText = "";
         }
         if (disconnectBtn) disconnectBtn.style.display = 'none';
     });
@@ -334,7 +334,6 @@ async function confirmPlatformSelection() {
     const selectedBrandId = localStorage.getItem("selected_brand_id");
     const existingRecord = activePlatforms[currentPlatformKey] ? activePlatforms[currentPlatformKey].raw : null;
 
-    // حفظ الخدمات مؤقتاً في الـ localStorage لتطبيقها عند العودة من المصادقة
     localStorage.setItem("pending_services", JSON.stringify({
         platform: currentPlatformKey,
         posts, reels, rc, comments, messages
@@ -342,13 +341,9 @@ async function confirmPlatformSelection() {
 
     if (existingRecord && existingRecord.account_id) {
         let updateEndpoint = "https://api.protonag.com/social/meta/update-services"; 
-        if (currentPlatformKey === 'tiktok') {
-            updateEndpoint = "https://api.protonag.com/social/tiktok/update-services";
-        } else if (currentPlatformKey === 'linkedin') {
-            updateEndpoint = "https://api.protonag.com/social/linkedin/update-services";
-        } else if (currentPlatformKey === 'x') {
-            updateEndpoint = "https://api.protonag.com/social/x/update-services";
-        }
+        if (currentPlatformKey === 'tiktok') updateEndpoint = "https://api.protonag.com/social/tiktok/update-services";
+        else if (currentPlatformKey === 'linkedin') updateEndpoint = "https://api.protonag.com/social/linkedin/update-services";
+        else if (currentPlatformKey === 'x') updateEndpoint = "https://api.protonag.com/social/x/update-services";
 
         await fetch(updateEndpoint, {
             method: "POST",
@@ -472,7 +467,6 @@ function updateMainSummary() {
     document.getElementById('selectedCount').textContent = count;
     document.getElementById('totalPrice').textContent = totalSum;
 
-    // إدارة تفعيل أو تعطيل زر إتمام الطلب بناءً على وجود منصات مربوطة
     const checkoutBtn = document.querySelector('.btn-checkout');
     if (checkoutBtn) {
         const hasConnections = count > 0;
@@ -491,11 +485,11 @@ function redirectToWhatsApp() {
     const username = localStorage.getItem("user_name") || localStorage.getItem("username") || "مستخدم بروتون";
     const userId = localStorage.getItem("user_id") || localStorage.getItem("id") || "غير محدد";
 
-    let message = `مرحباً، أود إتمام الطلب وتفعيل الخطة للنشاط التجاري: *${brandName}*[cite: 12].\n\n`;
+    let message = `مرحباً، أود إتمام الطلب وتفعيل الخطة للنشاط التجاري: *${brandName}*[cite: 10].\n\n`;
     message += `👤 *بيانات العميل:*\n`;
-    message += `- اسم المستخدم: ${username}[cite: 12]\n`;
-    message += `- معرف المستخدم (User ID): ${userId}[cite: 12]\n`;
-    message += `- معرف البراند (Brand ID): ${brandId}[cite: 12]\n\n`;
+    message += `- اسم المستخدم: ${username}[cite: 10]\n`;
+    message += `- معرف المستخدم (User ID): ${userId}[cite: 10]\n`;
+    message += `- معرف البراند (Brand ID): ${brandId}[cite: 10]\n\n`;
     
     message += `📋 *تفاصيل الفاتورة والاشتراكات:*\n`;
 
@@ -512,27 +506,27 @@ function redirectToWhatsApp() {
         const raw = plat.raw || {};
         const pName = platformNames[key] || key;
         
-        message += `\n🔹 *${pName}* (EGP${plat.total})[cite: 12]:\n`;
+        message += `\n🔹 *${pName}* (EGP${plat.total})[cite: 10]:\n`;
         if (raw.posts) {
-            message += `  - إدارة المحتوى (EGP5000)[cite: 12]\n`;
+            message += `  - إدارة المحتوى (EGP5000)[cite: 10]\n`;
         }
         if (raw.reels) {
             const rc = raw.rc || 1;
             const reelsTotal = rc * REEL_PRICE_PER_UNIT;
-            message += `  - إدارة الريلز: ${rc} ريل (EGP${reelsTotal})[cite: 12]\n`;
+            message += `  - إدارة الريلز: ${rc} ريل (EGP${reelsTotal})[cite: 10]\n`;
         }
         if (raw.comments) {
-            message += `  - إدارة التعليقات (EGP3000)[cite: 12]\n`;
+            message += `  - إدارة التعليقات (EGP3000)[cite: 10]\n`;
         }
         if (raw.messages) {
-            message += `  - إدارة الرسائل (EGP4500)[cite: 12]\n`;
+            message += `  - إدارة الرسائل (EGP4500)[cite: 10]\n`;
         }
     });
 
     message += `\n-------------------\n`;
-    message += `📊 *إجمالي المنصات المربوطة:* ${count}[cite: 12]\n`;
-    message += `💰 *الإجمالي الشهري الكلي:* EGP${total}[cite: 12]\n\n`;
-    message += `يرجى استكمال إجراءات التفعيل.[cite: 12]`;
+    message += `📊 *إجمالي المنصات المربوطة:* ${count}[cite: 10]\n`;
+    message += `💰 *الإجمالي الشهري الكلي:* EGP${total}[cite: 10]\n\n`;
+    message += `يرجى استكمال إجراءات التفعيل.[cite: 10]`;
 
     const url = `https://wa.me/+201066581983?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
