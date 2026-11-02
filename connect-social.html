@@ -11,6 +11,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
+    <style>
+        /* تنسيقات إضافية لحالات الأزرار الديناميكية */
+        .btn-connect.pending-state {
+            background-color: #4a5568 !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn-connect.connected {
+            background-color: #10b981 !important;
+            color: #ffffff !important;
+            border: none;
+        }
+    </style>
 </head>
 <body>
 
@@ -125,7 +138,7 @@
 
                 <!-- Action Buttons -->
                 <div class="actions-group">
-                    <button class="btn-checkout" onclick="redirectToWhatsApp()">إتمام الطلب وتفعيل الخطة</button>
+                    <button class="btn-checkout" onclick="redirectToWhatsApp()" disabled style="opacity: 0.5; cursor: not-allowed;">إتمام الطلب وتفعيل الخطة</button>
                     <a href="./dashboard.html" class="btn-skip">تخطي الآن</a>
                 </div>
             </div>
@@ -165,7 +178,6 @@
     <script src="./header.js" defer></script>
     <script src="./auth-guard.js" defer></script>
     <script src="./sidebar.js" defer></script>
-    <!-- الملف الخارجي الوحيد المسؤول عن المنصات والخدمات واحتساب التكاليف والربط -->
     <script src="./platform-handler.js" defer></script>
 </body>
 </html>
