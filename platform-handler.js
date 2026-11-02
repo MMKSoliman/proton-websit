@@ -1,4 +1,6 @@
-const REEL_PRICE_PER_UNIT = 1500; let activePlatforms = {}; let currentPlatformKey = null;
+const REEL_PRICE_PER_UNIT = 1500; 
+let activePlatforms = {}; 
+let currentPlatformKey = null;
 
 document.addEventListener("DOMContentLoaded", async function() {
     const token = localStorage.getItem("access_token") || new URLSearchParams(window.location.search).get('token');
@@ -62,7 +64,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     });
 
-    // معالجة العودة بعد المصادقة وتطبيق الخدمة المحفوظة مسبقاً
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('connected')) {
         const activeBrand = localStorage.getItem("selected_brand_id");
@@ -81,7 +82,7 @@ async function loadBrandConnections(brandId) {
         if (btn) {
             btn.disabled = false;
             btn.textContent = "ربط المنصة";
-            btn.classList.remove('connected');
+            btn.classList.remove('connected', 'pending-state');
             btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
         }
     });
@@ -103,13 +104,17 @@ async function loadBrandConnections(brandId) {
                 const btn = document.getElementById(`btn-${key}`);
                 const disconnectBtn = document.getElementById(`disconnect-${key}`);
 
-                if (connections[key]) {
-                    const conn = connections[key];
+                let conn = connections[key];
+                if (!conn && key === 'linkedin') {
+                    conn = connections['linkedin_page'] || connections['linkedin_company'];
+                }
+
+                if (conn) {
                     let pTotal = 0;
                     if (conn.posts) pTotal += 5000;
                     if (conn.reels) pTotal += (conn.rc || 1) * REEL_PRICE_PER_UNIT;
-                    if (conn.comments) pTotal += (key === 'tiktok' ? 3000 : 3000);
-                    if (conn.messages) pTotal += (key === 'tiktok' ? 4500 : 4500);
+                    if (conn.comments) pTotal += 3000;
+                    if (conn.messages) pTotal += 4500;
 
                     activePlatforms[key] = {
                         total: pTotal,
@@ -117,15 +122,29 @@ async function loadBrandConnections(brandId) {
                     };
 
                     if (btn) {
-                        btn.textContent = `تم الربط (EGP${pTotal})`;
-                        btn.classList.add('connected');
+                        // التحقق من حقل active أو admin_activated القادم من قاعدة البيانات
+                        const isActive = conn.active || conn.admin_activated;
+
+                        if (isActive) {
+                            // الحالة بعد تفعيل الأدمن: أخضر وكلمة "تم الربط" فقط
+                            btn.textContent = "تم الربط";
+                            btn.className = "btn-connect connected";
+                        } else {
+                            // الحالة في انتظار الموافقة/التفعيل: رمادي مع السعر وكلمة (تعديل) وقابل للنقر لتعديل الخدمات
+                            btn.textContent = `EGP${pTotal} (تعديل)`;
+                            btn.className = "btn-connect pending-state"; 
+                            btn.style.backgroundColor = "#4a5568"; // لون رمادي مميز
+                            btn.style.color = "#ffffff";
+                        }
                         btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
                     }
                     if (disconnectBtn) disconnectBtn.style.display = 'inline-block';
                 } else {
                     if (btn) {
                         btn.textContent = "ربط المنصة";
-                        btn.classList.remove('connected');
+                        btn.className = "btn-connect";
+                        btn.style.backgroundColor = "";
+                        btn.style.color = "";
                         btn.onclick = () => openPlatformModal(key, getPlatformTitle(key), getPlatformIcon(key));
                     }
                     if (disconnectBtn) disconnectBtn.style.display = 'none';
@@ -138,14 +157,17 @@ async function loadBrandConnections(brandId) {
         console.error("Error loading connections:", err);
     }
 }
+
 function getPlatformTitle(key) {
     const map = { 'facebook': 'Facebook Pages', 'instagram': 'Instagram Business', 'tiktok': 'TikTok Business', 'linkedin': 'LinkedIn Page', 'x': 'X Platform' };
     return map[key] || key;
 }
+
 function getPlatformIcon(key) {
     const map = { 'facebook': './FB-W.webp', 'instagram': './Insta-W.webp', 'tiktok': './TT-W.webp', 'linkedin': './L in-W.webp', 'x': './X-W.webp' };
     return map[key] || './favicon.png';
 }
+
 function resetPlatformsUI() {
     const platforms = ['facebook', 'instagram', 'tiktok', 'linkedin', 'x'];
     platforms.forEach(key => {
@@ -154,13 +176,16 @@ function resetPlatformsUI() {
         if (btn) {
             btn.disabled = true;
             btn.textContent = "اختر براند أولاً";
-            btn.classList.remove('connected');
+            btn.classList.remove('connected', 'pending-state');
+            btn.style.backgroundColor = "";
+            btn.style.color = "";
         }
         if (disconnectBtn) disconnectBtn.style.display = 'none';
     });
     activePlatforms = {};
     updateMainSummary();
 }
+
 function openPlatformModal(key, title, iconUrl) {
     const selectedBrandId = localStorage.getItem("selected_brand_id");
     if (!selectedBrandId) {
@@ -235,6 +260,7 @@ function openPlatformModal(key, title, iconUrl) {
 
     document.getElementById('authModal').style.display = 'flex';
 }
+
 function generateReelsOptions(selectedValue) {
     let options = '';
     for (let i = 1; i <= 30; i++) {
@@ -242,16 +268,17 @@ function generateReelsOptions(selectedValue) {
     }
     return options;
 }
+
 function toggleReelsDropdown() {
     const isChecked = document.getElementById('srv_reels').checked;
     const select = document.getElementById('reels_count');
     select.disabled = !isChecked;
 }
+
 function closeAuthModal() {
     document.getElementById('authModal').style.display = 'none';
 }
 
-// دوال الكارت المنبثق لتفاصيل الخدمات
 function openServiceDetailsModal() {
     let modal = document.getElementById('serviceModal');
     if (!modal) {
@@ -307,14 +334,14 @@ async function confirmPlatformSelection() {
     const selectedBrandId = localStorage.getItem("selected_brand_id");
     const existingRecord = activePlatforms[currentPlatformKey] ? activePlatforms[currentPlatformKey].raw : null;
 
+    // حفظ الخدمات مؤقتاً في الـ localStorage لتطبيقها عند العودة من المصادقة
     localStorage.setItem("pending_services", JSON.stringify({
         platform: currentPlatformKey,
         posts, reels, rc, comments, messages
     }));
 
-    // إذا كانت الخدمات مسجلة مسبقاً، قم بتحديثها مباشرة دون إعادة توجيه للـ OAuth
     if (existingRecord && existingRecord.account_id) {
-        let updateEndpoint = "https://api.protonag.com/social/meta/update-services"; // افتراضي
+        let updateEndpoint = "https://api.protonag.com/social/meta/update-services"; 
         if (currentPlatformKey === 'tiktok') {
             updateEndpoint = "https://api.protonag.com/social/tiktok/update-services";
         } else if (currentPlatformKey === 'linkedin') {
@@ -339,7 +366,6 @@ async function confirmPlatformSelection() {
 
     closeAuthModal();
 
-    // توجيه المستخدم لربط الحساب الجديد بناءً على المنصة المختارة
     let loginEndpoint = "";
     if (currentPlatformKey === 'facebook' || currentPlatformKey === 'instagram') {
         loginEndpoint = `https://api.protonag.com/social/meta/login/${selectedBrandId}`;
@@ -385,7 +411,6 @@ async function disconnectPlatform(platformKey) {
         });
 
         if (response.ok) {
-            // إعادة تحميل وتحديث اتصالات البراند لتفريغ الزر وتحديث الإجمالي فوراً
             await loadBrandConnections(selectedBrandId);
         } else {
             alert("حدث خطأ أثناء محاولة إلغاء الربط.");
@@ -404,7 +429,12 @@ async function applyPendingSavedServices() {
         const record = activePlatforms[pending.platform] ? activePlatforms[pending.platform].raw : null;
 
         if (record && record.account_id) {
-            await fetch("https://api.protonag.com/social/meta/update-services", {
+            let updateEndpoint = "https://api.protonag.com/social/meta/update-services";
+            if (pending.platform === 'tiktok') updateEndpoint = "https://api.protonag.com/social/tiktok/update-services";
+            else if (pending.platform === 'linkedin') updateEndpoint = "https://api.protonag.com/social/linkedin/update-services";
+            else if (pending.platform === 'x') updateEndpoint = "https://api.protonag.com/social/x/update-services";
+
+            await fetch(updateEndpoint, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -429,6 +459,7 @@ async function applyPendingSavedServices() {
         console.error("Error applying pending services:", e);
     }
 }
+
 function updateMainSummary() {
     let count = 0;
     let totalSum = 0;
@@ -440,7 +471,17 @@ function updateMainSummary() {
 
     document.getElementById('selectedCount').textContent = count;
     document.getElementById('totalPrice').textContent = totalSum;
+
+    // إدارة تفعيل أو تعطيل زر إتمام الطلب بناءً على وجود منصات مربوطة
+    const checkoutBtn = document.querySelector('.btn-checkout');
+    if (checkoutBtn) {
+        const hasConnections = count > 0;
+        checkoutBtn.disabled = !hasConnections;
+        checkoutBtn.style.opacity = hasConnections ? "1" : "0.5";
+        checkoutBtn.style.cursor = hasConnections ? "pointer" : "not-allowed";
+    }
 }
+
 function redirectToWhatsApp() {
     const brandName = localStorage.getItem("selected_brand_name") || "النشاط التجاري";
     const brandId = localStorage.getItem("selected_brand_id") || "غير محدد";
@@ -450,11 +491,11 @@ function redirectToWhatsApp() {
     const username = localStorage.getItem("user_name") || localStorage.getItem("username") || "مستخدم بروتون";
     const userId = localStorage.getItem("user_id") || localStorage.getItem("id") || "غير محدد";
 
-    let message = `مرحباً، أود إتمام الطلب وتفعيل الخطة للنشاط التجاري: *${brandName}*.\n\n`;
+    let message = `مرحباً، أود إتمام الطلب وتفعيل الخطة للنشاط التجاري: *${brandName}*[cite: 12].\n\n`;
     message += `👤 *بيانات العميل:*\n`;
-    message += `- اسم المستخدم: ${username}\n`;
-    message += `- معرف المستخدم (User ID): ${userId}\n`;
-    message += `- معرف البراند (Brand ID): ${brandId}\n\n`;
+    message += `- اسم المستخدم: ${username}[cite: 12]\n`;
+    message += `- معرف المستخدم (User ID): ${userId}[cite: 12]\n`;
+    message += `- معرف البراند (Brand ID): ${brandId}[cite: 12]\n\n`;
     
     message += `📋 *تفاصيل الفاتورة والاشتراكات:*\n`;
 
@@ -471,31 +512,27 @@ function redirectToWhatsApp() {
         const raw = plat.raw || {};
         const pName = platformNames[key] || key;
         
-        // تحديد أسعار التعليقات والرسائل حسب المنصة
-        const commentsPrice = (key === 'tiktok' ? 3000 : 3000);
-        const messagesPrice = (key === 'tiktok' ? 4500 : 4500);
-
-        message += `\n🔹 *${pName}* (EGP${plat.total}):\n`;
+        message += `\n🔹 *${pName}* (EGP${plat.total})[cite: 12]:\n`;
         if (raw.posts) {
-            message += `  - إدارة المحتوى (EGP5000)\n`;
+            message += `  - إدارة المحتوى (EGP5000)[cite: 12]\n`;
         }
         if (raw.reels) {
             const rc = raw.rc || 1;
-            const reelsTotal = rc * 1500;
-            message += `  - إدارة الريلز: ${rc} ريل (EGP${reelsTotal})\n`;
+            const reelsTotal = rc * REEL_PRICE_PER_UNIT;
+            message += `  - إدارة الريلز: ${rc} ريل (EGP${reelsTotal})[cite: 12]\n`;
         }
         if (raw.comments) {
-            message += `  - إدارة التعليقات (EGP${commentsPrice})\n`;
+            message += `  - إدارة التعليقات (EGP3000)[cite: 12]\n`;
         }
         if (raw.messages) {
-            message += `  - إدارة الرسائل (EGP${messagesPrice})\n`;
+            message += `  - إدارة الرسائل (EGP4500)[cite: 12]\n`;
         }
     });
 
     message += `\n-------------------\n`;
-    message += `📊 *إجمالي المنصات المربوطة:* ${count}\n`;
-    message += `💰 *الإجمالي الشهري الكلي:* EGP${total}\n\n`;
-    message += `يرجى استكمال إجراءات التفعيل.`;
+    message += `📊 *إجمالي المنصات المربوطة:* ${count}[cite: 12]\n`;
+    message += `💰 *الإجمالي الشهري الكلي:* EGP${total}[cite: 12]\n\n`;
+    message += `يرجى استكمال إجراءات التفعيل.[cite: 12]`;
 
     const url = `https://wa.me/+201066581983?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
