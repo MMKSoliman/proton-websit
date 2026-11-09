@@ -1,109 +1,162 @@
+* {
+    box-sizing: border-box;
+}
+
 .proton-dashboard-body {
     background-color: #0f1115;
     color: #e0e0e0;
     font-family: 'Cairo', sans-serif;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 .dashboard-workspace {
     max-width: 1300px;
+    width: 100%;
     margin: 30px auto;
-    padding: 0 20px;
+    padding: 0 15px;
     display: flex;
-    gap: 25px;
+    gap: 20px;
     min-height: 75vh;
 }
 
-/* شريط الأيقونات الجانبي (الأصفر) */
+/* شريط الأيقونات الجانبي الطافي بدون خلفية أو بادة */
 .sidebar-dock {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    background: rgba(20, 22, 28, 0.6);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 15px;
-    border-radius: 20px;
+    gap: 12px;
+    background: transparent;
+    padding: 10px 5px;
     height: fit-content;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    flex-shrink: 0;
 }
 
 .dock-icon-btn {
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 10px;
+    padding: 8px;
     border-radius: 14px;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .dock-icon-btn img {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     object-fit: contain;
     filter: grayscale(100%) opacity(0.6);
-    transition: filter 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-/* الأيقونة النشطة: ملونة + إضاءة نيون خلفية */
+/* الأيقونة النشطة: ملونة + إضاءة نيون خلفية خفيفة والكارت يضيء */
 .dock-icon-btn.active {
-    background: rgba(0, 210, 255, 0.1);
-    box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
-    border: 1px solid rgba(0, 210, 255, 0.3);
+    background: rgba(0, 210, 255, 0.08);
+    box-shadow: 0 0 12px rgba(0, 210, 255, 0.3);
+    border: 1px solid rgba(0, 210, 255, 0.25);
 }
 
 .dock-icon-btn.active img {
     filter: grayscale(0%) opacity(1);
 }
 
-.dock-icon-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
+.dock-icon-btn:hover img {
+    filter: grayscale(30%) opacity(0.9);
 }
 
-/* مساحة العرض الرئيسية (الأخضر) */
+/* رسالة التوضيح العائمة بجانب الأيقونة (Tooltip) */
+.dock-icon-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(20, 22, 28, 0.95);
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    border: 1px solid rgba(0, 210, 255, 0.2);
+    margin-right: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.dock-icon-btn:hover::after {
+    opacity: 1;
+}
+
+/* مساحة العرض الرئيسية الديناميكية */
 .active-content-area {
     flex-grow: 1;
-    background: rgba(20, 22, 28, 0.4);
+    width: 100%;
+    max-width: calc(100% - 60px);
+    background: rgba(20, 22, 28, 0.45);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 20px;
-    padding: 30px;
+    padding: 25px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* عنوان الكارت المرفق معه الأيقونة الصغيرة */
+.module-header-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding-bottom: 12px;
+}
+
+.module-header-title img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.module-header-title h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #ffffff;
 }
 
 /* تنسيقات كارت تقارير الأداء الافتتاحي */
 .analytics-overview-card {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 20px;
 }
 
 .analytics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
 }
 
 .metric-box {
     background: rgba(25, 28, 36, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 20px;
-    border-radius: 14px;
+    padding: 15px;
+    border-radius: 12px;
     text-align: center;
 }
 
 .metric-box h4 {
-    margin: 0 0 8px 0;
-    font-size: 14px;
+    margin: 0 0 6px 0;
+    font-size: 13px;
     color: #9aa0a6;
 }
 
 .metric-box .number {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     color: #00d2ff;
     margin: 0;
@@ -114,58 +167,71 @@
     background: rgba(0, 210, 255, 0.03);
     border: 1px solid rgba(0, 210, 255, 0.2);
     box-shadow: inset 0 0 15px rgba(0, 210, 255, 0.05), 0 0 15px rgba(0, 210, 255, 0.1);
-    padding: 18px 22px;
-    border-radius: 14px;
+    padding: 15px 18px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
 }
 
 .neon-tip-box p {
     margin: 0;
-    font-size: 15px;
+    font-size: 14px;
     color: #ffffff;
+    line-height: 1.5;
 }
 
 /* أفضل 3 منشورات تفاعلاً */
 .top-posts-section h3 {
-    margin-bottom: 15px;
-    font-size: 18px;
+    margin: 0 0 12px 0;
+    font-size: 16px;
     color: #ffffff;
 }
 
 .posts-links-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .post-link-item {
     background: rgba(25, 28, 36, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 12px 18px;
-    border-radius: 10px;
+    padding: 10px 15px;
+    border-radius: 8px;
     color: #00d2ff;
     text-decoration: none;
     transition: background 0.2s;
     display: flex;
     justify-content: space-between;
+    font-size: 14px;
 }
 
 .post-link-item:hover {
     background: rgba(0, 210, 255, 0.08);
 }
 
-/* الاستجابة للشاشات الصغيرة (الموبايل) */
+/* التوافق التام مع الموبايل بالطول مع تصغير الأيقونات وحماية الأبعاد */
 @media (max-width: 768px) {
     .dashboard-workspace {
-        flex-direction: column;
+        flex-direction: row; /* يظل بالطول مثل الديسك توب */
+        padding: 0 8px;
+        gap: 10px;
+        margin: 15px auto;
     }
     .sidebar-dock {
-        flex-direction: row;
-        justify-content: center;
-        overflow-x: auto;
-        width: 100%;
-        padding: 10px;
+        padding: 5px 0;
+        gap: 8px;
+    }
+    .dock-icon-btn img {
+        width: 30px; /* تصغير طفيف للأيقونات في الموبايل */
+        height: 30px;
+    }
+    .active-content-area {
+        padding: 15px;
+        max-width: calc(100% - 45px);
+    }
+    .analytics-grid {
+        grid-template-columns: repeat(2, 1fr); /* شبكة متناسقة عمودياً على الموبايل */
     }
 }
