@@ -19,13 +19,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // مصفوفة الأيقونات والربط بدوال الكروت
 const dashboardModules = [
-    { id: 'performance', name: 'تقارير الأداء ونظرة عامة', icon: '../home.webp', render: renderPerformance },
-    { id: 'brands', name: 'إدارة البراندات', icon: '../home.webp', render: renderBrands },
-    { id: 'channels', name: 'المنصات المربوطة', icon: '../home.webp', render: renderChannels },
-    { id: 'posts', name: 'مراجعة المنشورات', icon: '../home.webp', render: renderPosts },
-    { id: 'marketing-plan', name: 'الخطة التسويقية', icon: '../home.webp', render: renderMarketingPlan },
-    { id: 'content-plan', name: 'خطة المحتوى والمنتجات', icon: '../home.webp', render: renderContentPlan },
-    { id: 'billing', name: 'الفواتير والاشتراكات', icon: '../home.webp', render: renderBilling }
+    { id: 'performance', name: 'تقارير الأداء ونظرة عامة', icon: '../Dash-P.webp', render: renderPerformance },
+    { id: 'brands', name: 'إدارة البراندات', icon: '../Branding-P.webp', render: renderBrands },
+    { id: 'channels', name: 'المنصات المربوطة', icon: '../SMM01-P.webp', render: renderChannels },
+    { id: 'posts', name: 'مراجعة المنشورات', icon: '../Upload-P.webp', render: renderPosts },
+    { id: 'marketing-plan', name: 'الخطة التسويقية', icon: '../Sta-P.webp', render: renderMarketingPlan },
+    { id: 'content-plan', name: 'خطة المحتوى والمنتجات', icon: '../Prog-P.webp', render: renderContentPlan },
+    { id: 'billing', name: 'الفواتير والاشتراكات', icon: '../Bill-P.webp', render: renderBilling }
 ];
 
 function initDashboard() {
