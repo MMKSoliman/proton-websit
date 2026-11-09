@@ -1,7 +1,7 @@
 export function renderChannels(container) {
     container.innerHTML = `
         <div class="module-header-title">
-                <img src="./home.webp" alt="Icon">
+                <img src="./SMM01-P.webp" alt="Icon">
                 <h2>المنصات المربوطة</h2>
             </div>
             <p>حالة ربط حسابات السوشيال ميديا وصلاحيات الوصول النشطة.</p>
