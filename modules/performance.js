@@ -1,4 +1,4 @@
-export function renderperformance(container) {
+export function renderPerformance(container) {
     container.innerHTML = `
         <div class="module-header-title">
             <img src="../home.webp" alt="Icon">
