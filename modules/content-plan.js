@@ -1,9 +1,9 @@
 export function renderContentPlan(container) {
     container.innerHTML = `
         <div class="module-header-title">
-            <img src="../home.webp" alt="Icon">
-            <h2>الخطة التسويقية الاستراتيجية</h2>
-        </div>
-        <p>عرض الخطة الحالية مع تقرير التدقيق النفسي والسلوكي والخيارات المتاحة.</p>
+                <img src="./home.webp" alt="Icon">
+                <h2>خطة المحتوى وجدولة المنتجات</h2>
+            </div>
+            <p>إدارة المنتجات، الصور، والتقويم الزمني للمحتوى التلقائي ونشر العروض.</p>
     `;
 }
