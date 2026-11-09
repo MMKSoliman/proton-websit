@@ -1,4 +1,3 @@
-// جلب الفوتر
 document.addEventListener("DOMContentLoaded", () => {
     fetch('footer.html')
         .then(res => res.text())
@@ -10,15 +9,18 @@ document.addEventListener("DOMContentLoaded", () => {
     initDashboard();
 });
 
-// مصفوفة تعريف الأيقونات والعناصر (قابلة للتوسعة تلقائياً للإضافة المستقبلية)
+// مصفوفة الوحدات والأيقونات (جاهزة ومجهزة لتضاف أي أيقونة جديدة تلقائياً)
 const dashboardModules = [
     {
         id: 'performance',
-        name: 'تقارير الأداء والنمو',
-        icon: './home.webp',
+        name: 'تقارير الأداء ونظرة عامة',
+        icon: './home.webp', // تم توحيدها مؤقتاً لاسم home.webp
         render: () => `
+            <div class="module-header-title">
+                <img src="./home.webp" alt="Icon">
+                <h2>تقارير الأداء ونظرة عامة</h2>
+            </div>
             <div class="analytics-overview-card">
-                <h2>📊 تقارير الأداء ونظرة عامة</h2>
                 <div class="analytics-grid">
                     <div class="metric-box">
                         <h4>المتابعين الحاليين</h4>
@@ -63,11 +65,12 @@ const dashboardModules = [
         name: 'إدارة البراندات',
         icon: './home.webp',
         render: () => `
-            <div>
-                <h2>🏢 إدارة البراندات والهوية البصرية</h2>
-                <p>استعرض البراندات الخاصة بك، عدل الألوان، اللوجو، ونبرة الصوت بكل سهولة.</p>
-                <button class="action-btn-primary" style="margin-top: 15px;">➕ إضافة براند جديد</button>
+            <div class="module-header-title">
+                <img src="./home.webp" alt="Icon">
+                <h2>إدارة البراندات والهوية البصرية</h2>
             </div>
+            <p>استعرض البراندات الخاصة بك، عدل الألوان، اللوجو، ونبرة الصوت بكل سهولة.</p>
+            <button class="action-btn-primary" style="margin-top: 15px; background: linear-gradient(135deg, #00d2ff, #3a7bd5); border:none; padding:10px 20px; border-radius:8px; color:#fff; cursor:pointer;">➕ إضافة براند جديد</button>
         `
     },
     {
@@ -75,11 +78,12 @@ const dashboardModules = [
         name: 'المنصات المربوطة',
         icon: './home.webp',
         render: () => `
-            <div>
-                <h2>🔗 منصات التواصل المربوطة</h2>
-                <p>حالة ربط حسابات السوشيال ميديا وصلاحيات الوصول النشطة.</p>
-                <a href="./connect-social.html" class="action-link-inline" style="color: #00d2ff; display:inline-block; margin-top:15px;">إدارة وتعديل منصات التواصل الآن 🔗</a>
+            <div class="module-header-title">
+                <img src="./home.webp" alt="Icon">
+                <h2>المنصات المربوطة</h2>
             </div>
+            <p>حالة ربط حسابات السوشيال ميديا وصلاحيات الوصول النشطة.</p>
+            <a href="./connect-social.html" style="color: #00d2ff; display:inline-block; margin-top:15px; text-decoration:none;">إدارة وتعديل منصات التواصل الآن 🔗</a>
         `
     },
     {
@@ -87,10 +91,11 @@ const dashboardModules = [
         name: 'مراجعة المنشورات',
         icon: './home.webp',
         render: () => `
-            <div>
-                <h2>✍️ مراجعة المنشورات والتدقيق الذكي</h2>
-                <p>المنشورات التي تمت جدولتها ومراجعتها آلياً لتتطابق مع الهوية والخطط التسويقية.</p>
+            <div class="module-header-title">
+                <img src="./home.webp" alt="Icon">
+                <h2>مراجعة المنشورات والتدقيق الذكي</h2>
             </div>
+            <p>المنشورات التي تمت جدولتها ومراجعتها آلياً لتتطابق مع الهوية والخطط التسويقية.</p>
         `
     },
     {
@@ -98,10 +103,11 @@ const dashboardModules = [
         name: 'الخطة التسويقية',
         icon: './home.webp',
         render: () => `
-            <div>
-                <h2>📈 الخطة التسويقية الاستراتيجية</h2>
-                <p>عرض الخطة الحالية مع تقرير التدقيق النفسي والسلوكي والخيارات المتاحة.</p>
+            <div class="module-header-title">
+                <img src="./home.webp" alt="Icon">
+                <h2>الخطة التسويقية الاستراتيجية</h2>
             </div>
+            <p>عرض الخطة الحالية مع تقرير التدقيق النفسي والسلوكي والخيارات المتاحة.</p>
         `
     },
     {
@@ -109,10 +115,11 @@ const dashboardModules = [
         name: 'خطة المحتوى والمنتجات',
         icon: './home.webp',
         render: () => `
-            <div>
-                <h2>📅 خطة المحتوى وجدولة المنتجات</h2>
-                <p>إدارة المنتجات، الصور، والتقويم الزمني للمحتوى التلقائي ونشر العروض.</p>
+            <div class="module-header-title">
+                <img src="./home.webp" alt="Icon">
+                <h2>خطة المحتوى وجدولة المنتجات</h2>
             </div>
+            <p>إدارة المنتجات، الصور، والتقويم الزمني للمحتوى التلقائي ونشر العروض.</p>
         `
     },
     {
@@ -120,26 +127,27 @@ const dashboardModules = [
         name: 'الفواتير والاشتراكات',
         icon: './home.webp',
         render: () => `
-            <div>
-                <h2>💳 الفواتير والاشتراكات</h2>
-                <p>سجل الفواتير الشهرية وتفاصيل الاستهلاك وباقات بروتون.</p>
+            <div class="module-header-title">
+                <img src="./home.webp" alt="Icon">
+                <h2>الفواتير والاشتراكات</h2>
             </div>
+            <p>سجل الفواتير الشهرية وتفاصيل الاستهلاك وباقات بروتون.</p>
         `
     }
 ];
 
-// بناء شريط الأيقونات والعرض الافتتاحي تلقائياً
 function initDashboard() {
     const dockContainer = document.getElementById('sidebarDock');
+    if (!dockContainer) return;
     dockContainer.innerHTML = '';
 
     dashboardModules.forEach((mod, index) => {
         const btn = document.createElement('button');
         btn.className = `dock-icon-btn ${index === 0 ? 'active' : ''}`;
         btn.setAttribute('data-id', mod.id);
-        btn.innerHTML = `<img src="${mod.icon}" alt="${mod.name}" title="${mod.name}">`;
+        btn.setAttribute('data-tooltip', mod.name); // تفعيل رسالة التوضيح باسم الكارت
+        btn.innerHTML = `<img src="${mod.icon}" alt="${mod.name}">`;
 
-        // حدث الضغط للتنقل وتفعيل الأيقونة وتغيير الكارت
         btn.addEventListener('click', () => {
             document.querySelectorAll('.dock-icon-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -149,11 +157,9 @@ function initDashboard() {
         dockContainer.appendChild(btn);
     });
 
-    // افتح أول وحدة (تقارير الأداء) تلقائياً عند تحميل الصفحة
     renderActiveModule(dashboardModules[0].id);
 }
 
-// دالة عرض محتوى الكارت النشط داخل المساحة الخضراء
 function renderActiveModule(moduleId) {
     const activeModule = dashboardModules.find(m => m.id === moduleId);
     const contentArea = document.getElementById('activeContentArea');
