@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proton - لوحة التحكم والإدارة</title>
+    <title>Proton - لوحة تحكم الأداء</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="./favicon.webp">
 
-    <!-- Google Fonts: Cairo & Open Sans -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <!-- ملف الـ CSS المخصص للوحة التحكم -->
+    <!-- Styles -->
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./dashboard.css">
 </head>
@@ -22,88 +22,20 @@
     <div class="main-container">
 
         <!-- الهيدر العلوي -->
-        <header class="top-header" id="header-container">
-            <!-- سيتم تعبئته ديناميكياً بواسطة header.js -->
-        </header>
+        <header class="top-header" id="header-container"></header>
 
-        <!-- المحتوى الرئيسي للوحة التحكم -->
-        <main class="dashboard-main-content">
+        <!-- المحتوى الرئيسي للوحة التحكم (مساحة العرض الخضراء) -->
+        <main class="dashboard-workspace">
             
-            <!-- بطاقة الترحيب والحالة العامة -->
-            <section class="welcome-banner-card">
-                <div class="banner-info">
-                    <span class="status-badge" id="statusBadge">جاري التجهيز والربط ⏳</span>
-                    <h2 class="card-title" id="cardTitle">لوحة التحليلات والإدارة</h2>
-                    <p class="card-subtitle" id="cardSubtitle">
-                        أهلاً بك. يتم تفعيل اللوحة وعرض التحديثات والإحصائيات فور الوصول إلى نتائج التحليل واستلام الصلاحيات المطلوبة للمنصات.
-                    </p>
-                </div>
-                <div class="banner-action">
-                    <a href="./connect-social.html" class="action-btn-primary">
-                        🔗 ربط أو تعديل منصات التواصل الآن
-                    </a>
-                </div>
+            <!-- حاوية الأيقونات الجانبية (شريط التحكم) -->
+            <aside class="sidebar-dock" id="sidebarDock">
+                <!-- يتم توليد الأيقونات ديناميكياً أو إضافتها هنا -->
+            </aside>
+
+            <!-- منطقة عرض المحتوى النشط -->
+            <section class="active-content-area" id="activeContentArea">
+                <!-- الافتتاحية التلقائية: تقارير الأداء والإحصائيات -->
             </section>
-
-            <!-- شريط الأيقونات التفاعلية للتحكم الشامل -->
-            <section class="control-dock-section">
-                <h3 class="section-heading">عناصر التحكم والإدارة الذكية</h3>
-                <div class="control-icons-grid">
-                    
-                    <!-- عنصر 1: البراندات -->
-                    <button class="control-card-btn" onclick="openModule('brands')">
-                        <img src="./Auto-W.webp" alt="Brands" class="control-icon-img">
-                        <span>إدارة البراندات</span>
-                    </button>
-
-                    <!-- عنصر 2: المنصات المربوطة -->
-                    <button class="control-card-btn" onclick="openModule('channels')">
-                        <img src="./Auto-W.webp" alt="Channels" class="control-icon-img">
-                        <span>المنصات المربوطة</span>
-                    </button>
-
-                    <!-- عنصر 3: توليد ومراجعة المنشورات -->
-                    <button class="control-card-btn" onclick="openModule('posts')">
-                        <img src="./Auto-W.webp" alt="Posts" class="control-icon-img">
-                        <span>مراجعة المنشورات</span>
-                    </button>
-
-                    <!-- عنصر 4: الخطة التسويقية والتدقيق -->
-                    <button class="control-card-btn" onclick="openModule('marketing-plan')">
-                        <img src="./Auto-W.webp" alt="Marketing Plan" class="control-icon-img">
-                        <span>الخطة التسويقية</span>
-                    </button>
-
-                    <!-- عنصر 5: خطة المحتوى وجدولة المنتجات -->
-                    <button class="control-card-btn" onclick="openModule('content-calendar')">
-                        <img src="./Auto-W.webp" alt="Calendar" class="control-icon-img">
-                        <span>خطة المحتوى والمنتجات</span>
-                    </button>
-
-                    <!-- عنصر 6: الأداء والنمو -->
-                    <button class="control-card-btn" onclick="openModule('analytics')">
-                        <img src="./Auto-W.webp" alt="Analytics" class="control-icon-img">
-                        <span>تقارير الأداء والنمو</span>
-                    </button>
-
-                    <!-- عنصر 7: الفواتير والاشتراكات -->
-                    <button class="control-card-btn" onclick="openModule('billing')">
-                        <img src="./Auto-W.webp" alt="Billing" class="control-icon-img">
-                        <span>الفواتير والاشتراكات</span>
-                    </button>
-
-                </div>
-            </section>
-
-            <!-- منطقة عرض المحتوى التفاعلي للوحدات المذكورة -->
-            <div id="moduleContentModal" class="module-modal-container" style="display: none;">
-                <div class="module-modal-content">
-                    <button class="close-modal-btn" onclick="closeModule()">✕</button>
-                    <div id="dynamicModuleInner">
-                        <!-- يتم حقن تفاصيل كل قسم هنا ديناميكياً -->
-                    </div>
-                </div>
-            </div>
 
         </main>
 
@@ -112,7 +44,7 @@
 
     </div>
 
-    <!-- السكريبتات الخارجية المنفصلة -->
+    <!-- السكربتات -->
     <script src="./dashboard.js" defer></script>
     <script src="./whatsapp-widget.js" defer></script>
     <script src="./auth-guard.js" defer></script>
