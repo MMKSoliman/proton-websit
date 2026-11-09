@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proton - لوحة التحكم</title>
+    <title>Proton - لوحة التحكم والإدارة</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="./favicon.webp">
@@ -12,91 +12,108 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- ملف الـ CSS المخصص للوحة التحكم -->
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./dashboard.css">
 </head>
-<body>
+<body class="proton-dashboard-body">
 
     <div class="main-container">
 
         <!-- الهيدر العلوي -->
-        <div class="top-header">
-            <!-- سيتم تعبئته ديناميكياً بواسطة header.js أو عناصر التنقل -->
-        </div>
+        <header class="top-header" id="header-container">
+            <!-- سيتم تعبئته ديناميكياً بواسطة header.js -->
+        </header>
 
-        <!-- محتوى لوحة التحكم في المنتصف -->
-        <div class="center-content">
-            <div class="dashboard-card">
-                <span class="status-badge" id="statusBadge">جاري التجهيز والربط ⏳</span>
-                
-                <h2 class="card-title" id="cardTitle">لوحة التحليلات والإدارة</h2>
-                
-                <p class="card-subtitle" id="cardSubtitle">
-                    سيتم تفعيل اللوحة وعرض التحديثات والإحصائيات فور الوصول إلى نتائج التحليل واستلام الصلاحيات المطلوبة للمنصات.
-                </p>
+        <!-- المحتوى الرئيسي للوحة التحكم -->
+        <main class="dashboard-main-content">
+            
+            <!-- بطاقة الترحيب والحالة العامة -->
+            <section class="welcome-banner-card">
+                <div class="banner-info">
+                    <span class="status-badge" id="statusBadge">جاري التجهيز والربط ⏳</span>
+                    <h2 class="card-title" id="cardTitle">لوحة التحليلات والإدارة</h2>
+                    <p class="card-subtitle" id="cardSubtitle">
+                        أهلاً بك. يتم تفعيل اللوحة وعرض التحديثات والإحصائيات فور الوصول إلى نتائج التحليل واستلام الصلاحيات المطلوبة للمنصات.
+                    </p>
+                </div>
+                <div class="banner-action">
+                    <a href="./connect-social.html" class="action-btn-primary">
+                        🔗 ربط أو تعديل منصات التواصل الآن
+                    </a>
+                </div>
+            </section>
 
-                <a href="./connect-social.html" class="action-link">
-                    🔗 ربط أو تعديل منصات التواصل الآن
-                </a>
+            <!-- شريط الأيقونات التفاعلية للتحكم الشامل -->
+            <section class="control-dock-section">
+                <h3 class="section-heading">عناصر التحكم والإدارة الذكية</h3>
+                <div class="control-icons-grid">
+                    
+                    <!-- عنصر 1: البراندات -->
+                    <button class="control-card-btn" onclick="openModule('brands')">
+                        <img src="./Auto-W.webp" alt="Brands" class="control-icon-img">
+                        <span>إدارة البراندات</span>
+                    </button>
+
+                    <!-- عنصر 2: المنصات المربوطة -->
+                    <button class="control-card-btn" onclick="openModule('channels')">
+                        <img src="./Auto-W.webp" alt="Channels" class="control-icon-img">
+                        <span>المنصات المربوطة</span>
+                    </button>
+
+                    <!-- عنصر 3: توليد ومراجعة المنشورات -->
+                    <button class="control-card-btn" onclick="openModule('posts')">
+                        <img src="./Auto-W.webp" alt="Posts" class="control-icon-img">
+                        <span>مراجعة المنشورات</span>
+                    </button>
+
+                    <!-- عنصر 4: الخطة التسويقية والتدقيق -->
+                    <button class="control-card-btn" onclick="openModule('marketing-plan')">
+                        <img src="./Auto-W.webp" alt="Marketing Plan" class="control-icon-img">
+                        <span>الخطة التسويقية</span>
+                    </button>
+
+                    <!-- عنصر 5: خطة المحتوى وجدولة المنتجات -->
+                    <button class="control-card-btn" onclick="openModule('content-calendar')">
+                        <img src="./Auto-W.webp" alt="Calendar" class="control-icon-img">
+                        <span>خطة المحتوى والمنتجات</span>
+                    </button>
+
+                    <!-- عنصر 6: الأداء والنمو -->
+                    <button class="control-card-btn" onclick="openModule('analytics')">
+                        <img src="./Auto-W.webp" alt="Analytics" class="control-icon-img">
+                        <span>تقارير الأداء والنمو</span>
+                    </button>
+
+                    <!-- عنصر 7: الفواتير والاشتراكات -->
+                    <button class="control-card-btn" onclick="openModule('billing')">
+                        <img src="./Auto-W.webp" alt="Billing" class="control-icon-img">
+                        <span>الفواتير والاشتراكات</span>
+                    </button>
+
+                </div>
+            </section>
+
+            <!-- منطقة عرض المحتوى التفاعلي للوحدات المذكورة -->
+            <div id="moduleContentModal" class="module-modal-container" style="display: none;">
+                <div class="module-modal-content">
+                    <button class="close-modal-btn" onclick="closeModule()">✕</button>
+                    <div id="dynamicModuleInner">
+                        <!-- يتم حقن تفاصيل كل قسم هنا ديناميكياً -->
+                    </div>
+                </div>
             </div>
-        </div>
+
+        </main>
 
         <!-- Footer الموحد -->
-        <div id="footer-container"></div>
+        <footer id="footer-container"></footer>
 
     </div>
 
-    <!-- السكربتات والوظائف -->
-    <script>
-        // جلب محتوى الفوتر الخارجي
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-container').innerHTML = data;
-            });
-    </script>
-
-    <script>
-       // كود جلب حالة الداشبورد وتحديث محتوى الصفحة فقط
-       window.addEventListener('DOMContentLoaded', async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const tokenFromUrl = urlParams.get("token");
-            if (tokenFromUrl) {
-                localStorage.setItem("access_token", tokenFromUrl);
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-
-            const token = localStorage.getItem('access_token');
-
-            try {
-                const response = await fetch('https://api.protonag.com/v1/dashboard/status', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': token ? 'Bearer ' + token : ''
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    
-                    if (data.status_text && document.getElementById('statusBadge')) {
-                        document.getElementById('statusBadge').textContent = data.status_text;
-                    }
-                    if (data.title && document.getElementById('cardTitle')) {
-                        document.getElementById('cardTitle').textContent = data.title;
-                    }
-                    if (data.subtitle && document.getElementById('cardSubtitle')) {
-                        document.getElementById('cardSubtitle').textContent = data.subtitle;
-                    }
-                    if (data.full_name && document.getElementById('full_name')) {
-                        document.getElementById('full_name').textContent = data.full_name;
-                    }
-                }
-            } catch (error) {
-                console.error("Dashboard Sync Error:", error);
-            }
-        });
-    </script>
+    <!-- السكريبتات الخارجية المنفصلة -->
+    <script src="./dashboard.js" defer></script>
     <script src="./whatsapp-widget.js" defer></script>
     <script src="./auth-guard.js" defer></script>
     <script src="./header.js" defer></script>
