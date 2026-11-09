@@ -1,4 +1,3 @@
-// استيراد وحدات الكروت المستقلة
 import { renderPerformance } from './modules/performance.js';
 import { renderBrands } from './modules/brands.js';
 import { renderChannels } from './modules/channels.js';
