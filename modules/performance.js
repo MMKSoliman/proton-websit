@@ -1,7 +1,7 @@
 export function renderPerformance(container) {
     container.innerHTML = `
         <div class="module-header-title">
-                <img src="./home.webp" alt="Icon">
+                <img src="./Dash-P.webp" alt="Icon">
                 <h2>تقارير الأداء ونظرة عامة</h2>
             </div>
             <div class="analytics-overview-card">
