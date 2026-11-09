@@ -1,7 +1,7 @@
 export function renderBrands(container) {
     container.innerHTML = `
         <div class="module-header-title">
-                <img src="./home.webp" alt="Icon">
+                <img src="./Branding-P.webp" alt="Icon">
                 <h2>إدارة البراندات والهوية البصرية</h2>
             </div>
             <p>استعرض البراندات الخاصة بك، عدل الألوان، اللوجو، ونبرة الصوت بكل سهولة.</p>
