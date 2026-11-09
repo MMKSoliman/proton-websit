@@ -1,3 +1,12 @@
+// استيراد وحدات الكروت المستقلة
+import { renderPerformance } from './modules/performance.js';
+import { renderBrands } from './modules/brands.js';
+import { renderChannels } from './modules/channels.js';
+import { renderPosts } from './modules/posts.js';
+import { renderMarketingPlan } from './modules/marketing-plan.js';
+import { renderContentPlan } from './modules/content-plan.js';
+import { renderBilling } from './modules/billing.js';
+
 document.addEventListener("DOMContentLoaded", () => {
     fetch('footer.html')
         .then(res => res.text())
@@ -98,6 +107,7 @@ const dashboardModules = [
             <p>المنشورات التي تمت جدولتها ومراجعتها آلياً لتتطابق مع الهوية والخطط التسويقية.</p>
         `
     },
+    { id: 'marketing-plan', name: 'الخطة التسويقية', icon: '../home.webp', render: renderMarketingPlan },
     {
         id: 'content-calendar',
         name: 'خطة المحتوى والمنتجات',
