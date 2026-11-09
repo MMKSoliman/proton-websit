@@ -1,4 +1,4 @@
-export function rendercontentplan(container) {
+export function renderContentplan(container) {
     container.innerHTML = `
         <div class="module-header-title">
             <img src="../home.webp" alt="Icon">
