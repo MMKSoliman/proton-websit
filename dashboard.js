@@ -99,18 +99,6 @@ const dashboardModules = [
         `
     },
     {
-        id: 'marketing-plan',
-        name: 'الخطة التسويقية',
-        icon: './home.webp',
-        render: () => `
-            <div class="module-header-title">
-                <img src="./home.webp" alt="Icon">
-                <h2>الخطة التسويقية الاستراتيجية</h2>
-            </div>
-            <p>عرض الخطة الحالية مع تقرير التدقيق النفسي والسلوكي والخيارات المتاحة.</p>
-        `
-    },
-    {
         id: 'content-calendar',
         name: 'خطة المحتوى والمنتجات',
         icon: './home.webp',
