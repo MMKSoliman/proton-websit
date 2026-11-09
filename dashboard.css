@@ -14,7 +14,7 @@
 .dashboard-workspace {
     max-width: 1300px;
     width: 100%;
-    margin: 30px auto;
+    margin: 50px auto 30px auto; /* زيادة المسافة العلوية لمنع الزحام مع الهيدر */
     padding: 0 15px;
     display: flex;
     gap: 20px;
@@ -53,7 +53,7 @@
     transition: all 0.3s ease;
 }
 
-/* الأيقونة النشطة: ملونة + إضاءة نيون خلفية خفيفة والكارت يضيء */
+/* الأيقونة النشطة: ملونة + إضاءة نيون خلفية خفيفة */
 .dock-icon-btn.active {
     background: rgba(0, 210, 255, 0.08);
     box-shadow: 0 0 12px rgba(0, 210, 255, 0.3);
@@ -68,25 +68,26 @@
     filter: grayscale(30%) opacity(0.9);
 }
 
-/* رسالة التوضيح العائمة بجانب الأيقونة (Tooltip) */
+/* تعديل رسالة التوضيح العائمة (Tooltip) لتظهر بوضوح فوق/بجانب الأيقونة دون تداخل مع الكارت */
 .dock-icon-btn::after {
     content: attr(data-tooltip);
     position: absolute;
-    right: 100%;
+    left: 100%; /* تظهر على اليسار لتكون بعيدة عن الكارت المفتوح جهة اليمين */
     top: 50%;
     transform: translateY(-50%);
     background: rgba(20, 22, 28, 0.95);
     color: #ffffff;
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
-    border: 1px solid rgba(0, 210, 255, 0.2);
-    margin-right: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    border: 1px solid rgba(0, 210, 255, 0.3);
+    margin-left: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    z-index: 100;
 }
 
 .dock-icon-btn:hover::after {
@@ -211,27 +212,27 @@
     background: rgba(0, 210, 255, 0.08);
 }
 
-/* التوافق التام مع الموبايل بالطول مع تصغير الأيقونات وحماية الأبعاد */
+/* التوافق التام مع الموبايل بالطول مع حماية الأبعاد */
 @media (max-width: 768px) {
     .dashboard-workspace {
-        flex-direction: row; /* يظل بالطول مثل الديسك توب */
+        flex-direction: row;
         padding: 0 8px;
-        gap: 10px;
-        margin: 15px auto;
+        gap: 8px;
+        margin: 30px auto 20px auto; /* مساحة علوية مريحة أيضاً على الموبايل */
     }
     .sidebar-dock {
         padding: 5px 0;
         gap: 8px;
     }
     .dock-icon-btn img {
-        width: 30px; /* تصغير طفيف للأيقونات في الموبايل */
-        height: 30px;
+        width: 28px;
+        height: 28px;
     }
     .active-content-area {
         padding: 15px;
-        max-width: calc(100% - 45px);
+        max-width: calc(100% - 40px);
     }
     .analytics-grid {
-        grid-template-columns: repeat(2, 1fr); /* شبكة متناسقة عمودياً على الموبايل */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
