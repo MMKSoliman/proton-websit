@@ -1,111 +1,164 @@
-// جلب محتوى الفوتر الخارجي
+// جلب الفوتر
 document.addEventListener("DOMContentLoaded", () => {
     fetch('footer.html')
-        .then(response => response.text())
+        .then(res => res.text())
         .then(data => {
-            const footerContainer = document.getElementById('footer-container');
-            if (footerContainer) footerContainer.innerHTML = data;
-        })
-        .catch(err => console.error("Footer Load Error:", err));
-
-    // جلب بيانات وع trạngة الداشبورد عند التحميل
-    fetchDashboardStatus();
-});
-
-// دالة جلب الحالة من الـ Backend
-async function fetchDashboardStatus() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const tokenFromUrl = urlParams.get("token");
-    if (tokenFromUrl) {
-        localStorage.setItem("access_token", tokenFromUrl);
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
-    const token = localStorage.getItem('access_token');
-
-    try {
-        const response = await fetch('https://api.protonag.com/v1/dashboard/status', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': token ? 'Bearer ' + token : ''
-            }
+            const footer = document.getElementById('footer-container');
+            if(footer) footer.innerHTML = data;
         });
 
-        if (response.ok) {
-            const data = await response.json();
-            
-            if (data.status_text && document.getElementById('statusBadge')) {
-                document.getElementById('statusBadge').textContent = data.status_text;
-            }
-            if (data.title && document.getElementById('cardTitle')) {
-                document.getElementById('cardTitle').textContent = data.title;
-            }
-            if (data.subtitle && document.getElementById('cardSubtitle')) {
-                document.getElementById('cardSubtitle').textContent = data.subtitle;
-            }
-        }
-    } catch (error) {
-        console.error("Dashboard Sync Error:", error);
+    initDashboard();
+});
+
+// مصفوفة تعريف الأيقونات والعناصر (قابلة للتوسعة تلقائياً للإضافة المستقبلية)
+const dashboardModules = [
+    {
+        id: 'performance',
+        name: 'تقارير الأداء والنمو',
+        icon: './home.webp',
+        render: () => `
+            <div class="analytics-overview-card">
+                <h2>📊 تقارير الأداء ونظرة عامة</h2>
+                <div class="analytics-grid">
+                    <div class="metric-box">
+                        <h4>المتابعين الحاليين</h4>
+                        <p class="number">12,450</p>
+                    </div>
+                    <div class="metric-box">
+                        <h4>المنشورات</h4>
+                        <p class="number">148</p>
+                    </div>
+                    <div class="metric-box">
+                        <h4>التعليقات التفاعلية</h4>
+                        <p class="number">1,230</p>
+                    </div>
+                    <div class="metric-box">
+                        <h4>الرسائل المُعالجة</h4>
+                        <p class="number">850</p>
+                    </div>
+                    <div class="metric-box">
+                        <h4>معدل النمو</h4>
+                        <p class="number" style="color: #00ff88;">+18.4%</p>
+                    </div>
+                </div>
+
+                <div class="neon-tip-box">
+                    <span>💡</span>
+                    <p><strong>توصية ذكية لتحسين الأداء:</strong> لوحظ زيادة التفاعل على منشورات الفيديو بين الساعة 7 و 9 مساءً؛ يُنصح بجدولة منشورات المنتجات الجديدة خلال هذه الفترة لرفع معدل التحويل.</p>
+                </div>
+
+                <div class="top-posts-section">
+                    <h3>🔥 أعلى 3 منشورات تفاعلاً</h3>
+                    <div class="posts-links-list">
+                        <a href="#" class="post-link-item"><span>منشور إطلاق العون الجديد - تفاعل قياسي</span> <span>↗</span></a>
+                        <a href="#" class="post-link-item"><span>فيديو توضيحي لمميزات المنتج الرئيسي</span> <span>↗</span></a>
+                        <a href="#" class="post-link-item"><span>قصص نجاح العملاء والتقييمات</span> <span>↗</span></a>
+                    </div>
+                </div>
+            </div>
+        `
+    },
+    {
+        id: 'brands',
+        name: 'إدارة البراندات',
+        icon: './home.webp',
+        render: () => `
+            <div>
+                <h2>🏢 إدارة البراندات والهوية البصرية</h2>
+                <p>استعرض البراندات الخاصة بك، عدل الألوان، اللوجو، ونبرة الصوت بكل سهولة.</p>
+                <button class="action-btn-primary" style="margin-top: 15px;">➕ إضافة براند جديد</button>
+            </div>
+        `
+    },
+    {
+        id: 'channels',
+        name: 'المنصات المربوطة',
+        icon: './home.webp',
+        render: () => `
+            <div>
+                <h2>🔗 منصات التواصل المربوطة</h2>
+                <p>حالة ربط حسابات السوشيال ميديا وصلاحيات الوصول النشطة.</p>
+                <a href="./connect-social.html" class="action-link-inline" style="color: #00d2ff; display:inline-block; margin-top:15px;">إدارة وتعديل منصات التواصل الآن 🔗</a>
+            </div>
+        `
+    },
+    {
+        id: 'posts',
+        name: 'مراجعة المنشورات',
+        icon: './home.webp',
+        render: () => `
+            <div>
+                <h2>✍️ مراجعة المنشورات والتدقيق الذكي</h2>
+                <p>المنشورات التي تمت جدولتها ومراجعتها آلياً لتتطابق مع الهوية والخطط التسويقية.</p>
+            </div>
+        `
+    },
+    {
+        id: 'marketing-plan',
+        name: 'الخطة التسويقية',
+        icon: './home.webp',
+        render: () => `
+            <div>
+                <h2>📈 الخطة التسويقية الاستراتيجية</h2>
+                <p>عرض الخطة الحالية مع تقرير التدقيق النفسي والسلوكي والخيارات المتاحة.</p>
+            </div>
+        `
+    },
+    {
+        id: 'content-calendar',
+        name: 'خطة المحتوى والمنتجات',
+        icon: './home.webp',
+        render: () => `
+            <div>
+                <h2>📅 خطة المحتوى وجدولة المنتجات</h2>
+                <p>إدارة المنتجات، الصور، والتقويم الزمني للمحتوى التلقائي ونشر العروض.</p>
+            </div>
+        `
+    },
+    {
+        id: 'billing',
+        name: 'الفواتير والاشتراكات',
+        icon: './home.webp',
+        render: () => `
+            <div>
+                <h2>💳 الفواتير والاشتراكات</h2>
+                <p>سجل الفواتير الشهرية وتفاصيل الاستهلاك وباقات بروتون.</p>
+            </div>
+        `
     }
+];
+
+// بناء شريط الأيقونات والعرض الافتتاحي تلقائياً
+function initDashboard() {
+    const dockContainer = document.getElementById('sidebarDock');
+    dockContainer.innerHTML = '';
+
+    dashboardModules.forEach((mod, index) => {
+        const btn = document.createElement('button');
+        btn.className = `dock-icon-btn ${index === 0 ? 'active' : ''}`;
+        btn.setAttribute('data-id', mod.id);
+        btn.innerHTML = `<img src="${mod.icon}" alt="${mod.name}" title="${mod.name}">`;
+
+        // حدث الضغط للتنقل وتفعيل الأيقونة وتغيير الكارت
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.dock-icon-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderActiveModule(mod.id);
+        });
+
+        dockContainer.appendChild(btn);
+    });
+
+    // افتح أول وحدة (تقارير الأداء) تلقائياً عند تحميل الصفحة
+    renderActiveModule(dashboardModules[0].id);
 }
 
-// نظام النوافذ المنبثقة التفاعلية للأيقونات (Modules Handler)
-function openModule(moduleName) {
-    const modal = document.getElementById('moduleContentModal');
-    const innerContainer = document.getElementById('dynamicModuleInner');
+// دالة عرض محتوى الكارت النشط داخل المساحة الخضراء
+function renderActiveModule(moduleId) {
+    const activeModule = dashboardModules.find(m => m.id === moduleId);
+    const contentArea = document.getElementById('activeContentArea');
     
-    let contentHTML = '';
-
-    switch(moduleName) {
-        case 'brands':
-            contentHTML = `
-                <h3>إدارة البراندات والهوية البصرية</h3>
-                <p>استعرض البراندات الخاصة بك وقم بتعديل اللوجو، الألوان، ونبرة الصوت.</p>
-                <div class="module-action-box">
-                    <button class="btn-sub">إضافة براند جديد</button>
-                </div>`;
-            break;
-        case 'channels':
-            contentHTML = `
-                <h3>منصات التواصل المربوطة</h3>
-                <p>حالة ربط الحسابات ومنصات السوشيال ميديا الخاصة بنشاطك.</p>
-                <a href="./connect-social.html" class="action-link-inline">🔗 إدارة وربط الحسابات</a>`;
-            break;
-        case 'posts':
-            contentHTML = `
-                <h3>منصة المراجعة والتدقيق الذكي للمنشورات</h3>
-                <p>المنشورات التي تمت جدولتها ومراجعتها آلياً لتتطابق مع خطتك التسويقية.</p>`;
-            break;
-        case 'marketing-plan':
-            contentHTML = `
-                <h3>الخطة التسويقية الاستراتيجية</h3>
-                <p>عرض الخطة الحالية مع تقرير التدقيق وخيارات التعديل المخصصة.</p>`;
-            break;
-        case 'content-calendar':
-            contentHTML = `
-                <h3>خطة المحتوى وجدولة المنتجات</h3>
-                <p>إدارة المنتجات، الصور، والتقويم الزمني للمحتوى التلقائي.</p>`;
-            break;
-        case 'analytics':
-            contentHTML = `
-                <h3>تقارير الأداء ونمو المتابعين</h3>
-                <p>مقارنة المتابعين، عدد الردود، والرسائل التي تمت معالجتها بواسطة النظام.</p>`;
-            break;
-        case 'billing':
-            contentHTML = `
-                <h3>سجل الاشتراكات والفواتير</h3>
-                <p>تفاصيل باقتك الحالية والفواتير الشهرية السابقة.</p>`;
-            break;
-        default:
-            contentHTML = `<h3>محتوى غير متوفر</h3>`;
+    if (activeModule && contentArea) {
+        contentArea.innerHTML = activeModule.render();
     }
-
-    innerContainer.innerHTML = contentHTML;
-    modal.style.display = 'flex';
-}
-
-function closeModule() {
-    const modal = document.getElementById('moduleContentModal');
-    if (modal) modal.style.display = 'none';
 }
