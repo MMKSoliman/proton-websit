@@ -1,0 +1,176 @@
+/* تنسيقات لوحة التحكم العامة */
+.proton-dashboard-body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: 'Cairo', 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-main-content {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* بطاقة الترحيب */
+.welcome-banner-card {
+    background: #1e1e1e;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    margin-bottom: 40px;
+    gap: 20px;
+}
+
+.status-badge {
+    background: rgba(0, 210, 255, 0.15);
+    color: #00d2ff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.card-title {
+    color: #ffffff;
+    font-size: 24px;
+    margin: 15px 0 10px 0;
+}
+
+.card-subtitle {
+    color: #aaaaaa;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.action-btn-primary {
+    background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+    display: inline-block;
+}
+
+.action-btn-primary:hover {
+    opacity: 0.9;
+}
+
+/* شريط الأيقونات والتحكم */
+.control-dock-section {
+    margin-top: 20px;
+}
+
+.section-heading {
+    color: #ffffff;
+    font-size: 18px;
+    margin-bottom: 20px;
+    border-right: 4px solid #00d2ff;
+    padding-right: 10px;
+}
+
+.control-icons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.control-card-btn {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #ffffff;
+}
+
+.control-card-btn:hover {
+    background: #222222;
+    border-color: #00d2ff;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 210, 255, 0.1);
+}
+
+.control-icon-img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+}
+
+.control-card-btn span {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* النافذة المنبثقة (Modal) لعرض محتوى العناصر */
+.module-modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.module-modal-content {
+    background: #1a1a1a;
+    border: 1px solid #333333;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 600px;
+    padding: 30px;
+    position: relative;
+    color: #ffffff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+}
+
+.close-modal-btn {
+    background: transparent;
+    border: none;
+    color: #aaaaaa;
+    font-size: 20px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+}
+
+.close-modal-btn:hover {
+    color: #ffffff;
+}
+
+/* استجابة الموبايل */
+@media (max-width: 768px) {
+    .welcome-banner-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .control-icons-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    .dashboard-main-content {
+        margin: 20px auto;
+        padding: 0 10px;
+    }
+}
