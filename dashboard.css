@@ -110,6 +110,7 @@
 .module-header-title {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 12px;
     margin-bottom: 20px;
     border-bottom: 1px solid rgba(255,255,255,0.06);
