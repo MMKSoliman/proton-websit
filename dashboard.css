@@ -109,13 +109,18 @@
 /* عنوان الكارت المرفق معه الأيقونة الصغيرة */
 .module-header-title {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    padding-bottom: 12px;
+    align-items: center;
+    background: rgba(22, 27, 34, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 20px 25px;
+    border-radius: 16px;
+    margin-bottom: 15px;
     direction: rtl;
+    text-align: right;
+    gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .module-header-title img {
