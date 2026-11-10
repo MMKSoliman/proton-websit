@@ -116,39 +116,39 @@ export async function renderMarketingPlan(container) {
     await fetchAndPopulatePlanData();
 }
 
-async function fetchAndPopulatePlanData() {
+async function fetchAndPopulatePlanData(brandId) {
     try {
-        // جلب البيانات (من جدول marketing_plans والـ brands)
-        const planData = {
-            logo_url: "", // رابط لوجو العميل القادم من جدول brands
-            target_market: "أصحاب الشركات الصغيرة والتاجر العربي الذي يعاني من ضيق الوقت للرد على الرسائل والتعليقات.",
-            brand_message: "Proton هو شريك النمو الرقمي الذي يدير ويضاعف مبيعاتك أوتوماتيكياً بدون استنزاف ووقت.",
-            reach_channels: "إعلانات Instagram الموجهة، محتوى LinkedIn الاستراتيجي، وحملات إعادة الاستهداف.",
-            lead_capture: "دليل مجاني أو تدقيق مجاني لحسابات السوشيال ميديا مقابل تسجيل رقم الواتساب.",
-            lead_nurturing: "سلسلة رسائل واتساب وآلية n8n التلقائية للرد على الاستفسارات فور وقوعها.",
-            sales_conversion: "تقديم عرض استشاري مصغر وتجربة آليات الرد الآلي حية أمام العميل.",
-            delight_experience: "لوحة تحكم تفاعلية هادئة، وتقارير أسبوعية تصدر آلياً.",
-            increase_clv: "توفير باقات جدولة المنتجات المتقدمة، وربط المتاجر الإلكترونية المتعددة.",
-            referral_system: "خصم 20% لكل عميل يجلب نشاطاً تجارياً آخر للاشتراك في Proton."
-        };
+        // جلب البيانات الديناميكية الخاصة بالبراند من الـ Backend أو الـ API الخاص بك
+        const response = await fetch(`/v1/marketing-plan/${brandId}`);
+        
+        if (!response.ok) {
+            throw new Error("لم يتم العثور على خطة تسويقية مسجلة لهذا البراند بعد.");
+        }
+        
+        const planData = await response.json();
 
+        // عرض لوجو العميل إذا كان موجوداً
         if (planData.logo_url) {
             const logoImg = document.getElementById('brand-logo-preview');
-            logoImg.src = planData.logo_url;
-            logoImg.style.display = 'block';
+            if (logoImg) {
+                logoImg.src = planData.logo_url;
+                logoImg.style.display = 'block';
+            }
         }
 
-        document.getElementById('data-target-market').innerText = planData.target_market;
-        document.getElementById('data-brand-message').innerText = planData.brand_message;
-        document.getElementById('data-reach-channels').innerText = planData.reach_channels;
-        document.getElementById('data-lead-capture').innerText = planData.lead_capture;
-        document.getElementById('data-lead-nurturing').innerText = planData.lead_nurturing;
-        document.getElementById('data-sales-conversion').innerText = planData.sales_conversion;
-        document.getElementById('data-delight-experience').innerText = planData.delight_experience;
-        document.getElementById('data-increase-clv').innerText = planData.increase_clv;
-        document.getElementById('data-referral-system').innerText = planData.referral_system;
+        // تعبئة الـ 9 خانات بمخرجات قاعدة البيانات الحقيقية
+        document.getElementById('data-target-market').innerText = planData.target_market || '';
+        document.getElementById('data-brand-message').innerText = planData.brand_message || '';
+        document.getElementById('data-reach-channels').innerText = planData.reach_channels || '';
+        document.getElementById('data-lead-capture').innerText = planData.lead_capture || '';
+        document.getElementById('data-lead-nurturing').innerText = planData.lead_nurturing || '';
+        document.getElementById('data-sales-conversion').innerText = planData.sales_conversion || '';
+        document.getElementById('data-delight-experience').innerText = planData.delight_experience || '';
+        document.getElementById('data-increase-clv').innerText = planData.increase_clv || '';
+        document.getElementById('data-referral-system').innerText = planData.referral_system || '';
 
     } catch (error) {
-        console.error("Error loading plan:", error);
+        console.error("Error loading marketing plan:", error);
+        // في حال عدم وجود خطة، يمكنك ترك الكروت فارغة أو إظهار رسالة تنبيه لطيفة للمستخدم
     }
 }
