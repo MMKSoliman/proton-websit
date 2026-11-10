@@ -127,6 +127,7 @@
     width: 64px;
     height: 64px;
     object-fit: contain;
+    padding: 4px;
 }
 
 .module-header-title h2 {
