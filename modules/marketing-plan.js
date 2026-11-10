@@ -1,8 +1,3 @@
-/**
- * Dynamic Marketing Plan Module - The 1-Page Marketing Plan Framework
- * Proton Automated Platform
- */
-
 export async function renderMarketingPlan(container) {
     container.innerHTML = `
         <!-- الهيدر الرئيسي للوحدة -->
