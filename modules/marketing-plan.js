@@ -4,13 +4,19 @@
  */
 
 export async function renderMarketingPlan(container) {
-    // 1. هيكل HTML التفاعلي المقسم إلى 3 مراحل و9 كروت
     container.innerHTML = `
         <div class="module-header-title">
-            <img src="../Sta-P.webp" alt="Marketing Plan Icon">
-            <h2>الخطة التسويقية الاستراتيجية (1-Page Canvas)</h2>
+            <div class="brand-header-info">
+                <!-- لوجو بروتون بجوار لوجو العميل -->
+                <img src="../Sta-P.webp" alt="Proton Logo" class="proton-logo-print">
+                <img id="brand-logo-preview" src="" alt="Client Logo" class="brand-logo-img" style="display:none;">
+                <div>
+                    <h2>الخطة التسويقية الاستراتيجية (1-Page Canvas)</h2>
+                    <p class="module-subtitle">إطار العمل الاستراتيجي المعتمد لرحلة نمو العميل، والمربوط بآليات الأتمتة الذكية في Proton.</p>
+                </div>
+            </div>
+            <button id="print-plan-btn" class="proton-btn-print">🖨️ طباعة الخطة (A4)</button>
         </div>
-        <p class="module-subtitle">إطار العمل الاستراتيجي المعتمد لرحلة نمو العميل، والمربوط بآليات الأتمتة الذكية في Proton.</p>
 
         <!-- حاوية الشبكة الرئيسية للخطة التسويقية -->
         <div class="marketing-canvas-container">
@@ -22,19 +28,19 @@ export async function renderMarketingPlan(container) {
                     <h3>العملاء المحتملون (Prospects)</h3>
                 </div>
                 <div class="phase-cards-grid">
-                    <div class="canvas-card" id="card-target-market">
+                    <div class="canvas-card">
                         <div class="card-num">01</div>
                         <h4>سوقي المستهدف</h4>
                         <p class="card-desc">الدوافع النفسية والسلوكية للجمهور</p>
                         <div class="card-content" id="data-target-market">جاري جلب البيانات...</div>
                     </div>
-                    <div class="canvas-card" id="card-brand-message">
+                    <div class="canvas-card">
                         <div class="card-num">02</div>
                         <h4>رسالتي للسوق</h4>
                         <p class="card-desc">القيمة الفريدة ونبرة الصوت (UVP)</p>
                         <div class="card-content" id="data-brand-message">جاري جلب البيانات...</div>
                     </div>
-                    <div class="canvas-card" id="card-reach-channels">
+                    <div class="canvas-card">
                         <div class="card-num">03</div>
                         <h4>وسائل الوصول</h4>
                         <p class="card-desc">منصات ومنافذ النشر المستهدفة</p>
@@ -50,19 +56,19 @@ export async function renderMarketingPlan(container) {
                     <h3>العملاء المهتمون (Leads)</h3>
                 </div>
                 <div class="phase-cards-grid">
-                    <div class="canvas-card" id="card-lead-capture">
+                    <div class="canvas-card">
                         <div class="card-num">04</div>
                         <h4>استدراج المهتمين</h4>
                         <p class="card-desc">عرض القيمة وجذب بيانات التواصل</p>
                         <div class="card-content" id="data-lead-capture">جاري جلب البيانات...</div>
                     </div>
-                    <div class="canvas-card" id="card-lead-nurturing">
+                    <div class="canvas-card">
                         <div class="card-num">05</div>
                         <h4>احتضان وتغذية المهتمين</h4>
                         <p class="card-desc">سلسلة الردود والمتابعة الذكية تلقائياً</p>
                         <div class="card-content" id="data-lead-nurturing">جاري جلب البيانات...</div>
                     </div>
-                    <div class="canvas-card" id="card-sales-conversion">
+                    <div class="canvas-card">
                         <div class="card-num">06</div>
                         <h4>تحويل المهتمين إلى مشترين</h4>
                         <p class="card-desc">استراتيجيات إغلاق المبيعات والحجز</p>
@@ -78,19 +84,19 @@ export async function renderMarketingPlan(container) {
                     <h3>العملاء الفعليون (Customers)</h3>
                 </div>
                 <div class="phase-cards-grid">
-                    <div class="canvas-card" id="card-delight-experience">
+                    <div class="canvas-card">
                         <div class="card-num">07</div>
                         <h4>تجربة عميل مميزة</h4>
                         <p class="card-desc">الانطباع الأول وتقديم القيمة الفائقة</p>
                         <div class="card-content" id="data-delight-experience">جاري جلب البيانات...</div>
                     </div>
-                    <div class="canvas-card" id="card-increase-clv">
+                    <div class="canvas-card">
                         <div class="card-num">08</div>
                         <h4>رفع القيمة الدائمة (CLV)</h4>
                         <p class="card-desc">إعادة الشراء والخدمات المكملة</p>
                         <div class="card-content" id="data-increase-clv">جاري جلب البيانات...</div>
                     </div>
-                    <div class="canvas-card" id="card-referral-system">
+                    <div class="canvas-card">
                         <div class="card-num">09</div>
                         <h4>تنسيق الإحالات والتوصيات</h4>
                         <p class="card-desc">تحويل العملاء إلى مسوقين للبراند</p>
@@ -102,48 +108,36 @@ export async function renderMarketingPlan(container) {
         </div>
     `;
 
-    // 2. استدعاء دالة جلب البيانات وحقنها في الخانات التسع
+    // تفعيل زر الطباعة
+    document.getElementById('print-plan-btn').addEventListener('click', () => {
+        window.print();
+    });
+
     await fetchAndPopulatePlanData();
 }
 
-/**
- * دالة جلب بيانات الخطة من قاعدة البيانات أو n8n Webhook
- */
 async function fetchAndPopulatePlanData() {
-    const token = localStorage.getItem('access_token');
-    
-    // يمكن الاستدعاء من FastApi Endpoint أو n8n Webhook مباشرة:
-    // const API_URL = 'https://api.protonag.com/v1/marketing-plan/current';
-    // أو رابط سيناريو n8n:
-    // const API_URL = 'https://n8n.protonag.com/webhook/get-marketing-plan';
-
     try {
-        /*
-        // السطر الفعلي للـ Fetch (موقوف مؤقتاً لحين ربط الـ Backend):
-        const response = await fetch('https://api.protonag.com/v1/marketing-plan', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': token ? 'Bearer ' + token : ''
-            }
-        });
-        const planData = await response.json();
-        */
-
-        // 3. متطلبات ومخرجات السيناريو (Mock Data لتوضيح أسماء المتغيرات القادمة من n8n/DB)
+        // جلب البيانات (من جدول marketing_plans والـ brands)
         const planData = {
+            logo_url: "", // رابط لوجو العميل القادم من جدول brands
             target_market: "أصحاب الشركات الصغيرة والتاجر العربي الذي يعاني من ضيق الوقت للرد على الرسائل والتعليقات.",
             brand_message: "Proton هو شريك النمو الرقمي الذي يدير ويضاعف مبيعاتك أوتوماتيكياً بدون استنزاف ووقت.",
             reach_channels: "إعلانات Instagram الموجهة، محتوى LinkedIn الاستراتيجي، وحملات إعادة الاستهداف.",
             lead_capture: "دليل مجاني أو تدقيق مجاني لحسابات السوشيال ميديا مقابل تسجيل رقم الواتساب.",
             lead_nurturing: "سلسلة رسائل واتساب وآلية n8n التلقائية للرد على الاستفسارات فور وقوعها.",
             sales_conversion: "تقديم عرض استشاري مصغر وتجربة آليات الرد الآلي حية أمام العميل.",
-            delight_experience: "لوحة تحكم تفاعلية هادئة، وتقارير أداء أسبوعية تصدر آلياً.",
+            delight_experience: "لوحة تحكم تفاعلية هادئة، وتقارير أسبوعية تصدر آلياً.",
             increase_clv: "توفير باقات جدولة المنتجات المتقدمة، وربط المتاجر الإلكترونية المتعددة.",
             referral_system: "خصم 20% لكل عميل يجلب نشاطاً تجارياً آخر للاشتراك في Proton."
         };
 
-        // 4. حقن التكست داخل كل مربع ديناميكياً
+        if (planData.logo_url) {
+            const logoImg = document.getElementById('brand-logo-preview');
+            logoImg.src = planData.logo_url;
+            logoImg.style.display = 'block';
+        }
+
         document.getElementById('data-target-market').innerText = planData.target_market;
         document.getElementById('data-brand-message').innerText = planData.brand_message;
         document.getElementById('data-reach-channels').innerText = planData.reach_channels;
@@ -155,6 +149,6 @@ async function fetchAndPopulatePlanData() {
         document.getElementById('data-referral-system').innerText = planData.referral_system;
 
     } catch (error) {
-        console.error("Marketing Plan Sync Error:", error);
+        console.error("Error loading plan:", error);
     }
 }
