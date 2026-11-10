@@ -25,7 +25,7 @@
     font-size: 22px;
     color: #ffffff;
     font-weight: 700;
-    white-space: nowrap; /* منع انقسام العنوان على أكثر من سطر */
+    white-space: nowrap;
 }
 
 .module-subtitle {
@@ -39,6 +39,7 @@
     align-items: center;
     gap: 15px;
     flex-shrink: 0;
+    flex-direction: row-reverse; /* وضع اللوجو يمين زر الطباعة / الكلام */
 }
 
 .proton-badge-logo {
@@ -55,7 +56,7 @@
     object-fit: contain;
 }
 
-/* بادة العميل المخصصة */
+/* بادة العميل المخصصة (جعل اللوجو يمين الكلام تماماً) */
 .client-brand-badge-card {
     background: rgba(22, 27, 34, 0.85);
     border: 1px solid rgba(0, 210, 255, 0.25);
@@ -74,6 +75,7 @@
     align-items: center;
     gap: 16px;
     width: 100%;
+    flex-direction: row; /* اللوجو يمين والنصوص يساره في الاتجاه العربي */
 }
 
 .brand-logo-wrapper {
@@ -101,6 +103,7 @@
     flex-direction: column;
     gap: 3px;
     width: 100%;
+    text-align: right;
 }
 
 .client-titles h3 {
@@ -108,7 +111,7 @@
     font-size: 18px;
     color: #00d2ff;
     font-weight: 700;
-    white-space: nowrap; /* اسم البراند على سطر واحد */
+    white-space: nowrap;
 }
 
 .client-plan-title {
@@ -249,6 +252,7 @@
     .header-actions-group {
         justify-content: space-between;
         width: 100%;
+        flex-direction: row-reverse;
     }
 
     .proton-btn-print {
@@ -257,7 +261,7 @@
     }
 
     .header-titles-group h2 {
-        white-space: normal; /* السماح بالنزول لسطر في الموبايل لو الشاشة صغيرة جداً */
+        white-space: normal;
         font-size: 18px;
     }
 
@@ -300,7 +304,7 @@
         print-color-adjust: exact !important;
     }
 
-    /* الهيدر العلوي في الطباعة (العنوان يميناً، اللوجو يساراً وبشكل أفقي سليم) */
+    /* الهيدر العلوي في الطباعة (العنوان يميناً، اللوجو وزر الطباعة يساراً) */
     .module-header-title {
         position: relative !important;
         width: 100% !important;
@@ -330,6 +334,8 @@
     .header-actions-group {
         display: flex !important;
         align-items: center !important;
+        flex-direction: row-reverse !important;
+        gap: 10px !important;
     }
 
     .proton-badge-logo {
@@ -342,7 +348,7 @@
         height: 30px !important;
     }
 
-    /* بادة العميل في الطباعة (خلفية نظيفة متناسقة وأفقيّة) */
+    /* بادة العميل في الطباعة (اللوجو يمين الكلام تماماً) */
     .client-brand-badge-card {
         position: relative !important;
         width: 100% !important;
@@ -354,6 +360,14 @@
         display: flex !important;
         align-items: center !important;
         direction: rtl !important;
+    }
+
+    .client-brand-info {
+        flex-direction: row !important; /* ضمان وجود اللوجو يمين النصوص بالطباعة */
+    }
+
+    .client-titles {
+        text-align: right !important;
     }
 
     .client-titles h3 {
