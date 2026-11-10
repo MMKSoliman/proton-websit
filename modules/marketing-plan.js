@@ -8,7 +8,6 @@ export async function renderMarketingPlan(container) {
         <!-- الهيدر الرئيسي للوحدة مع تضمين لوجو بروتون -->
         <div class="module-header-title">
             <div class="header-titles-group">
-                <div class="proton-badge-logo">
                     <img src="../Sta-P.webp" alt="Proton Logo" class="proton-header-logo-img">
                 <h2>الخطة التسويقية الاستراتيجية</h2>
                 <p class="module-subtitle">إطار العمل الاستراتيجي المعتمد لرحلة نمو العميل، والمربوط بآليات الأتمتة الذكية في Proton.</p>
