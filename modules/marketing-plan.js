@@ -27,6 +27,10 @@ export async function renderMarketingPlan(container) {
                 <div class="brand-logo-wrapper">
                     <img id="brand-logo-preview" src="../Sta-P.webp" alt="Brand Logo" class="brand-logo-img">
                 </div>
+                <div class="platform-text">
+                                <h4>اختر النشاط التجاري</h4>
+                                <p>اختر البراند المطلوب عرض خطته التسويقية</p>
+                            </div>
                 <select id="brand-selector" class="brand-select-input">
                     <option value="">جاري التحميل...</option>
                 </select>
