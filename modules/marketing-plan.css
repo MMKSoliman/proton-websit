@@ -13,13 +13,6 @@
     gap: 20px;
 }
 
-.header-main-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
 .header-titles-group h2 {
     margin: 0 0 5px 0;
     font-size: 22px;
@@ -33,19 +26,7 @@
     margin: 0;
 }
 
-.proton-main-icon {
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    background: rgba(0, 210, 255, 0.08);
-    border: 2px solid rgba(0, 210, 255, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-/* بادة العميل الجديدة تحت الهيدر مباشرة */
+/* بادة العميل تحت الهيدر */
 .client-brand-badge-card {
     background: rgba(22, 27, 34, 0.85);
     border: 1px solid rgba(0, 210, 255, 0.25);
@@ -120,7 +101,7 @@
     box-shadow: 0 6px 20px rgba(0, 210, 255, 0.5);
 }
 
-/* شبكة الكروت الرئيسية */
+/* شبكة الكروت الكبيرة موحدة التنسيق */
 .marketing-canvas-container {
     display: flex;
     flex-direction: column;
@@ -180,6 +161,8 @@
     border-radius: 12px;
     padding: 18px;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .card-num {
@@ -207,13 +190,15 @@
     font-size: 13px;
     color: #d1d5db;
     line-height: 1.6;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.25);
     padding: 12px;
     border-radius: 8px;
     min-height: 65px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    flex-grow: 1;
 }
 
-/* ---------------- إعدادات الطباعة الرسمية على مقاس A4 ---------------- */
+/* ---------------- إعدادات الطباعة الرسمية A4 ---------------- */
 @media print {
     @page {
         size: A4 portrait;
@@ -245,15 +230,17 @@
         print-color-adjust: exact !important;
     }
 
+    /* الهيدر العلوي غامق واللوجو جهة اليمين */
     .module-header-title {
         position: relative !important;
         width: 100% !important;
         background-color: #161b22 !important;
         color: #ffffff !important;
         border-radius: 6px;
-        padding: 8px 15px !important;
+        padding: 10px 15px !important;
         margin-bottom: 8px !important;
         display: flex !important;
+        flex-direction: row-reverse !important; /* وضع اللوجو يميناً والعنوان بجانبه */
         justify-content: space-between !important;
         align-items: center !important;
         direction: rtl !important;
@@ -265,7 +252,6 @@
         margin: 0;
     }
 
-    /* بادة العميل في الطباعة */
     .client-brand-badge-card {
         position: relative !important;
         width: 100% !important;
