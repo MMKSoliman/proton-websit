@@ -223,32 +223,29 @@
 /* ---------------- إعدادات الطباعة الرسمية على مقاس A4 ---------------- */
 /* ---------------- إعدادات الطباعة الرسمية على مقاس A4 (متنسطة وبدون خلفية داكنة) ---------------- */
 /* ---------------- إعدادات الطباعة الرسمية على مقاس A4 (منضبطة، في المنتصف، وباتجاه صحيح) ---------------- */
+/* ---------------- إعدادات الطباعة الرسمية على مقاس A4 (متنسطة وبدون خلفية داكنة) ---------------- */
 @media print {
     @page {
         size: A4 portrait;
-        margin: 10mm;
+        margin: 8mm;
     }
 
+    /* إخفاء كافة عناصر الموقع والخلفيات الخارجية */
     body * {
         visibility: hidden !important;
     }
 
+    /* إظهار فقط حاوية الخطة وترويستها الكارتية وكروت المحتوى */
     .module-header-title, .module-header-title *, 
     .marketing-canvas-container, .marketing-canvas-container * {
         visibility: visible !important;
     }
 
-    /* إخفاء زر الطباعة تماماً أثناء عملية الطباعة */
-    .proton-btn-print {
-        display: none !important;
-        visibility: hidden !important;
-    }
-
-    .module-subtitle {
+    .proton-btn-print, .module-subtitle {
         display: none !important;
     }
 
-    /* تثبيت خلفية بيضاء بالكامل وإزالة أي هوامش رمادية داتكنة */
+    /* إلغاء أي خلفية داكنة للصفحة والمستند وجعله أبيض صافياً */
     body, html, .active-content-area, .dashboard-workspace {
         background: #ffffff !important;
         background-color: #ffffff !important;
@@ -263,55 +260,40 @@
         print-color-adjust: exact !important;
     }
 
-    /* ضبط اتجاه الهيدر ليكون من اليمين لليسار ومحاذاة اللوجو واسم البراند في المنتصف/اليمين */
+    /* جعل الهيدر غامق وأنيق ومتوسط في أعلى الصفحة */
     .module-header-title {
         position: relative !important;
         top: 0 !important;
         width: 100% !important;
-        margin: 0 auto 12px auto !important;
+        margin: 0 auto 15px auto !important;
         background-color: #161b22 !important;
         color: #ffffff !important;
         border-radius: 8px;
-        padding: 10px 15px !important;
+        padding: 12px 20px !important;
         border: none !important;
         display: flex !important;
-        flex-direction: row-reverse !important; /* عكس الترتيب ليصبح اللوجو واسم البراند يميناً والعنوان يساراً */
         justify-content: space-between !important;
         align-items: center !important;
         direction: rtl !important;
         box-sizing: border-box !important;
     }
 
-    .brand-header-info {
-        display: flex !important;
-        flex-direction: row-reverse !important; /* وضع اللوجو بجوار اسم البراند بالاتجاه الصحيح */
-        align-items: center !important;
-        gap: 12px !important;
-    }
-
-    .header-titles-group {
-        text-align: right !important;
-    }
-
     .header-titles-group h2 {
         color: #ffffff !important;
-        font-size: 13pt;
+        font-size: 14pt;
         margin: 0;
     }
 
     .brand-name-badge {
         color: #00d2ff !important;
-        font-size: 9pt;
     }
 
     .brand-logo-wrapper {
         background: #0d1117 !important;
         border: 2px solid #00d2ff !important;
-        width: 45px !important;
-        height: 45px !important;
     }
 
-    /* توسيط شبكة الكروت وملاءمتها لمنتصف الصفحة */
+    /* توسيط شبكة الخطة التسويقية بالكامل في منتصف الصفحة */
     .marketing-canvas-container {
         position: relative !important;
         top: 0 !important;
@@ -319,7 +301,7 @@
         margin: 0 auto !important;
         display: flex !important;
         flex-direction: column !important;
-        gap: 8px !important;
+        gap: 10px !important;
         direction: rtl !important;
         box-sizing: border-box !important;
     }
@@ -328,50 +310,47 @@
         background: #fdfdfd !important;
         border: 1px solid #dcdcdc !important;
         border-radius: 8px;
-        padding: 6px 8px;
+        padding: 8px 10px;
         break-inside: avoid;
     }
 
     .phase-header h3 {
         color: #222222 !important;
-        font-size: 10.5pt;
-        margin: 0;
+        font-size: 11pt;
     }
 
     .phase-cards-grid {
-        display: grid !important;
+        display: grid;
         grid-template-columns: repeat(3, 1fr) !important;
-        gap: 6px !important;
+        gap: 8px;
     }
 
     .canvas-card {
         background: #ffffff !important;
         border: 1px solid #e0e0e0 !important;
         border-radius: 6px;
-        padding: 6px;
+        padding: 8px;
         break-inside: avoid;
-        box-shadow: none !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
 
     .canvas-card h4 {
         color: #0077b6 !important;
-        font-size: 9pt;
-        margin: 0 0 2px 0;
+        font-size: 9.5pt;
     }
 
     .card-content {
         background: #f8f9fa !important;
         color: #212529 !important;
         border: 1px solid #eaeaea;
-        padding: 5px;
-        font-size: 8pt;
+        padding: 6px;
+        font-size: 8.5pt;
         border-radius: 4px;
-        min-height: 30px;
+        min-height: 35px;
     }
 
     .card-desc {
         color: #666666 !important;
-        font-size: 7pt;
-        margin: 0 0 6px 0;
+        font-size: 7.5pt;
     }
 }
