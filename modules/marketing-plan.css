@@ -221,16 +221,19 @@
 }
 
 /* ---------------- إعدادات الطباعة الرسمية على مقاس A4 ---------------- */
+/* ---------------- إعدادات الطباعة الرسمية على مقاس A4 (متنسطة وبدون خلفية داكنة) ---------------- */
 @media print {
     @page {
         size: A4 portrait;
-        margin: 10mm;
+        margin: 8mm;
     }
 
+    /* إخفاء كافة عناصر الموقع والخلفيات الخارجية */
     body * {
         visibility: hidden !important;
     }
 
+    /* إظهار فقط حاوية الخطة وترويستها الكارتية وكروت المحتوى */
     .module-header-title, .module-header-title *, 
     .marketing-canvas-container, .marketing-canvas-container * {
         visibility: visible !important;
@@ -240,27 +243,37 @@
         display: none !important;
     }
 
-    body, html {
+    /* إلغاء أي خلفية داكنة للصفحة والمستند وجعله أبيض صافياً */
+    body, html, .active-content-area, .dashboard-workspace {
+        background: #ffffff !important;
         background-color: #ffffff !important;
         color: #111111 !important;
+        box-shadow: none !important;
+        border: none !important;
+        backdrop-filter: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
     }
 
+    /* جعل الهيدر غامق وأنيق ومتوسط في أعلى الصفحة */
     .module-header-title {
-        position: absolute;
-        top: 0;
-        right: 0;
-        left: 0;
+        position: relative !important;
+        top: 0 !important;
+        width: 100% !important;
+        margin: 0 auto 15px auto !important;
         background-color: #161b22 !important;
         color: #ffffff !important;
         border-radius: 8px;
         padding: 12px 20px !important;
         border: none !important;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        direction: rtl;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        direction: rtl !important;
+        box-sizing: border-box !important;
     }
 
     .header-titles-group h2 {
@@ -278,15 +291,17 @@
         border: 2px solid #00d2ff !important;
     }
 
+    /* توسيط شبكة الخطة التسويقية بالكامل في منتصف الصفحة */
     .marketing-canvas-container {
-        position: absolute;
-        top: 95px;
-        right: 0;
-        left: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        direction: rtl;
+        position: relative !important;
+        top: 0 !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        direction: rtl !important;
+        box-sizing: border-box !important;
     }
 
     .canvas-phase {
