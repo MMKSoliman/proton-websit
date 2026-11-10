@@ -8,13 +8,11 @@ export async function renderMarketingPlan(container) {
         <!-- الهيدر الرئيسي للوحدة مع تضمين لوجو بروتون -->
         <div class="module-header-title">
             <div class="header-titles-group">
+                <div class="proton-badge-logo">
+                    <img src="../Sta-P.webp" alt="Proton Logo" class="proton-header-logo-img">
                 <h2>الخطة التسويقية الاستراتيجية</h2>
                 <p class="module-subtitle">إطار العمل الاستراتيجي المعتمد لرحلة نمو العميل، والمربوط بآليات الأتمتة الذكية في Proton.</p>
             </div>
-            <div class="header-actions-group">
-                <div class="proton-badge-logo">
-                    <img src="../Sta-P.webp" alt="Proton Logo" class="proton-header-logo-img">
-                </div>
                 <button id="print-plan-btn" class="proton-btn-print">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                     طباعة الخطة (A4)
