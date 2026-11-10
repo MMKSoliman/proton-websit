@@ -19,8 +19,8 @@
 .header-titles-group {
     display: flex;
     flex-direction: column;
-    gap: 3px;
-    width: 100%;
+    gap: 4px;
+    flex-grow: 1;
     text-align: right;
 }
 
@@ -29,7 +29,6 @@
     font-size: 22px;
     color: #ffffff;
     font-weight: 700;
-    white-space: nowrap;
 }
 
 .module-subtitle {
@@ -38,21 +37,27 @@
     margin: 0;
 }
 
-.proton-logo-wrapper {
-    width: 60px;
-    height: 60px;
+/* حاوية اللوجو الرئيسي في أقصى اليسار والكتابة تبدأ بجانبه */
+.header-actions-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
+    flex-direction: row;
+}
+
+.proton-badge-logo {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    flex-shrink: 0;
+    background: transparent !important;
+    border: none !important;
 }
 
 .proton-header-logo-img {
-    width: 100%;
-    height: 100%;
+    width: 45px;
+    height: 45px;
     object-fit: contain;
-    padding: 4px;
 }
 
 /* بادة العميل المخصصة */
@@ -259,20 +264,23 @@
     }
 
     .module-header-title {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        align-items: center;
         padding: 15px;
-        gap: 15px;
+        gap: 12px;
+    }
+
+    .header-actions-group {
+        flex-direction: row;
     }
 
     .proton-btn-print {
-        flex-grow: 1;
-        justify-content: center;
+        display: none !important; /* إخفاء زر الطباعة على الموبايل لعدم تداخل المساحات، أو إبقاؤه حسب الرغبة */
     }
 
     .header-titles-group h2 {
+        font-size: 16px;
         white-space: normal !important;
-        font-size: 18px;
     }
 
     .client-brand-badge-card {
@@ -320,16 +328,18 @@
         print-color-adjust: exact !important;
     }
 
-    /* الهيدر العلوي في الطباعة (اللوجو يميناً والعنوان بجانبه على سطر واحد وبأمان) */
+    /* الهيدر العلوي في الطباعة (العنوان يميناً، اللوجو يساراً ومظهر نظيف جداً) */
     .module-header-title {
         position: relative !important;
         width: 100% !important;
-        background-color: #f1f5f9 !important;
-        border: 1px solid #cbd5e1 !important;
+        background-color: #161b22 !important;
+        color: #ffffff !important;
         border-radius: 6px;
-        padding: 8px 15px !important;
+        padding: 10px 15px !important;
         margin-bottom: 8px !important;
         display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
         align-items: center !important;
         direction: rtl !important;
     }
@@ -345,9 +355,24 @@
         white-space: nowrap !important;
     }
 
+    .header-actions-group {
+        display: flex !important;
+        align-items: center !important;
+        flex-direction: row !important;
+    }
+
+    .proton-badge-logo {
+        background: transparent !important;
+        border: none !important;
+        display: flex !important;
+        visibility: visible !important;
+    }
+
     .proton-header-logo-img {
-        width: 38px !important;
-        height: 38px !important;
+        width: 32px !important;
+        height: 32px !important;
+        display: block !important;
+        visibility: visible !important;
     }
 
     /* بادة العميل في الطباعة */
