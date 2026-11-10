@@ -25,7 +25,6 @@
     font-size: 22px;
     color: #ffffff;
     font-weight: 700;
-    white-space: nowrap;
 }
 
 .module-subtitle {
@@ -39,7 +38,6 @@
     align-items: center;
     gap: 15px;
     flex-shrink: 0;
-    flex-direction: row-reverse; /* وضع اللوجو يمين زر الطباعة / الكلام */
 }
 
 .proton-badge-logo {
@@ -56,7 +54,7 @@
     object-fit: contain;
 }
 
-/* بادة العميل المخصصة (جعل اللوجو يمين الكلام تماماً) */
+/* بادة العميل المخصصة (اللوجو يمين النصوص تماماً) */
 .client-brand-badge-card {
     background: rgba(22, 27, 34, 0.85);
     border: 1px solid rgba(0, 210, 255, 0.25);
@@ -75,7 +73,6 @@
     align-items: center;
     gap: 16px;
     width: 100%;
-    flex-direction: row; /* اللوجو يمين والنصوص يساره في الاتجاه العربي */
 }
 
 .brand-logo-wrapper {
@@ -111,13 +108,11 @@
     font-size: 18px;
     color: #00d2ff;
     font-weight: 700;
-    white-space: nowrap;
 }
 
 .client-plan-title {
     font-size: 12px;
     color: #9aa0a6;
-    white-space: nowrap;
 }
 
 /* زر الطباعة */
@@ -240,7 +235,7 @@
     flex-grow: 1;
 }
 
-/* الموبايل والتجاوب */
+/* ==================== معالجة الشاشات الصغيرة والموبايل ==================== */
 @media (max-width: 768px) {
     .module-header-title {
         flex-direction: column;
@@ -252,17 +247,18 @@
     .header-actions-group {
         justify-content: space-between;
         width: 100%;
-        flex-direction: row-reverse;
+        flex-direction: row;
     }
 
     .proton-btn-print {
         flex-grow: 1;
         justify-content: center;
+        max-width: calc(100% - 55px); /* منع خروج الزر عن الشاشة */
     }
 
     .header-titles-group h2 {
-        white-space: normal;
         font-size: 18px;
+        white-space: normal;
     }
 
     .client-brand-badge-card {
@@ -304,7 +300,7 @@
         print-color-adjust: exact !important;
     }
 
-    /* الهيدر العلوي في الطباعة (العنوان يميناً، اللوجو وزر الطباعة يساراً) */
+    /* الهيدر العلوي في الطباعة (اللوجو يميناً، العنوان بجانبه، وزر الطباعة مخفي) */
     .module-header-title {
         position: relative !important;
         width: 100% !important;
@@ -315,9 +311,26 @@
         margin-bottom: 8px !important;
         display: flex !important;
         flex-direction: row !important;
-        justify-content: space-between !important;
+        justify-content: flex-start !important;
         align-items: center !important;
+        gap: 15px !important;
         direction: rtl !important;
+    }
+
+    .header-actions-group {
+        order: -1; /* وضع اللوجو في أقصى اليمين بالطباعة */
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .proton-badge-logo {
+        background: transparent !important;
+        border: none !important;
+    }
+
+    .proton-header-logo-img {
+        width: 32px !important;
+        height: 32px !important;
     }
 
     .header-titles-group {
@@ -328,27 +341,9 @@
         color: #ffffff !important;
         font-size: 12pt;
         margin: 0;
-        white-space: nowrap !important;
     }
 
-    .header-actions-group {
-        display: flex !important;
-        align-items: center !important;
-        flex-direction: row-reverse !important;
-        gap: 10px !important;
-    }
-
-    .proton-badge-logo {
-        background: transparent !important;
-        border: none !important;
-    }
-
-    .proton-header-logo-img {
-        width: 30px !important;
-        height: 30px !important;
-    }
-
-    /* بادة العميل في الطباعة (اللوجو يمين الكلام تماماً) */
+    /* بادة العميل في الطباعة (اللوجو يمين النصوص) */
     .client-brand-badge-card {
         position: relative !important;
         width: 100% !important;
@@ -363,7 +358,7 @@
     }
 
     .client-brand-info {
-        flex-direction: row !important; /* ضمان وجود اللوجو يمين النصوص بالطباعة */
+        flex-direction: row !important;
     }
 
     .client-titles {
@@ -374,7 +369,6 @@
         color: #0f172a !important;
         font-size: 11pt;
         margin: 0;
-        white-space: nowrap !important;
     }
 
     .client-plan-title {
