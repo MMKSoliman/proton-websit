@@ -7,13 +7,13 @@ export async function renderMarketingPlan(container) {
     container.innerHTML = `
         <div class="module-header-title">
             <div class="brand-header-info">
-                <div class="header-titles-group">
-                    <h2>الخطة التسويقية الاستراتيجية</h2>
-                    <p class="module-subtitle">إطار العمل الاستراتيجي المعتمد لرحلة نمو العميل، والمربوط بآليات الأتمتة الذكية في Proton.</p>
-                </div>
-                <!-- مكان لوجو العميل (أو اللوجو الافتراضي لبروتون عند عدم توفره) -->
                 <div class="brand-logo-wrapper">
                     <img id="brand-logo-preview" src="../Sta-P.webp" alt="Brand Logo" class="brand-logo-img">
+                </div>
+                <div class="header-titles-group">
+                    <h2>الخطة التسويقية الاستراتيجية</h2>
+                    <span id="brand-name-display" class="brand-name-badge">جاري جلب اسم البراند...</span>
+                    <p class="module-subtitle">إطار العمل الاستراتيجي المعتمد لرحلة نمو العميل، والمربوط بآليات الأتمتة الذكية في Proton.</p>
                 </div>
             </div>
             <button id="print-plan-btn" class="proton-btn-print">
@@ -125,14 +125,20 @@ async function fetchAndPopulatePlanData(brandId) {
         
         const planData = await response.json();
 
+        // تعيين لوجو العميل أو اللوجو الافتراضي لبروتون
         const logoImg = document.getElementById('brand-logo-preview');
         if (logoImg) {
-            // إذا وُجد لوجو العميل يتم وضعه، وإذا لم يوجد يستمر اللوجو الافتراضي (Sta-P.webp)
             if (planData.logo_url && planData.logo_url.trim() !== "") {
                 logoImg.src = planData.logo_url;
             } else {
                 logoImg.src = "../Sta-P.webp";
             }
+        }
+
+        // تعيين اسم البراند المستخرج من قاعدة البيانات بجوار اللوجو
+        const brandNameEl = document.getElementById('brand-name-display');
+        if (brandNameEl) {
+            brandNameEl.innerText = planData.brand_name || "Proton Partner Brand";
         }
 
         document.getElementById('data-target-market').innerText = planData.target_market || '';
