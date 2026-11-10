@@ -5,21 +5,34 @@
 
 export async function renderMarketingPlan(container) {
     container.innerHTML = `
+        <!-- الهيدر الرئيسي للوحدة -->
         <div class="module-header-title">
-            <div class="brand-header-info">
-                <div class="brand-logo-wrapper">
-                    <img id="brand-logo-preview" src="../Sta-P.webp" alt="Brand Logo" class="brand-logo-img">
-                </div>
+            <div class="header-main-content">
                 <div class="header-titles-group">
                     <h2>الخطة التسويقية الاستراتيجية</h2>
-                    <span id="brand-name-display" class="brand-name-badge">جاري جلب اسم البراند...</span>
                     <p class="module-subtitle">إطار العمل الاستراتيجي المعتمد لرحلة نمو العميل، والمربوط بآليات الأتمتة الذكية في Proton.</p>
+                </div>
+                <div class="proton-main-icon">
+                    <img src="../Sta-P.webp" alt="Proton Logo" style="width: 45px; height: 45px; object-fit: contain;">
                 </div>
             </div>
             <button id="print-plan-btn" class="proton-btn-print">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                 طباعة الخطة (A4)
             </button>
+        </div>
+
+        <!-- بادة العميل الجديدة تحت الهيدر (تشمل لوجو العميل واسم البراند وعنوان الخطة الخاصة به) -->
+        <div class="client-brand-badge-card">
+            <div class="client-brand-info">
+                <div class="brand-logo-wrapper">
+                    <img id="brand-logo-preview" src="../Sta-P.webp" alt="Brand Logo" class="brand-logo-img">
+                </div>
+                <div class="client-titles">
+                    <h3 id="brand-name-display">جاري جلب اسم البراند...</h3>
+                    <span class="client-plan-title">الخطة التسويقية الخاصة بالنشاط التجاري</span>
+                </div>
+            </div>
         </div>
 
         <div class="marketing-canvas-container">
@@ -41,13 +54,13 @@ export async function renderMarketingPlan(container) {
                         <div class="card-num">02</div>
                         <h4>رسالتي للسوق</h4>
                         <p class="card-desc">القيمة الفريدة ونبرة الصوت (UVP)</p>
-                        <div class="card-content" id="data-brand-message">جاري جلب البيانات...</div>
+                        <div class="canvas-content" id="data-brand-message">جاري جلب البيانات...</div>
                     </div>
                     <div class="canvas-card">
                         <div class="card-num">03</div>
                         <h4>وسائل الوصول</h4>
                         <p class="card-desc">منصات ومنافذ النشر المستهدفة</p>
-                        <div class="card-content" id="data-reach-channels">جاري جلب البيانات...</div>
+                        <div class="canvas-content" id="data-reach-channels">جاري جلب البيانات...</div>
                     </div>
                 </div>
             </div>
@@ -63,19 +76,19 @@ export async function renderMarketingPlan(container) {
                         <div class="card-num">04</div>
                         <h4>استدراج المهتمين</h4>
                         <p class="card-desc">عرض القيمة وجذب بيانات التواصل</p>
-                        <div class="card-content" id="data-lead-capture">جاري جلب البيانات...</div>
+                        <div class="canvas-content" id="data-lead-capture">جاري جلب البيانات...</div>
                     </div>
                     <div class="canvas-card">
                         <div class="card-num">05</div>
                         <h4>احتضان وتغذية المهتمين</h4>
                         <p class="card-desc">سلسلة الردود والمتابعة الذكية تلقائياً</p>
-                        <div class="card-content" id="data-lead-nurturing">جاري جلب البيانات...</div>
+                        <div class="canvas-content" id="data-lead-nurturing">جاري جلب البيانات...</div>
                     </div>
                     <div class="canvas-card">
                         <div class="card-num">06</div>
                         <h4>تحويل المهتمين إلى مشترين</h4>
                         <p class="card-desc">استراتيجيات إغلاق المبيعات والحجز</p>
-                        <div class="card-content" id="data-sales-conversion">جاري جلب البيانات...</div>
+                        <div class="canvas-content" id="data-sales-conversion">جاري جلب البيانات...</div>
                     </div>
                 </div>
             </div>
@@ -91,19 +104,19 @@ export async function renderMarketingPlan(container) {
                         <div class="card-num">07</div>
                         <h4>تجربة عميل مميزة</h4>
                         <p class="card-desc">الانطباع الأول وتقديم القيمة الفائقة</p>
-                        <div class="card-content" id="data-delight-experience">جاري جلب البيانات...</div>
+                        <div class="canvas-content" id="data-delight-experience">جاري جلب البيانات...</div>
                     </div>
                     <div class="canvas-card">
                         <div class="card-num">08</div>
                         <h4>رفع القيمة الدائمة (CLV)</h4>
                         <p class="card-desc">إعادة الشراء والخدمات المكملة</p>
-                        <div class="card-content" id="data-increase-clv">جاري جلب البيانات...</div>
+                        <div class="canvas-content" id="data-increase-clv">جاري جلب البيانات...</div>
                     </div>
                     <div class="canvas-card">
                         <div class="card-num">09</div>
                         <h4>تنسيق الإحالات والتوصيات</h4>
                         <p class="card-desc">تحويل العملاء إلى مسوقين للبراند</p>
-                        <div class="card-content" id="data-referral-system">جاري جلب البيانات...</div>
+                        <div class="canvas-content" id="data-referral-system">جاري جلب البيانات...</div>
                     </div>
                 </div>
             </div>
@@ -125,7 +138,7 @@ async function fetchAndPopulatePlanData(brandId) {
         
         const planData = await response.json();
 
-        // تعيين لوجو العميل أو اللوجو الافتراضي لبروتون
+        // تعيين لوجو العميل أو اللوجو الافتراضي
         const logoImg = document.getElementById('brand-logo-preview');
         if (logoImg) {
             if (planData.logo_url && planData.logo_url.trim() !== "") {
@@ -135,7 +148,7 @@ async function fetchAndPopulatePlanData(brandId) {
             }
         }
 
-        // تعيين اسم البراند المستخرج من قاعدة البيانات بجوار اللوجو
+        // تعيين اسم البراند المستخرج من قاعدة البيانات
         const brandNameEl = document.getElementById('brand-name-display');
         if (brandNameEl) {
             brandNameEl.innerText = planData.brand_name || "Proton Partner Brand";
