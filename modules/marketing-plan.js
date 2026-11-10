@@ -168,3 +168,51 @@ async function fetchAndPopulatePlanData(brandId) {
         console.error("Error loading plan:", error);
     }
 }
+
+// 1. جلب البراندات وملء القائمة عند فتح الصفحة
+async function loadUserBrands() {
+    try {
+        const response = await fetch('/api/user-brands'); // عدل المسار حسب الـ Router لديك
+        const data = await response.json();
+        
+        const selectElement = document.getElementById('brandSelect'); // ضع الـ ID الخاص بالقائمة لديك
+        selectElement.innerHTML = '<option value="">-- اختر النشاط التجاري --</option>';
+        
+        data.brands.forEach(brand => {
+            const option = document.createElement('option');
+            option.value = brand.brand_id;
+            option.textContent = brand.brand_name;
+            selectElement.appendChild(option);
+        });
+    } catch (error) {
+        console.error("خطأ في جلب البراندات:", error);
+    }
+}
+
+// 2. جلب الخطة التسويقية عند اختيار براند معين
+async function loadMarketingPlan(brandId) {
+    if (!brandId) return;
+    try {
+        const response = await fetch(`/api/marketing-plan/${brandId}`); // الإندبوينت الخاص بجلب الخطة
+        const data = await response.json();
+        
+        if (data.status === "success") {
+            const plan = data.plan;
+            // تعبئة الكروت التسويقية الـ 9 بالبيانات المسترجعة
+            document.getElementById('target_market').innerText = plan.target_market || 'لا توجد بيانات';
+            document.getElementById('brand_message').innerText = plan.brand_message || 'لا توجد بيانات';
+            document.getElementById('reach_channels').innerText = plan.reach_channels || 'لا توجد بيانات';
+            // ... وبقية الكروت بنفس الطريقة
+        }
+    } catch (error) {
+        console.error("خطأ في جلب الخطة التسويقية:", error);
+    }
+}
+
+// ربط الحدث عند تغيير الاختيار في القائمة
+document.getElementById('brandSelect').addEventListener('change', (e) => {
+    loadMarketingPlan(e.target.value);
+});
+
+// تشغيل الدالة عند تحميل الصفحة
+window.onload = loadUserBrands;
