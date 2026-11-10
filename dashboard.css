@@ -103,6 +103,30 @@
     padding: 25px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
+/* إضافة من الكود القديم ________________________________*/
+/* عنوان الكارت المرفق معه الأيقونة الصغيرة */
+.module-header-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding-bottom: 12px;
+}
+
+.module-header-title img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+
+.module-header-title h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #ffffff;
+}
+
+/*  نهاية الإضافة من الكود القديم ________________________________*/
 
 /* تنسيقات عامة لكارت تقارير الأداء الافتتاحي */
 .analytics-overview-card {
