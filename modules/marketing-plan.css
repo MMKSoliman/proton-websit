@@ -19,8 +19,9 @@
 .header-titles-group {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    flex-grow: 1;
+    gap: 3px;
+    width: 100%;
+    text-align: right;
 }
 
 .header-titles-group h2 {
@@ -54,9 +55,10 @@
 }
 
 .proton-header-logo-img {
-    width: 40px;
-    height: 40px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+    padding: 4px;
 }
 
 /* بادة العميل المخصصة */
