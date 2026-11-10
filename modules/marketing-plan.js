@@ -7,18 +7,19 @@ export async function renderMarketingPlan(container) {
     container.innerHTML = `
         <div class="module-header-title">
             <div class="brand-header-info">
-                <!-- لوجو بروتون بجوار لوجو العميل -->
                 <img src="../Sta-P.webp" alt="Proton Logo" class="proton-logo-print">
                 <img id="brand-logo-preview" src="" alt="Client Logo" class="brand-logo-img" style="display:none;">
                 <div>
-                    <h2>الخطة التسويقية الاستراتيجية (1-Page Canvas)</h2>
+                    <h2>الخطة التسويقية الاستراتيجية</h2>
                     <p class="module-subtitle">إطار العمل الاستراتيجي المعتمد لرحلة نمو العميل، والمربوط بآليات الأتمتة الذكية في Proton.</p>
                 </div>
             </div>
-            <button id="print-plan-btn" class="proton-btn-print">🖨️ طباعة الخطة (A4)</button>
+            <button id="print-plan-btn" class="proton-btn-print">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                طباعة الخطة (A4)
+            </button>
         </div>
 
-        <!-- حاوية الشبكة الرئيسية للخطة التسويقية -->
         <div class="marketing-canvas-container">
             
             <!-- المرحلة الأولى: قبل (العملاء المحتملون) -->
@@ -108,26 +109,21 @@ export async function renderMarketingPlan(container) {
         </div>
     `;
 
-    // تفعيل زر الطباعة
     document.getElementById('print-plan-btn').addEventListener('click', () => {
         window.print();
     });
 
-    await fetchAndPopulatePlanData();
+    // استبدل الـ 1 بمعرف البراند الحالي ديناميكياً لديك
+    await fetchAndPopulatePlanData(1);
 }
 
 async function fetchAndPopulatePlanData(brandId) {
     try {
-        // جلب البيانات الديناميكية الخاصة بالبراند من الـ Backend أو الـ API الخاص بك
         const response = await fetch(`/v1/marketing-plan/${brandId}`);
-        
-        if (!response.ok) {
-            throw new Error("لم يتم العثور على خطة تسويقية مسجلة لهذا البراند بعد.");
-        }
+        if (!response.ok) throw new Error("Network response was not ok");
         
         const planData = await response.json();
 
-        // عرض لوجو العميل إذا كان موجوداً
         if (planData.logo_url) {
             const logoImg = document.getElementById('brand-logo-preview');
             if (logoImg) {
@@ -136,7 +132,6 @@ async function fetchAndPopulatePlanData(brandId) {
             }
         }
 
-        // تعبئة الـ 9 خانات بمخرجات قاعدة البيانات الحقيقية
         document.getElementById('data-target-market').innerText = planData.target_market || '';
         document.getElementById('data-brand-message').innerText = planData.brand_message || '';
         document.getElementById('data-reach-channels').innerText = planData.reach_channels || '';
@@ -148,7 +143,6 @@ async function fetchAndPopulatePlanData(brandId) {
         document.getElementById('data-referral-system').innerText = planData.referral_system || '';
 
     } catch (error) {
-        console.error("Error loading marketing plan:", error);
-        // في حال عدم وجود خطة، يمكنك ترك الكروت فارغة أو إظهار رسالة تنبيه لطيفة للمستخدم
+        console.error("Error loading plan:", error);
     }
 }
