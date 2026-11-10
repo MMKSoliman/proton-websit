@@ -14,14 +14,14 @@
 .dashboard-workspace {
     max-width: 1300px;
     width: 100%;
-    margin: 50px auto 30px auto;
+    margin: 50px auto 30px auto; /* زيادة المسافة العلوية لمنع الزحام مع الهيدر */
     padding: 0 15px;
     display: flex;
     gap: 20px;
     min-height: 75vh;
 }
 
-/* شريط الأيقونات الجانبي الطافي */
+/* شريط الأيقونات الجانبي الطافي بدون خلفية أو بادة */
 .sidebar-dock {
     display: flex;
     flex-direction: column;
@@ -53,6 +53,7 @@
     transition: all 0.3s ease;
 }
 
+/* الأيقونة النشطة: ملونة + إضاءة نيون خلفية خفيفة */
 .dock-icon-btn.active {
     background: rgba(0, 210, 255, 0.08);
     box-shadow: 0 0 12px rgba(0, 210, 255, 0.3);
@@ -67,10 +68,11 @@
     filter: grayscale(30%) opacity(0.9);
 }
 
+/* تعديل رسالة التوضيح العائمة (Tooltip) لتظهر بوضوح فوق/بجانب الأيقونة دون تداخل مع الكارت */
 .dock-icon-btn::after {
     content: attr(data-tooltip);
     position: absolute;
-    right: calc(100% + 12px);
+    right: calc(100% + 12px); /* نستخدم right بدلاً من left لتظهر بثبات في الفراغ الأيمن أو الخارج تماماً */
     top: 50%;
     transform: translateY(-50%);
     background: rgba(20, 22, 28, 0.98);
@@ -84,7 +86,7 @@
     transition: opacity 0.2s ease;
     border: 1px solid rgba(0, 210, 255, 0.3);
     box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-    z-index: 9999;
+    z-index: 9999; /* لضمان ظهورها فوق أي عنصر آخر */
 }
 
 .dock-icon-btn:hover::after {
@@ -103,32 +105,30 @@
     padding: 25px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
-/* إضافة من الكود القديم ________________________________*/
+
 /* عنوان الكارت المرفق معه الأيقونة الصغيرة */
 .module-header-title {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    padding-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding-bottom: 12px;
 }
 
 .module-header-title img {
-    width: 64px;
-    height: 64px;
-    object-fit: contain;
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
 }
 
 .module-header-title h2 {
-    margin: 0;
-    font-size: 20px;
-    color: #ffffff;
+    margin: 0;
+    font-size: 20px;
+    color: #ffffff;
 }
 
-/*  نهاية الإضافة من الكود القديم ________________________________*/
-
-/* تنسيقات عامة لكارت تقارير الأداء الافتتاحي */
+/* تنسيقات كارت تقارير الأداء الافتتاحي */
 .analytics-overview-card {
     display: flex;
     flex-direction: column;
@@ -162,6 +162,7 @@
     margin: 0;
 }
 
+/* إطار النصيحة المتغيرة بإضاءة نيون خفيفة */
 .neon-tip-box {
     background: rgba(0, 210, 255, 0.03);
     border: 1px solid rgba(0, 210, 255, 0.2);
@@ -180,6 +181,7 @@
     line-height: 1.5;
 }
 
+/* أفضل 3 منشورات تفاعلاً */
 .top-posts-section h3 {
     margin: 0 0 12px 0;
     font-size: 16px;
@@ -209,12 +211,13 @@
     background: rgba(0, 210, 255, 0.08);
 }
 
+/* التوافق التام مع الموبايل بالطول مع حماية الأبعاد */
 @media (max-width: 768px) {
     .dashboard-workspace {
         flex-direction: row;
         padding: 0 8px;
         gap: 8px;
-        margin: 30px auto 20px auto;
+        margin: 30px auto 20px auto; /* مساحة علوية مريحة أيضاً على الموبايل */
     }
     .sidebar-dock {
         padding: 5px 0;
