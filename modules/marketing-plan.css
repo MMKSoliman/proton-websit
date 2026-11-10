@@ -12,12 +12,15 @@
     direction: rtl;
     text-align: right;
     gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .header-titles-group {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    flex-grow: 1;
 }
 
 .header-titles-group h2 {
@@ -25,6 +28,7 @@
     font-size: 22px;
     color: #ffffff;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 .module-subtitle {
@@ -38,6 +42,7 @@
     align-items: center;
     gap: 15px;
     flex-shrink: 0;
+    flex-direction: row-reverse; /* اللوجو في أقصى اليمين تماماً بجانب العنوان */
 }
 
 .proton-badge-logo {
@@ -49,12 +54,12 @@
 }
 
 .proton-header-logo-img {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     object-fit: contain;
 }
 
-/* بادة العميل المخصصة (اللوجو يمين النصوص تماماً) */
+/* بادة العميل المخصصة */
 .client-brand-badge-card {
     background: rgba(22, 27, 34, 0.85);
     border: 1px solid rgba(0, 210, 255, 0.25);
@@ -66,6 +71,8 @@
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .client-brand-info {
@@ -145,6 +152,8 @@
     gap: 20px;
     direction: rtl;
     text-align: right;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .canvas-phase {
@@ -152,6 +161,7 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 16px;
     padding: 20px;
+    box-sizing: border-box;
 }
 
 .phase-header {
@@ -188,18 +198,23 @@
 
 .phase-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 15px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .canvas-card {
     background: rgba(25, 28, 36, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 12px;
-    padding: 18px;
+    padding: 16px;
     position: relative;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .card-num {
@@ -233,38 +248,53 @@
     min-height: 65px;
     border: 1px solid rgba(255, 255, 255, 0.03);
     flex-grow: 1;
+    word-break: break-word;
 }
 
-/* ==================== معالجة الشاشات الصغيرة والموبايل ==================== */
+/* ==================== معالجة الشاشات الصغيرة والموبايل لمنع الخروج ==================== */
 @media (max-width: 768px) {
+    .dashboard-workspace {
+        padding: 0 8px !important;
+    }
+
+    .active-content-area {
+        padding: 12px !important;
+        max-width: 100% !important;
+    }
+
     .module-header-title {
         flex-direction: column;
         align-items: stretch;
         padding: 15px;
-        gap: 12px;
+        gap: 15px;
     }
 
     .header-actions-group {
         justify-content: space-between;
         width: 100%;
-        flex-direction: row;
+        flex-direction: row-reverse;
     }
 
     .proton-btn-print {
         flex-grow: 1;
         justify-content: center;
-        max-width: calc(100% - 55px); /* منع خروج الزر عن الشاشة */
     }
 
     .header-titles-group h2 {
+        white-space: normal !important;
         font-size: 18px;
-        white-space: normal;
     }
 
     .client-brand-badge-card {
-        flex-direction: row;
-        align-items: center;
         padding: 12px 15px;
+    }
+
+    .phase-cards-grid {
+        grid-template-columns: 1fr !important; /* الكروت تحت بعضها تماماً بالموبايل لتجنب الخروج */
+    }
+
+    .canvas-phase {
+        padding: 12px;
     }
 }
 
@@ -300,7 +330,7 @@
         print-color-adjust: exact !important;
     }
 
-    /* الهيدر العلوي في الطباعة (اللوجو يميناً، العنوان بجانبه، وزر الطباعة مخفي) */
+    /* الهيدر العلوي في الطباعة (اللوجو يميناً والعنوان بجانبه على سطر واحد وبأمان) */
     .module-header-title {
         position: relative !important;
         width: 100% !important;
@@ -310,17 +340,27 @@
         padding: 10px 15px !important;
         margin-bottom: 8px !important;
         display: flex !important;
-        flex-direction: row !important;
-        justify-content: flex-start !important;
+        flex-direction: row-reverse !important;
+        justify-content: space-between !important;
         align-items: center !important;
-        gap: 15px !important;
         direction: rtl !important;
     }
 
+    .header-titles-group {
+        text-align: right !important;
+    }
+
+    .header-titles-group h2 {
+        color: #ffffff !important;
+        font-size: 12pt;
+        margin: 0;
+        white-space: nowrap !important;
+    }
+
     .header-actions-group {
-        order: -1; /* وضع اللوجو في أقصى اليمين بالطباعة */
         display: flex !important;
         align-items: center !important;
+        flex-direction: row !important;
     }
 
     .proton-badge-logo {
@@ -333,17 +373,7 @@
         height: 32px !important;
     }
 
-    .header-titles-group {
-        text-align: right !important;
-    }
-
-    .header-titles-group h2 {
-        color: #ffffff !important;
-        font-size: 12pt;
-        margin: 0;
-    }
-
-    /* بادة العميل في الطباعة (اللوجو يمين النصوص) */
+    /* بادة العميل في الطباعة */
     .client-brand-badge-card {
         position: relative !important;
         width: 100% !important;
@@ -369,6 +399,7 @@
         color: #0f172a !important;
         font-size: 11pt;
         margin: 0;
+        white-space: nowrap !important;
     }
 
     .client-plan-title {
@@ -410,6 +441,7 @@
         display: grid !important;
         grid-template-columns: repeat(3, 1fr) !important;
         gap: 5px !important;
+        width: 100% !important;
     }
 
     .canvas-card {
