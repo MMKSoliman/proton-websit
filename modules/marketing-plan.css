@@ -39,8 +39,8 @@
 }
 
 .proton-logo-wrapper {
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -265,12 +265,6 @@
         gap: 15px;
     }
 
-    .header-actions-group {
-        justify-content: space-between;
-        width: 100%;
-        flex-direction: row-reverse;
-    }
-
     .proton-btn-print {
         flex-grow: 1;
         justify-content: center;
@@ -330,14 +324,12 @@
     .module-header-title {
         position: relative !important;
         width: 100% !important;
-        background-color: #161b22 !important;
-        color: #ffffff !important;
+        background-color: #f1f5f9 !important;
+        border: 1px solid #cbd5e1 !important;
         border-radius: 6px;
-        padding: 10px 15px !important;
+        padding: 8px 15px !important;
         margin-bottom: 8px !important;
         display: flex !important;
-        flex-direction: row-reverse !important;
-        justify-content: space-between !important;
         align-items: center !important;
         direction: rtl !important;
     }
@@ -353,20 +345,9 @@
         white-space: nowrap !important;
     }
 
-    .header-actions-group {
-        display: flex !important;
-        align-items: center !important;
-        flex-direction: row !important;
-    }
-
-    .proton-badge-logo {
-        background: transparent !important;
-        border: none !important;
-    }
-
     .proton-header-logo-img {
-        width: 32px !important;
-        height: 32px !important;
+        width: 38px !important;
+        height: 38px !important;
     }
 
     /* بادة العميل في الطباعة */
