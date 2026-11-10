@@ -26,6 +26,30 @@
     margin: 0;
 }
 
+.header-actions-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.proton-badge-logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(0, 210, 255, 0.08);
+    border: 1px solid rgba(0, 210, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.proton-header-logo-img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
 /* بادة العميل تحت الهيدر */
 .client-brand-badge-card {
     background: rgba(22, 27, 34, 0.85);
@@ -83,7 +107,7 @@
     background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
     color: #ffffff;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 18px;
     border-radius: 12px;
     cursor: pointer;
     font-weight: 700;
@@ -198,6 +222,32 @@
     flex-grow: 1;
 }
 
+/* ---------------- التجاوب مع الموبايل لحل مشكلة خروج الزر ---------------- */
+@media (max-width: 768px) {
+    .module-header-title {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .header-actions-group {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .proton-btn-print {
+        flex-grow: 1;
+        justify-content: center;
+    }
+
+    .client-brand-badge-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
 /* ---------------- إعدادات الطباعة الرسمية A4 ---------------- */
 @media print {
     @page {
@@ -230,7 +280,6 @@
         print-color-adjust: exact !important;
     }
 
-    /* الهيدر العلوي غامق واللوجو جهة اليمين */
     .module-header-title {
         position: relative !important;
         width: 100% !important;
@@ -240,7 +289,7 @@
         padding: 10px 15px !important;
         margin-bottom: 8px !important;
         display: flex !important;
-        flex-direction: row-reverse !important; /* وضع اللوجو يميناً والعنوان بجانبه */
+        flex-direction: row-reverse !important;
         justify-content: space-between !important;
         align-items: center !important;
         direction: rtl !important;
@@ -323,7 +372,7 @@
     .canvas-card h4 {
         color: #0077b6 !important;
         font-size: 8.5pt;
-        margin: 0 0 2px 0;
+        margin: 0 0 2.5px 0;
     }
 
     .card-content {
