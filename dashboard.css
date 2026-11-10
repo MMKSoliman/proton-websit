@@ -207,6 +207,109 @@
     font-size: 14px;
 }
 
+/* تنسيقات كارت الخطة التسويقية 1-Page Canvas */
+.module-subtitle {
+    color: #8f9cae;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.marketing-canvas-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.canvas-phase {
+    background: rgba(15, 17, 21, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.phase-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.phase-header h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.phase-badge {
+    background: rgba(255, 77, 77, 0.15);
+    color: #ff4d4d;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.badge-during {
+    background: rgba(255, 170, 0, 0.15);
+    color: #ffaa00;
+}
+
+.badge-after {
+    background: rgba(0, 255, 136, 0.15);
+    color: #00ff88;
+}
+
+.phase-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.canvas-card {
+    background: rgba(25, 28, 36, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.canvas-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(0, 210, 255, 0.4);
+}
+
+.card-num {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.15);
+}
+
+.canvas-card h4 {
+    margin: 0 0 4px 0;
+    font-size: 15px;
+    color: #00d2ff;
+}
+
+.card-desc {
+    margin: 0 0 12px 0;
+    font-size: 11px;
+    color: #6c7a89;
+}
+
+.card-content {
+    font-size: 13px;
+    color: #d1d5db;
+    line-height: 1.6;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 8px;
+    min-height: 60px;
+}
+
 .post-link-item:hover {
     background: rgba(0, 210, 255, 0.08);
 }
