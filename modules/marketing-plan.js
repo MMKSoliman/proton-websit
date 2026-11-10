@@ -7,11 +7,13 @@ export async function renderMarketingPlan(container) {
     container.innerHTML = `
         <div class="module-header-title">
             <div class="brand-header-info">
-                <img src="../Sta-P.webp" alt="Proton Logo" class="proton-logo-print">
-                <img id="brand-logo-preview" src="" alt="Client Logo" class="brand-logo-img" style="display:none;">
-                <div>
+                <div class="header-titles-group">
                     <h2>الخطة التسويقية الاستراتيجية</h2>
                     <p class="module-subtitle">إطار العمل الاستراتيجي المعتمد لرحلة نمو العميل، والمربوط بآليات الأتمتة الذكية في Proton.</p>
+                </div>
+                <!-- مكان لوجو العميل (أو اللوجو الافتراضي لبروتون عند عدم توفره) -->
+                <div class="brand-logo-wrapper">
+                    <img id="brand-logo-preview" src="../Sta-P.webp" alt="Brand Logo" class="brand-logo-img">
                 </div>
             </div>
             <button id="print-plan-btn" class="proton-btn-print">
@@ -113,7 +115,6 @@ export async function renderMarketingPlan(container) {
         window.print();
     });
 
-    // استبدل الـ 1 بمعرف البراند الحالي ديناميكياً لديك
     await fetchAndPopulatePlanData(1);
 }
 
@@ -124,11 +125,13 @@ async function fetchAndPopulatePlanData(brandId) {
         
         const planData = await response.json();
 
-        if (planData.logo_url) {
-            const logoImg = document.getElementById('brand-logo-preview');
-            if (logoImg) {
+        const logoImg = document.getElementById('brand-logo-preview');
+        if (logoImg) {
+            // إذا وُجد لوجو العميل يتم وضعه، وإذا لم يوجد يستمر اللوجو الافتراضي (Sta-P.webp)
+            if (planData.logo_url && planData.logo_url.trim() !== "") {
                 logoImg.src = planData.logo_url;
-                logoImg.style.display = 'block';
+            } else {
+                logoImg.src = "../Sta-P.webp";
             }
         }
 
