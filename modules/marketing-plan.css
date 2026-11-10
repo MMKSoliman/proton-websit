@@ -33,20 +33,19 @@
     flex-shrink: 0;
 }
 
+/* إزالة الإطار والخلفية من لوجو بروتون في الهيدر الرئيسي وجعله نظيفاً */
 .proton-badge-logo {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: rgba(0, 210, 255, 0.08);
-    border: 1px solid rgba(0, 210, 255, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .proton-header-logo-img {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
     object-fit: contain;
 }
 
@@ -70,6 +69,7 @@
     gap: 16px;
 }
 
+/* إزالة الإطار والخلفية من لوجو العميل أيضاً إذا أردت، أو جعله بسيطاً */
 .brand-logo-wrapper {
     width: 55px;
     height: 55px;
@@ -125,7 +125,7 @@
     box-shadow: 0 6px 20px rgba(0, 210, 255, 0.5);
 }
 
-/* شبكة الكروت الكبيرة موحدة التنسيق */
+/* شبكة الكروت الرئيسية */
 .marketing-canvas-container {
     display: flex;
     flex-direction: column;
@@ -222,7 +222,7 @@
     flex-grow: 1;
 }
 
-/* ---------------- التجاوب مع الموبايل لحل مشكلة خروج الزر ---------------- */
+/* التجاوب مع الموبايل */
 @media (max-width: 768px) {
     .module-header-title {
         flex-direction: column;
@@ -248,7 +248,7 @@
     }
 }
 
-/* ---------------- إعدادات الطباعة الرسمية A4 ---------------- */
+/* ---------------- إعدادات الطباعة الرسمية A4 (منضبطة وسلسة) ---------------- */
 @media print {
     @page {
         size: A4 portrait;
@@ -280,6 +280,7 @@
         print-color-adjust: exact !important;
     }
 
+    /* الهيدر العلوي في الطباعة: العنوان يميناً، اللوجو وزر الطباعة يساراً بشكل أفقي متناسق */
     .module-header-title {
         position: relative !important;
         width: 100% !important;
@@ -289,16 +290,38 @@
         padding: 10px 15px !important;
         margin-bottom: 8px !important;
         display: flex !important;
-        flex-direction: row-reverse !important;
+        flex-direction: row !important; /* اتجاه طبيعي أفقي من اليمين لليسار */
         justify-content: space-between !important;
         align-items: center !important;
         direction: rtl !important;
+    }
+
+    .header-titles-group {
+        text-align: right !important;
     }
 
     .header-titles-group h2 {
         color: #ffffff !important;
         font-size: 12pt;
         margin: 0;
+    }
+
+    .header-actions-group {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+    /* إزالة أي إطار أو خلفية عن لوجو بروتون في طباعة الهيدر العلوي */
+    .proton-badge-logo {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .proton-header-logo-img {
+        width: 32px !important;
+        height: 32px !important;
     }
 
     .client-brand-badge-card {
