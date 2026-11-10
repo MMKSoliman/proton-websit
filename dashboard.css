@@ -314,6 +314,103 @@
     background: rgba(0, 210, 255, 0.08);
 }
 
+.proton-logo-print {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    display: none; /* مخفي على الشاشة العادية ويظهر في الطباعة */
+}
+
+/* إعدادات الطباعة الرسمية على مقاس A4 */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 10mm;
+    }
+
+    /* إخفاء القوائم الجانبية وأزرار التحكم في الموقع */
+    aside, nav, .sidebar, header, .proton-btn-print, .module-subtitle {
+        display: none !important;
+    }
+
+    /* تحويل الخلفية إلى بيضاء صافية للطباعة */
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt;
+    }
+
+    .module-header-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #000;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+
+    .brand-header-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .proton-logo-print, .brand-logo-img {
+        display: block !important;
+        width: 45px;
+        height: 45px;
+        object-fit: contain;
+    }
+
+    .marketing-canvas-container {
+        gap: 12px;
+    }
+
+    .canvas-phase {
+        background: #ffffff !important;
+        border: 1px solid #bbb !important;
+        padding: 10px;
+        break-inside: avoid;
+        margin-bottom: 10px;
+    }
+
+    .phase-header h3 {
+        color: #000 !important;
+        font-size: 13pt;
+    }
+
+    .phase-cards-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px;
+    }
+
+    .canvas-card {
+        background: #fff !important;
+        border: 1px solid #ddd !important;
+        padding: 10px;
+        break-inside: avoid;
+    }
+
+    .canvas-card h4 {
+        color: #111 !important;
+        font-size: 11pt;
+    }
+
+    .card-content {
+        background: #f8f9fa !important;
+        color: #333 !important;
+        border: 1px solid #eee;
+        padding: 6px;
+        font-size: 9.5pt;
+        min-height: 40px;
+    }
+
+    .card-desc {
+        color: #555 !important;
+        font-size: 8.5pt;
+    }
+}
+
 /* التوافق التام مع الموبايل بالطول مع حماية الأبعاد */
 @media (max-width: 768px) {
     .dashboard-workspace {
