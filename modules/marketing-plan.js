@@ -7,32 +7,31 @@ export async function renderMarketingPlan(container) {
     container.innerHTML = `
         <!-- الهيدر الرئيسي للوحدة مع تضمين لوجو بروتون -->
         <div class="module-header-title">
-                <div class="proton-logo-wrapper">
-                    <img src="../Sta-P.webp" alt="Proton Logo" class="proton-header-logo-img">
-                </div>
-                <div class="header-titles-group">
-                    <h2>الخطة التسويقية الاستراتيجية</h2>
-                    <p class="module-subtitle">إطار العمل الاستراتيجي المعتمد لرحلة نمو العميل، والمربوط بآليات الأتمتة الذكية في Proton.</p>
-                </div>
-                <button id="print-plan-btn" class="proton-btn-print">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                    طباعة الخطة
-                </button>
+            <div class="proton-logo-wrapper">
+                <img src="../Sta-P.webp" alt="Proton Logo" class="proton-header-logo-img">
             </div>
+            <div class="header-titles-group">
+                <h2>الخطة التسويقية الاستراتيجية</h2>
+                <p class="module-subtitle">إطار العمل الاستراتيجي المعتمد لرحلة نمو العميل، والمربوط بآليات الأتمتة الذكية في Proton.</p>
+            </div>
+            <button id="print-plan-btn" class="proton-btn-print">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                طباعة الخطة
+            </button>
         </div>
 
-        <!-- بادة العميل المخصصة تحت الهيدر -->
+        <!-- بادة العميل المخصصة تحت الهيدر مع قائمة اختيار البراندات -->
         <div class="client-brand-badge-card">
             <div class="client-brand-info">
                 <div class="brand-logo-wrapper">
                     <img id="brand-logo-preview" src="../Sta-P.webp" alt="Brand Logo" class="brand-logo-img">
                 </div>
                 <div class="platform-text">
-                                <h4>اختر النشاط التجاري</h4>
-                                <p>اختر البراند المطلوب عرض خطته التسويقية</p>
-                            </div>
+                    <h4 id="brand-name-display">اختر النشاط التجاري</h4>
+                    <p>اختر البراند المطلوب عرض خطته التسويقية</p>
+                </div>
                 <select id="brand-selector" class="brand-select-input">
-                    <option value="">جاري التحميل...</option>
+                    <option value="">جاري جلب برانداتك...</option>
                 </select>
             </div>
         </div>
@@ -126,45 +125,127 @@ export async function renderMarketingPlan(container) {
         </div>
     `;
 
+    // تفعيل زر الطباعة
     document.getElementById('print-plan-btn').addEventListener('click', () => {
         window.print();
     });
 
-    await fetchAndPopulatePlanData(1);
+    // جلب قائمة البراندات الخاصة بالمستخدم الحالي عند تحميل الوحدة
+    await loadUserBrands();
 }
 
+/**
+ * جلب البراندات الخاصة بالمستخدم الحالي فقط من الباك إند
+ */
+async function loadUserBrands() {
+    try {
+        const response = await fetch('/v1/user/brands', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+            // سيتم تمرير الـ Session / Auth Token تلقائياً عبر الكوكيز أو الهيدرز للمصادقة
+        });
+        
+        if (!response.ok) throw new Error("Failed to fetch user brands");
+
+        const brands = await response.json();
+        const selector = document.getElementById('brand-selector');
+        
+        if (!brands || brands.length === 0) {
+            selector.innerHTML = '<option value="">لا توجد براندات مضافة حالياً</option>';
+            clearPlanDataDisplay();
+            return;
+        }
+
+        // تعبئة القائمة المنسدلة بالبراندات الخاصة بالمستخدم
+        selector.innerHTML = brands.map(b => `<option value="${b.id}">${b.brand_name}</option>`).join('');
+
+        // جلب تفاصيل الخطة لأول براند افتراضياً
+        const firstBrandId = brands[0].id;
+        await fetchAndPopulatePlanData(firstBrandId);
+
+        // الاستماع لتغيير الاختيار في القائمة المنسدلة
+        selector.addEventListener('change', async (e) => {
+            const selectedBrandId = e.target.value;
+            if (selectedBrandId) {
+                await fetchAndPopulatePlanData(selectedBrandId);
+            }
+        });
+
+    } catch (error) {
+        console.error("Error loading user brands:", error);
+        document.getElementById('brand-selector').innerHTML = '<option value="">خطأ في تحميل البراندات</option>';
+    }
+}
+
+/**
+ * جلب وتعبئة تفاصيل الخطة التسويقية للبراند المحدد من قاعدة البيانات
+ */
 async function fetchAndPopulatePlanData(brandId) {
     try {
+        setLoadingState(true);
         const response = await fetch(`/v1/marketing-plan/${brandId}`);
         if (!response.ok) throw new Error("Network response was not ok");
         
         const planData = await response.json();
 
+        // تحديث اللوجو الخاص بالبراند
         const logoImg = document.getElementById('brand-logo-preview');
         if (logoImg) {
-            if (planData.logo_url && planData.logo_url.trim() !== "") {
-                logoImg.src = planData.logo_url;
-            } else {
-                logoImg.src = "../Sta-P.webp";
-            }
+            logoImg.src = (planData.logo_url && planData.logo_url.trim() !== "") ? planData.logo_url : "../Sta-P.webp";
         }
 
+        // تحديث اسم البراند في البادة
         const brandNameEl = document.getElementById('brand-name-display');
         if (brandNameEl) {
             brandNameEl.innerText = planData.brand_name || "Proton Partner Brand";
         }
 
-        document.getElementById('data-target-market').innerText = planData.target_market || '';
-        document.getElementById('data-brand-message').innerText = planData.brand_message || '';
-        document.getElementById('data-reach-channels').innerText = planData.reach_channels || '';
-        document.getElementById('data-lead-capture').innerText = planData.lead_capture || '';
-        document.getElementById('data-lead-nurturing').innerText = planData.lead_nurturing || '';
-        document.getElementById('data-sales-conversion').innerText = planData.sales_conversion || '';
-        document.getElementById('data-delight-experience').innerText = planData.delight_experience || '';
-        document.getElementById('data-increase-clv').innerText = planData.increase_clv || '';
-        document.getElementById('data-referral-system').innerText = planData.referral_system || '';
+        // تعبئة محاور الخطة الـ 9 الناتجة عن أتمتة n8n و DeepSeek
+        document.getElementById('data-target-market').innerText = planData.target_market || 'لا توجد بيانات متاحة';
+        document.getElementById('data-brand-message').innerText = planData.brand_message || 'لا توجد بيانات متاحة';
+        document.getElementById('data-reach-channels').innerText = planData.reach_channels || 'لا توجد بيانات متاحة';
+        document.getElementById('data-lead-capture').innerText = planData.lead_capture || 'لا توجد بيانات متاحة';
+        document.getElementById('data-lead-nurturing').innerText = planData.lead_nurturing || 'لا توجد بيانات متاحة';
+        document.getElementById('data-sales-conversion').innerText = planData.sales_conversion || 'لا توجد بيانات متاحة';
+        document.getElementById('data-delight-experience').innerText = planData.delight_experience || 'لا توجد بيانات متاحة';
+        document.getElementById('data-increase-clv').innerText = planData.increase_clv || 'لا توجد بيانات متاحة';
+        document.getElementById('data-referral-system').innerText = planData.referral_system || 'لا توجد بيانات متاحة';
 
     } catch (error) {
-        console.error("Error loading plan:", error);
+        console.error("Error loading plan details:", error);
+    } finally {
+        setLoadingState(false);
     }
+}
+
+/**
+ * وضع مؤشر التحميل المؤقت أثناء جلب البيانات
+ */
+function setLoadingState(isLoading) {
+    const contentIds = [
+        'data-target-market', 'data-brand-message', 'data-reach-channels',
+        'data-lead-capture', 'data-lead-nurturing', 'data-sales-conversion',
+        'data-delight-experience', 'data-increase-clv', 'data-referral-system'
+    ];
+    
+    contentIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && isLoading && el.innerText === 'جاري جلب البيانات...') {
+            el.style.opacity = '0.6';
+        } else if (el) {
+            el.style.opacity = '1';
+        }
+    });
+}
+
+function clearPlanDataDisplay() {
+    const contentIds = [
+        'data-target-market', 'data-brand-message', 'data-reach-channels',
+        'data-lead-capture', 'data-lead-nurturing', 'data-sales-conversion',
+        'data-delight-experience', 'data-increase-clv', 'data-referral-system'
+    ];
+    contentIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = '-';
+    });
 }
