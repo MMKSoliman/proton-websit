@@ -139,15 +139,16 @@ export async function renderMarketingPlan(container) {
  */
 async function loadUserBrands() {
     try {
-        const response = await fetch('/v1/user/brands', {
+        const response = await fetch('/v1/user-brands', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
-            // سيتم تمرير الـ Session / Auth Token تلقائياً عبر الكوكيز أو الهيدرز للمصادقة
         });
         
         if (!response.ok) throw new Error("Failed to fetch user brands");
 
-        const brands = await response.json();
+        const data = await response.json();
+        // استخراج مصفوفة البراندات من مفتاح "brands" بناءً على شكل استجابة الباك إند
+        const brands = data.brands || [];
         const selector = document.getElementById('brand-selector');
         
         if (!brands || brands.length === 0) {
@@ -156,14 +157,14 @@ async function loadUserBrands() {
             return;
         }
 
-        // تعبئة القائمة المنسدلة بالبراندات الخاصة بالمستخدم
-        selector.innerHTML = brands.map(b => `<option value="${b.id}">${b.brand_name}</option>`).join('');
+        // تعبئة القائمة بـ brand_id الصحيح
+        selector.innerHTML = brands.map(b => `<option value="${b.brand_id}">${b.brand_name}</option>`).join('');
 
         // جلب تفاصيل الخطة لأول براند افتراضياً
-        const firstBrandId = brands[0].id;
+        const firstBrandId = brands[0].brand_id;
         await fetchAndPopulatePlanData(firstBrandId);
 
-        // الاستماع لتغيير الاختيار في القائمة المنسدلة
+        // الاستماع لتغيير الاختيار في القائمة
         selector.addEventListener('change', async (e) => {
             const selectedBrandId = e.target.value;
             if (selectedBrandId) {
