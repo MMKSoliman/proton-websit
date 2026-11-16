@@ -142,7 +142,7 @@ async function loadUserBrands() {
         const response = await fetch('https://api.protonag.com/v1/user-brands', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
-            credentials: 'include' // مهم جداً لإرسال الـ Session/Cookies بين النطاقات
+            credentials: 'include' // إرسال الجلسة والكوكيز للمصادقة عبر النطاقات
         });
                 
         if (!response.ok) throw new Error("Failed to fetch user brands");
