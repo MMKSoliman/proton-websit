@@ -244,7 +244,7 @@
                 // وضع التعديل: تغيير العنوان وجلب بيانات البراند المحدد
                 document.getElementById('pageMainTitle').textContent = "تعديل بيانات البراند";
                 try {
-                    const res = await fetch(`https://api.protonag.com/v1/brands/${brandId}`, {
+                    const res = await fetch(`https://api.protonag.com/v1/marketing-plan/${brandId}`, {
                         headers: { "Authorization": "Bearer " + token }
                     });
                     if (res.ok) {
