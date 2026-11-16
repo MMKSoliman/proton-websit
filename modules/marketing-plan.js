@@ -132,12 +132,19 @@ export async function renderMarketingPlan(container) {
     await loadUserBrands();
 }
 
+/**
+ * جلب البراندات الخاصة بالمستخدم الحالي باستخدام الـ JWT Token
+ */
 async function loadUserBrands() {
     try {
+        const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+
         const response = await fetch('https://api.protonag.com/v1/user-brands', {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include'
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
         });
                 
         if (!response.ok) throw new Error("Failed to fetch user brands");
@@ -170,13 +177,20 @@ async function loadUserBrands() {
     }
 }
 
+/**
+ * جلب وتعبئة تفاصيل الخطة التسويقية للبراند المحدد باستخدام الـ JWT Token
+ */
 async function fetchAndPopulatePlanData(brandId) {
     try {
         setLoadingState(true);
+        const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+
         const response = await fetch(`https://api.protonag.com/v1/marketing-plan/${brandId}`, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include'
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
         });
         if (!response.ok) throw new Error("Network response was not ok");
         
