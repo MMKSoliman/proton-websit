@@ -246,8 +246,8 @@
                 document.getElementById('pageMainTitle').textContent = "تعديل بيانات البراند";
                 try {
                     // تم تعديل المسار لجلب بيانات البراند الأساسية بدلاً من الخطة التسويقية
-                    const res = await fetch(`https://api.protonag.com/v1/brands/${brandId}`, {
-                        headers: { "Authorization": "Bearer " + token }
+                    const res = await fetch(`https://api.protonag.com/onboarding/brands/${brandId}`, {
+                    headers: { "Authorization": "Bearer " + token }
                     });
                     if (res.ok) {
                         const brandData = await res.json();
