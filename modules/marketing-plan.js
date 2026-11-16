@@ -255,6 +255,19 @@ function updateEditBrandLink(brandId) {
     }
 }
 
+function setBrandLogo(logoUrl) {
+    const logoImg = document.getElementById('brand-logo-preview');
+    if (!logoImg) return;
+    
+    if (logoUrl && logoUrl.trim() !== "") {
+        logoImg.src = logoUrl.startsWith('http') 
+            ? logoUrl 
+            : `https://api.protonag.com${logoUrl}`;
+    } else {
+        logoImg.src = "../Sta-P.webp";
+    }
+}
+
 /**
  * جلب وتعبئة تفاصيل الخطة التسويقية للبراند المحدد باستخدام الـ JWT Token
  */
