@@ -219,6 +219,7 @@
         let hasIdentity = false;
 
         // تهيئة الصفحة عند التحميل (معالجة وضع إنشاء براند جديد أو تعديل براند حالي)
+        // تهيئة الصفحة عند التحميل (معالجة وضع إنشاء براند جديد أو تعديل براند حالي)
         document.addEventListener("DOMContentLoaded", async function() {
             const urlParams = new URLSearchParams(window.location.search);
             const mode = urlParams.get("mode");
@@ -241,19 +242,23 @@
             }
 
             if (mode === "edit_brand" && brandId) {
-                // وضع التعديل: تغيير العنوان وجلب بيانات البراند المحدد
+                // وضع التعديل: تغيير العنوان وجلب بيانات البراند الحقيقية من جدول البراندات مباشرة
                 document.getElementById('pageMainTitle').textContent = "تعديل بيانات البراند";
                 try {
-                    const res = await fetch(`https://api.protonag.com/v1/marketing-plan/${brandId}`, {
+                    // تم تعديل المسار لجلب بيانات البراند الأساسية بدلاً من الخطة التسويقية
+                    const res = await fetch(`https://api.protonag.com/v1/brands/${brandId}`, {
                         headers: { "Authorization": "Bearer " + token }
                     });
                     if (res.ok) {
                         const brandData = await res.json();
-                        // تعبئة الحقول بالبيانات الحالية للبراند
+                        
+                        // تعبئة الحقول بالبيانات الأصلية التي أدخلها العميل وحفظها في جدول البراندات
                         document.getElementById('brand_name').value = brandData.brand_name || "";
                         document.getElementById('brand_type').value = brandData.brand_type || "";
                         if (brandData.lang) document.getElementById('lang').value = brandData.lang;
-                        document.getElementById('niche').value = brandData.target_market || brandData.niche || "";
+                        
+                        // جلب الحقول بالأسماء الصحيحة المطابقة لجدول البراندات
+                        document.getElementById('niche').value = brandData.niche || "";
                         document.getElementById('audience').value = brandData.audience || "";
                         
                         document.getElementById('phone_nunber').value = brandData.phone_number || "";
