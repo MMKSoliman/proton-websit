@@ -225,6 +225,21 @@
             const brandId = urlParams.get("brand_id");
             const token = localStorage.getItem("access_token");
 
+            // جلب بيانات المستخدم الشخصية دائماً لملء الخطوة الأولى وتجنب أي خطأ في الفحص الإلزامي
+            try {
+                const userRes = await fetch("https://api.protonag.com/auth/me", {
+                    headers: { "Authorization": "Bearer " + token }
+                });
+                if (userRes.ok) {
+                    const userData = await userRes.json();
+                    document.getElementById('user_name').value = userData.name || userData.full_name || "مستخدم بروتون";
+                    document.getElementById('user_phone_number').value = userData.phone || userData.phone_number || "+201000000000";
+                    document.getElementById('p_email').value = userData.email || "user@protonag.com";
+                }
+            } catch (err) {
+                console.error("Could not fetch user info:", err);
+            }
+
             if (mode === "edit_brand" && brandId) {
                 // وضع التعديل: تغيير العنوان وجلب بيانات البراند المحدد
                 document.getElementById('pageMainTitle').textContent = "تعديل بيانات البراند";
@@ -258,20 +273,6 @@
                 updateUI();
 
             } else if (mode === "new_brand" || urlParams.get("step") === "2") {
-                try {
-                    const res = await fetch("https://api.protonag.com/auth/me", {
-                        headers: { "Authorization": "Bearer " + token }
-                    });
-                    if (res.ok) {
-                        const userData = await res.json();
-                        document.getElementById('user_name').value = userData.name || userData.full_name || "مستخدم بروتون";
-                        document.getElementById('user_phone_number').value = userData.phone || userData.phone_number || "+201000000000";
-                        document.getElementById('p_email').value = userData.email || "user@protonag.com";
-                    }
-                } catch (err) {
-                    console.error("Could not fetch user info for new brand:", err);
-                }
-
                 document.getElementById(`step${currentStep}`).classList.remove('active');
                 currentStep = 2;
                 document.getElementById(`step${currentStep}`).classList.add('active');
@@ -419,18 +420,17 @@
             const unifiedFile = document.getElementById('bcard_file').files[0];
             if (unifiedFile) formData.append('bcard_file', unifiedFile);
 
+            if (brandId) {
+                formData.append('brand_id', brandId);
+            }
+
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
             submitBtn.textContent = 'جاري حفظ البيانات وإرسالها...';
 
             try {
                 const token = localStorage.getItem("access_token");
-                // إذا كان وضع تعديل، نرسل الطلب مع brand_id أو لمسار التعديل المخصص
-                let endpoint = 'https://api.protonag.com/onboarding/save';
-                if (mode === 'edit_brand' && brandId) {
-                    formData.append('brand_id', brandId);
-                    endpoint = 'https://api.protonag.com/onboarding/update'; // أو المسار المعتمد في الباك إند لديك للتعديل
-                }
+                const endpoint = 'https://api.protonag.com/onboarding/save';
 
                 const response = await fetch(endpoint, {
                     method: 'POST',
