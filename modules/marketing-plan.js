@@ -139,11 +139,12 @@ export async function renderMarketingPlan(container) {
  */
 async function loadUserBrands() {
     try {
-        const response = await fetch('/v1/user-brands', {
+        const response = await fetch('https://api.protonag.com/v1/user-brands', {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include' // مهم جداً لإرسال الـ Session/Cookies بين النطاقات
         });
-        
+                
         if (!response.ok) throw new Error("Failed to fetch user brands");
 
         const data = await response.json();
@@ -184,7 +185,11 @@ async function loadUserBrands() {
 async function fetchAndPopulatePlanData(brandId) {
     try {
         setLoadingState(true);
-        const response = await fetch(`/v1/marketing-plan/${brandId}`);
+        const response = await fetch(`https://api.protonag.com/v1/marketing-plan/${brandId}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+        });
         if (!response.ok) throw new Error("Network response was not ok");
         
         const planData = await response.json();
