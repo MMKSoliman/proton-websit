@@ -245,7 +245,7 @@ async function loadUserBrands() {
 }
 
 /**
- * تحديث رابط زر تعديل البراند بناءً على البراند المختحد حالياً
+ * تحديث رابط زر تعديل البراند بناءً على البراند المختار حالياً
  */
 function updateEditBrandLink(brandId) {
     const editBtn = document.getElementById('edit-brand-btn');
@@ -257,47 +257,41 @@ function updateEditBrandLink(brandId) {
 
 /**
  * جلب وتعبئة تفاصيل الخطة التسويقية للبراند المحدد باستخدام الـ JWT Token
-         */
-        async function fetchAndPopulatePlanData(brandId) {
-            try {
-                setLoadingState(true);
-                const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+ */
+async function fetchAndPopulatePlanData(brandId) {
+    try {
+        setLoadingState(true);
+        const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+
+        const response = await fetch(`https://api.protonag.com/v1/marketing-plan/${brandId}`, {
+            method: 'GET',
+            headers: {  
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (!response.ok) throw new Error("Network response was not ok");
         
-                const response = await fetch(`https://api.protonag.com/v1/marketing-plan/${brandId}`, {
-                    method: 'GET',
-                    headers: {  
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                if (!response.ok) throw new Error("Network response was not ok");
-                
-                const planData = await response.json();
-        
-                const logoImg = document.getElementById('brand-logo-preview');
-                if (logoImg) {
-                    if (planData.logo_url && planData.logo_url.trim() !== "") {
-                        // إذا كان المسار نسبياً، نربطه بنطاق الـ API لكي يتم تحميل الصورة من السيرفر الصحيح
-                        logoImg.src = planData.logo_url.startsWith('http') 
-                            ? planData.logo_url 
-                            : `https://api.protonag.com${planData.logo_url}`;
-                    } else {
-                        logoImg.src = "../Sta-P.webp";
-                    }
-                }
-        
-                const brandNameEl = document.getElementById('brand-name-display');
-                if (brandNameEl) {
-                    brandNameEl.innerText = planData.brand_name || "Proton Partner Brand";
-                }
-        
-                // ... (باقي الكود الخاص بك إن وجد)
-                
-            } catch (error) {
-                console.error("Error fetching plan data:", error);
+        const planData = await response.json();
+
+        // معالجة وعرض لوجو البراند
+        const logoImg = document.getElementById('brand-logo-preview');
+        if (logoImg) {
+            if (planData.logo_url && planData.logo_url.trim() !== "") {
+                logoImg.src = planData.logo_url.startsWith('http') 
+                    ? planData.logo_url 
+                    : `https://api.protonag.com${planData.logo_url}`;
+            } else {
+                logoImg.src = "../Sta-P.webp";
             }
         }
 
+        const brandNameEl = document.getElementById('brand-name-display');
+        if (brandNameEl) {
+            brandNameEl.innerText = planData.brand_name || "Proton Partner Brand";
+        }
+
+        // تعبئة بيانات الحقول التسويقية (أصبحت داخل الدالة بشكل صحيح)
         document.getElementById('data-target-market').innerText = planData.target_market || 'لا توجد بيانات متاحة';
         document.getElementById('data-brand-message').innerText = planData.brand_message || 'لا توجد بيانات متاحة';
         document.getElementById('data-reach-channels').innerText = planData.reach_channels || 'لا توجد بيانات متاحة';
@@ -309,7 +303,7 @@ function updateEditBrandLink(brandId) {
         document.getElementById('data-referral-system').innerText = planData.referral_system || 'لا توجد بيانات متاحة';
 
     } catch (error) {
-        console.error("Error loading plan details:", error);
+        console.error("Error fetching plan data:", error);
     } finally {
         setLoadingState(false);
     }
