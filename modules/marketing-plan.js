@@ -125,30 +125,24 @@ export async function renderMarketingPlan(container) {
         </div>
     `;
 
-    // تفعيل زر الطباعة
     document.getElementById('print-plan-btn').addEventListener('click', () => {
         window.print();
     });
 
-    // جلب قائمة البراندات الخاصة بالمستخدم الحالي عند تحميل الوحدة
     await loadUserBrands();
 }
 
-/**
- * جلب البراندات الخاصة بالمستخدم الحالي فقط من الباك إند
- */
 async function loadUserBrands() {
     try {
         const response = await fetch('https://api.protonag.com/v1/user-brands', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
-            credentials: 'include' // إرسال الجلسة والكوكيز للمصادقة عبر النطاقات
+            credentials: 'include'
         });
                 
         if (!response.ok) throw new Error("Failed to fetch user brands");
 
         const data = await response.json();
-        // استخراج مصفوفة البراندات من مفتاح "brands" بناءً على شكل استجابة الباك إند
         const brands = data.brands || [];
         const selector = document.getElementById('brand-selector');
         
@@ -158,14 +152,11 @@ async function loadUserBrands() {
             return;
         }
 
-        // تعبئة القائمة بـ brand_id الصحيح
         selector.innerHTML = brands.map(b => `<option value="${b.brand_id}">${b.brand_name}</option>`).join('');
 
-        // جلب تفاصيل الخطة لأول براند افتراضياً
         const firstBrandId = brands[0].brand_id;
         await fetchAndPopulatePlanData(firstBrandId);
 
-        // الاستماع لتغيير الاختيار في القائمة
         selector.addEventListener('change', async (e) => {
             const selectedBrandId = e.target.value;
             if (selectedBrandId) {
@@ -179,9 +170,6 @@ async function loadUserBrands() {
     }
 }
 
-/**
- * جلب وتعبئة تفاصيل الخطة التسويقية للبراند المحدد من قاعدة البيانات
- */
 async function fetchAndPopulatePlanData(brandId) {
     try {
         setLoadingState(true);
@@ -194,19 +182,16 @@ async function fetchAndPopulatePlanData(brandId) {
         
         const planData = await response.json();
 
-        // تحديث اللوجو الخاص بالبراند
         const logoImg = document.getElementById('brand-logo-preview');
         if (logoImg) {
             logoImg.src = (planData.logo_url && planData.logo_url.trim() !== "") ? planData.logo_url : "../Sta-P.webp";
         }
 
-        // تحديث اسم البراند في البادة
         const brandNameEl = document.getElementById('brand-name-display');
         if (brandNameEl) {
             brandNameEl.innerText = planData.brand_name || "Proton Partner Brand";
         }
 
-        // تعبئة محاور الخطة الـ 9 الناتجة عن أتمتة n8n و DeepSeek
         document.getElementById('data-target-market').innerText = planData.target_market || 'لا توجد بيانات متاحة';
         document.getElementById('data-brand-message').innerText = planData.brand_message || 'لا توجد بيانات متاحة';
         document.getElementById('data-reach-channels').innerText = planData.reach_channels || 'لا توجد بيانات متاحة';
@@ -224,9 +209,6 @@ async function fetchAndPopulatePlanData(brandId) {
     }
 }
 
-/**
- * وضع مؤشر التحميل المؤقت أثناء جلب البيانات
- */
 function setLoadingState(isLoading) {
     const contentIds = [
         'data-target-market', 'data-brand-message', 'data-reach-channels',
