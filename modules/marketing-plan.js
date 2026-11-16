@@ -265,7 +265,7 @@ async function fetchAndPopulatePlanData(brandId) {
 
         const response = await fetch(`https://api.protonag.com/v1/marketing-plan/${brandId}`, {
             method: 'GET',
-            headers: { 
+            headers: {  
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             }
@@ -276,13 +276,27 @@ async function fetchAndPopulatePlanData(brandId) {
 
         const logoImg = document.getElementById('brand-logo-preview');
         if (logoImg) {
-            logoImg.src = (planData.logo_url && planData.logo_url.trim() !== "") ? planData.logo_url : "../Sta-P.webp";
+            if (planData.logo_url && planData.logo_url.trim() !== "") {
+                // إذا كان المسار نسبياً، نربطه بنطاق الـ API لكي يتم تحميل الصورة من السيرفر الصحيح
+                logoImg.src = planData.logo_url.startsWith('http') 
+                    ? planData.logo_url 
+                    : `https://api.protonag.com${planData.logo_url}`;
+            } else {
+                logoImg.src = "../Sta-P.webp";
+            }
         }
 
         const brandNameEl = document.getElementById('brand-name-display');
         if (brandNameEl) {
             brandNameEl.innerText = planData.brand_name || "Proton Partner Brand";
         }
+
+        // ... (باقي الكود الخاص بك إن وجد)
+        
+    } catch (error) {
+        console.error("Error fetching plan data:", error);
+    }
+}
 
         document.getElementById('data-target-market').innerText = planData.target_market || 'لا توجد بيانات متاحة';
         document.getElementById('data-brand-message').innerText = planData.brand_message || 'لا توجد بيانات متاحة';
