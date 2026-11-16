@@ -23,7 +23,7 @@
         <div class="center-content">
             <div class="onboarding-card">
                 <div class="card-header">
-                    <h2 class="card-title">تهيئة ملف النشاط</h2>
+                    <h2 class="card-title" id="pageMainTitle">تهيئة ملف النشاط</h2>
                     <p class="card-subtitle">الخطوة <span id="stepNumber">1</span> من 4</p>
                 </div>
 
@@ -149,7 +149,7 @@
                         
                         <div class="form-row">
                             <div class="form-group">
-                                <label>هاتف البراند (Brand phone nunber)</label>
+                                <label>هاتف البراند (Brand phone number)</label>
                                 <input type="tel" class="form-control" id="phone_nunber" placeholder="+20 10XXXXXXXX">
                             </div>
                             <div class="form-group">
@@ -218,18 +218,52 @@
         const totalSteps = 4;
         let hasIdentity = false;
 
-        // جلب بيانات المستخدم الشخصية وتخطي الخطوة الأولى تلقائياً عند إضافة براند جديد
+        // تهيئة الصفحة عند التحميل (معالجة وضع إنشاء براند جديد أو تعديل براند حالي)
         document.addEventListener("DOMContentLoaded", async function() {
             const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get("mode") === "new_brand" || urlParams.get("step") === "2") {
+            const mode = urlParams.get("mode");
+            const brandId = urlParams.get("brand_id");
+            const token = localStorage.getItem("access_token");
+
+            if (mode === "edit_brand" && brandId) {
+                // وضع التعديل: تغيير العنوان وجلب بيانات البراند المحدد
+                document.getElementById('pageMainTitle').textContent = "تعديل بيانات البراند";
                 try {
-                    const token = localStorage.getItem("access_token");
+                    const res = await fetch(`https://api.protonag.com/v1/marketing-plan/${brandId}`, {
+                        headers: { "Authorization": "Bearer " + token }
+                    });
+                    if (res.ok) {
+                        const brandData = await res.json();
+                        // تعبئة الحقول بالبيانات الحالية للبراند
+                        document.getElementById('brand_name').value = brandData.brand_name || "";
+                        document.getElementById('brand_type').value = brandData.brand_type || "";
+                        if (brandData.lang) document.getElementById('lang').value = brandData.lang;
+                        document.getElementById('niche').value = brandData.target_market || brandData.niche || "";
+                        document.getElementById('audience').value = brandData.audience || "";
+                        
+                        document.getElementById('phone_nunber').value = brandData.phone_number || "";
+                        document.getElementById('brand_wa').value = brandData.brand_wa || "";
+                        document.getElementById('brand_email').value = brandData.brand_email || "";
+                        document.getElementById('brand_ws').value = brandData.brand_ws || "";
+                        document.getElementById('address').value = brandData.address || "";
+                    }
+                } catch (err) {
+                    console.error("Could not fetch brand data for editing:", err);
+                }
+
+                // الانتقال فوراً للخطوة الثانية وتحديث المؤشر
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep = 2;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateUI();
+
+            } else if (mode === "new_brand" || urlParams.get("step") === "2") {
+                try {
                     const res = await fetch("https://api.protonag.com/auth/me", {
                         headers: { "Authorization": "Bearer " + token }
                     });
                     if (res.ok) {
                         const userData = await res.json();
-                        // تعبئة حقول الخطوة الأولى بالبيانات المسجلة مسبقاً في الخلفية
                         document.getElementById('user_name').value = userData.name || userData.full_name || "مستخدم بروتون";
                         document.getElementById('user_phone_number').value = userData.phone || userData.phone_number || "+201000000000";
                         document.getElementById('p_email').value = userData.email || "user@protonag.com";
@@ -238,7 +272,6 @@
                     console.error("Could not fetch user info for new brand:", err);
                 }
 
-                // الانتقال فوراً للخطوة الثانية وتحديث المؤشر
                 document.getElementById(`step${currentStep}`).classList.remove('active');
                 currentStep = 2;
                 document.getElementById(`step${currentStep}`).classList.add('active');
@@ -263,7 +296,6 @@
             const brandName = document.getElementById('brand_name').value || "شركتي";
             const whatsappNumber = "+201066581983";
             const message = encodeURIComponent(`مرحباً بروتون، أرغب في طلب تصميم هوية بصرية متكاملة للبراند الخاص بي: "${brandName}".`);
-            
             window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
         }
 
@@ -276,14 +308,13 @@
 
         function handlePrevStep() {
             const urlParams = new URLSearchParams(window.location.search);
-            const isNewBrandMode = urlParams.get("mode") === "new_brand";
+            const mode = urlParams.get("mode");
 
             if (currentStep === 3 && document.getElementById('identityFieldsContainer').style.display === 'block') {
                 document.getElementById('identityFieldsContainer').style.display = 'none';
                 document.getElementById('identityChoiceBox').style.display = 'block';
                 document.getElementById('nextBtn').style.display = 'none';
-            } else if (isNewBrandMode && currentStep === 2) {
-                // إذا كان يضيف براند جديد، امنعه من الرجوع للخطوة الأولى الشخصية لأنه متخطيهالاصلاً
+            } else if ((mode === "new_brand" || mode === "edit_brand") && currentStep === 2) {
                 return;
             } else {
                 changeStep(-1);
@@ -324,14 +355,13 @@
             document.getElementById('progressBar').style.width = `${progressPercent}%`;
 
             const urlParams = new URLSearchParams(window.location.search);
-            const isNewBrandMode = urlParams.get("mode") === "new_brand";
+            const mode = urlParams.get("mode");
 
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const submitBtn = document.getElementById('submitBtn');
 
-            // إخفاء زر السابق إذا كان في الخطوة الأولى أو إذا كان يضيف براند جديد في الخطوة الثانية
-            if (currentStep === 1 || (isNewBrandMode && currentStep === 2)) {
+            if (currentStep === 1 || ((mode === "new_brand" || mode === "edit_brand") && currentStep === 2)) {
                 prevBtn.style.display = 'none';
             } else {
                 prevBtn.style.display = 'block';
@@ -354,12 +384,9 @@
             e.preventDefault();
 
             const formData = new FormData();
-
             const urlParams = new URLSearchParams(window.location.search);
-            const tokenParam = urlParams.get('token');
-            if (tokenParam) {
-                document.cookie = `access_token=${tokenParam}; path=/; secure; samesite=strict`;
-            }
+            const mode = urlParams.get('mode');
+            const brandId = urlParams.get('brand_id');
 
             formData.append('user_name', document.getElementById('user_name').value);
             formData.append('user_phone_number', document.getElementById('user_phone_number').value);
@@ -381,11 +408,9 @@
 
                 const guidelinesFile = document.getElementById('guide_file').files[0];
                 if (guidelinesFile) formData.append('guide_file', guidelinesFile);
-
-                 const bcardFile = document.getElementById('bcard_file').files[0];
-                if (bcardFile) formData.append('bcard_file', bcardFile);
             }
 
+            formData.append('phone_number', document.getElementById('phone_nunber').value);
             formData.append('brand_wa', document.getElementById('brand_wa').value);
             formData.append('brand_email', document.getElementById('brand_email').value);
             formData.append('brand_ws', document.getElementById('brand_ws').value);
@@ -399,10 +424,15 @@
             submitBtn.textContent = 'جاري حفظ البيانات وإرسالها...';
 
             try {
-                // جلب التوكن من الـ localStorage أو الرابط وإرفاقه صراحةً في الهيدر
-                const token = localStorage.getItem("access_token") || new URLSearchParams(window.location.search).get('token');
+                const token = localStorage.getItem("access_token");
+                // إذا كان وضع تعديل، نرسل الطلب مع brand_id أو لمسار التعديل المخصص
+                let endpoint = 'https://api.protonag.com/onboarding/save';
+                if (mode === 'edit_brand' && brandId) {
+                    formData.append('brand_id', brandId);
+                    endpoint = 'https://api.protonag.com/onboarding/update'; // أو المسار المعتمد في الباك إند لديك للتعديل
+                }
 
-                const response = await fetch('https://api.protonag.com/onboarding/save', {
+                const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: {
                         ...(token ? { "Authorization": "Bearer " + token } : {})
@@ -419,8 +449,8 @@
                 }
 
                 if (response.ok) {
-                    alert("تم حفظ معلومات النشاط بنجاح!");
-                    window.location.href = result.redirect_url || "./connect-social.html";
+                    alert(mode === 'edit_brand' ? "تم تحديث بيانات البراند بنجاح!" : "تم حفظ معلومات النشاط بنجاح!");
+                    window.location.href = result.redirect_url || "./dashboard.html";
                 } else {
                     alert("تعذر حفظ البيانات: " + (result.message || "يرجى التحقق من المدخلات والمحاولة مرة أخرى."));
                     submitBtn.disabled = false;
